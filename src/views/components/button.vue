@@ -1,7 +1,8 @@
+<!-- eslint-disable max-len -->
 <template>
   <!-- Search component button with name of type, press Ctrl + F -->
 
-  <div class="button h-auto p-3">
+  <div class="h-auto p-3 button">
     <nav class="flex" aria-label="Breadcrumb">
       <ol class="inline-flex items-center space-x-1 md:space-x-3">
         <li class="inline-flex items-center">
@@ -9,12 +10,7 @@
             href="#"
             class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
           >
-            <svg
-              class="mr-2 w-4 h-4"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
               ></path>
@@ -67,23 +63,18 @@
       </ol>
     </nav>
     <!-- end nav -->
-    <div class="mt-5 w-full">
-      <h1 class="text-2xl text-gray-900 font-medium dark:text-gray-200">
-        Button
-      </h1>
+    <div class="w-full mt-5">
+      <h1 class="text-2xl font-medium text-gray-900 dark:text-gray-200">Button</h1>
       <p class="mt-1 text-sm font-normal text-gray-400">
-        The button component is probably the most widely used element in any
-        user interface or website as it can be used to launch an action but also
-        to link to other pages.
+        The button component is probably the most widely used element in any user interface or website as it can be used
+        to launch an action but also to link to other pages.
       </p>
     </div>
     <div class="grid grid-cols-2 gap-2 mt-5 font-lexend">
-      <div
-        class="card bg-white dark:bg-gray-800 w-full rounded-md p-5 shadow bpx"
-      >
+      <div class="w-full p-5 bg-white rounded-md shadow card dark:bg-gray-800 bpx">
         <!-- Button Default -->
         <h2 class="dark:text-gray-200">Button Default</h2>
-        <div class="wrapper-button w-full box-border mt-4">
+        <div class="box-border w-full mt-4 wrapper-button">
           <button
             type="button"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -134,12 +125,10 @@
           </button>
         </div>
       </div>
-      <div
-        class="card bg-white dark:bg-gray-800 w-full rounded-md p-5 shadow bpx"
-      >
+      <div class="w-full p-5 bg-white rounded-md shadow card dark:bg-gray-800 bpx">
         <!-- Button Rounded -->
         <h2 class="dark:text-gray-200">Button Rounded</h2>
-        <div class="wrapper-button w-full box-border mt-4">
+        <div class="box-border w-full mt-4 wrapper-button">
           <button
             type="button"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -194,11 +183,9 @@
       <!-- gradient button -->
 
       <!-- button gradient monochrome -->
-      <div
-        class="card bg-white dark:bg-gray-800 w-full rounded-md p-5 shadow bpx"
-      >
+      <div class="w-full p-5 bg-white rounded-md shadow card dark:bg-gray-800 bpx">
         <h2 class="dark:text-gray-200">Button Gradient Monochrome</h2>
-        <div class="wrapper-button w-full box-border mt-4">
+        <div class="box-border w-full mt-4 wrapper-button">
           <button
             type="button"
             class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
@@ -250,11 +237,9 @@
         </div>
       </div>
       <!-- button gradient doutone -->
-      <div
-        class="card bg-white dark:bg-gray-800 w-full rounded-md p-5 shadow bpx"
-      >
+      <div class="w-full p-5 bg-white rounded-md shadow card dark:bg-gray-800 bpx">
         <h2 class="dark:text-gray-200">Button Gradient Doutone</h2>
-        <div class="wrapper-button w-full box-border mt-4">
+        <div class="box-border w-full mt-4 wrapper-button">
           <button
             type="button"
             class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
@@ -300,11 +285,9 @@
         </div>
       </div>
       <!-- button gradient outline -->
-      <div
-        class="card bg-white dark:bg-gray-800 w-full rounded-md p-5 shadow bpx"
-      >
+      <div class="w-full p-5 bg-white rounded-md shadow card dark:bg-gray-800 bpx">
         <h2 class="dark:text-gray-200">Button Gradient Outline</h2>
-        <div class="wrapper-button w-full box-border mt-4">
+        <div class="box-border w-full mt-4 wrapper-button">
           <button
             class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
           >
@@ -371,11 +354,9 @@
         </div>
       </div>
       <!-- button colored shadows -->
-      <div
-        class="card bg-white dark:bg-gray-800 w-full rounded-md p-5 shadow bpx"
-      >
+      <div class="w-full p-5 bg-white rounded-md shadow card dark:bg-gray-800 bpx">
         <h2 class="dark:text-gray-200">Button Colored Shadows</h2>
-        <div class="wrapper-button w-full box-border mt-4">
+        <div class="box-border w-full mt-4 wrapper-button">
           <button
             type="button"
             class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
@@ -427,11 +408,9 @@
         </div>
       </div>
       <!-- button social -->
-      <div
-        class="card bg-white dark:bg-gray-800 w-full rounded-md p-5 shadow bpx"
-      >
+      <div class="w-full p-5 bg-white rounded-md shadow card dark:bg-gray-800 bpx">
         <h2 class="dark:text-gray-200">Button Social</h2>
-        <div class="wrapper-button w-full box-border mt-4">
+        <div class="box-border w-full mt-4 wrapper-button">
           <button
             type="button"
             class="text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 mr-2 mb-2"
@@ -539,11 +518,9 @@
           </button>
         </div>
       </div>
-      <div
-        class="card bg-white dark:bg-gray-800 w-full rounded-md p-5 shadow bpx"
-      >
+      <div class="w-full p-5 bg-white rounded-md shadow card dark:bg-gray-800 bpx">
         <h2 class="dark:text-gray-200">Button with label badge</h2>
-        <div class="wrapper-button w-full box-border mt-4">
+        <div class="box-border w-full mt-4 wrapper-button">
           <button
             type="button"
             class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -558,21 +535,14 @@
         </div>
       </div>
       <!-- button with icon -->
-      <div
-        class="card bg-white dark:bg-gray-800 w-full rounded-md p-5 shadow bpx"
-      >
+      <div class="w-full p-5 bg-white rounded-md shadow card dark:bg-gray-800 bpx">
         <h2 class="dark:text-gray-200">Button with icon</h2>
-        <div class="wrapper-button w-full box-border mt-4">
+        <div class="box-border w-full mt-4 wrapper-button">
           <button
             type="button"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
-            <svg
-              class="w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path
                 fill-rule="evenodd"
                 d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
@@ -584,12 +554,7 @@
             type="button"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
-            <svg
-              class="w-4 h-4"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path
                 fill-rule="evenodd"
                 d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
@@ -601,12 +566,7 @@
             type="button"
             class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800"
           >
-            <svg
-              class="w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path
                 fill-rule="evenodd"
                 d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
@@ -618,12 +578,7 @@
             type="button"
             class="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800"
           >
-            <svg
-              class="w-5 h-5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path
                 fill-rule="evenodd"
                 d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
@@ -634,11 +589,9 @@
         </div>
       </div>
       <!-- button loading -->
-      <div
-        class="card bg-white dark:bg-gray-800 w-full rounded-md p-5 shadow bpx"
-      >
+      <div class="w-full p-5 bg-white rounded-md shadow card dark:bg-gray-800 bpx">
         <h2 class="dark:text-gray-200">Button with loading</h2>
-        <div class="wrapper-button w-full box-border mt-4">
+        <div class="box-border w-full mt-4 wrapper-button">
           <button
             disabled
             type="button"

@@ -1,7 +1,8 @@
+<!-- eslint-disable max-len -->
 <template>
   <button
     @click="toggleAccordion()"
-    class="text-gray-800 dark:text-gray-500 bg-transparent border dark:border-gray-700 dark:hover:bg-gray-700 hover:bg-gray-200 w-full flex text-left rounded-md box-border p-3"
+    class="box-border flex w-full p-3 text-left text-gray-800 bg-transparent border rounded-md dark:text-gray-500 dark:border-gray-700 dark:hover:bg-gray-700 hover:bg-gray-200"
     :aria-expanded="isOpen"
     :aria-controls="`collapse${_uid}`"
     :class="{
@@ -28,31 +29,28 @@
     </span>
   </button>
 
-  <div
-    v-show="isOpen"
-    :id="`collapse${_uid}`"
-    class="p-3 mt-2 bg-gray-100 dark:bg-gray-700"
-  >
+  <div v-show="isOpen" :id="`collapse${_uid}`" class="p-3 mt-2 bg-gray-100 dark:bg-gray-700">
     <slot name="content" />
   </div>
 </template>
 
 <script>
-  import { Icon } from "@iconify/vue";
-  export default {
-    data() {
-      return {
-        isOpen: false,
-      };
-    },
+import { Icon } from '@iconify/vue'
 
-    methods: {
-      toggleAccordion() {
-        this.isOpen = !this.isOpen;
-      },
+export default {
+  data() {
+    return {
+      isOpen: false,
+    }
+  },
+
+  methods: {
+    toggleAccordion() {
+      this.isOpen = !this.isOpen
     },
-    components: {
-      Icon,
-    },
-  };
+  },
+  components: {
+    Icon,
+  },
+}
 </script>

@@ -1,7 +1,8 @@
+<!-- eslint-disable max-len -->
 <template>
   <!-- Search component Breadcumb with name of type  press Ctrl + F -->
 
-  <div class="beadcumb h-auto p-3">
+  <div class="h-auto p-3 beadcumb">
     <nav class="flex" aria-label="Breadcrumb">
       <ol class="inline-flex items-center space-x-1 md:space-x-3">
         <li class="inline-flex items-center">
@@ -9,12 +10,7 @@
             href="#"
             class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
           >
-            <svg
-              class="mr-2 w-4 h-4"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
               ></path>
@@ -67,21 +63,16 @@
       </ol>
     </nav>
     <!-- end nav -->
-    <div class="mt-5 w-full">
-      <h1 class="text-2xl text-gray-900 font-medium dark:text-gray-200">
-        Breadcumb
-      </h1>
+    <div class="w-full mt-5">
+      <h1 class="text-2xl font-medium text-gray-900 dark:text-gray-200">Breadcumb</h1>
       <p class="mt-1 text-sm font-normal text-gray-400">
-        Show the location of the current page in a hierarchical structure using
-        the Tailwind CSS breadcrumb components
+        Show the location of the current page in a hierarchical structure using the Tailwind CSS breadcrumb components
       </p>
     </div>
-    <div class="grid grid-cols-2 mt-10 gap-5">
-      <div class="card w-full p-5 rounded-md bg-white dark:bg-gray-800">
-        <h2 class="text-lg font-lexend dark:text-gray-200">
-          Default Breadcumb
-        </h2>
-        <div class="wrapper-breadcumb mt-5">
+    <div class="grid grid-cols-2 gap-5 mt-10">
+      <div class="w-full p-5 bg-white rounded-md card dark:bg-gray-800">
+        <h2 class="text-lg font-lexend dark:text-gray-200">Default Breadcumb</h2>
+        <div class="mt-5 wrapper-breadcumb">
           <!-- default breadcumb -->
           <nav class="flex" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -90,12 +81,7 @@
                   href="#"
                   class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                 >
-                  <svg
-                    class="mr-2 w-4 h-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
                     ></path>
@@ -138,24 +124,19 @@
                       clip-rule="evenodd"
                     ></path>
                   </svg>
-                  <span
-                    class="ml-1 text-sm font-medium text-gray-400 md:ml-2 dark:text-gray-500"
-                    >Windzo</span
-                  >
+                  <span class="ml-1 text-sm font-medium text-gray-400 md:ml-2 dark:text-gray-500">Windzo</span>
                 </div>
               </li>
             </ol>
           </nav>
         </div>
       </div>
-      <div
-        class="card row-span-2 w-full p-5 rounded-md bg-white dark:bg-gray-800"
-      >
+      <div class="w-full row-span-2 p-5 bg-white rounded-md card dark:bg-gray-800">
         <!-- Solid Breadcrumb -->
         <h2 class="text-lg font-lexend dark:text-gray-200">Solid Breadcumb</h2>
-        <div class="wrapper-breadcumb mt-5">
+        <div class="mt-5 wrapper-breadcumb">
           <nav
-            class="flex py-3 px-5 text-gray-700 bg-gray-50 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+            class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
             aria-label="Breadcrumb"
           >
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -164,12 +145,7 @@
                   href="#"
                   class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
                 >
-                  <svg
-                    class="mr-2 w-4 h-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
                     ></path>
@@ -212,10 +188,7 @@
                       clip-rule="evenodd"
                     ></path>
                   </svg>
-                  <span
-                    class="ml-1 text-sm font-medium text-gray-400 md:ml-2 dark:text-gray-500"
-                    >Windzo</span
-                  >
+                  <span class="ml-1 text-sm font-medium text-gray-400 md:ml-2 dark:text-gray-500">Windzo</span>
                 </div>
               </li>
             </ol>

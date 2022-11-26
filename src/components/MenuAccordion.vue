@@ -1,7 +1,8 @@
+<!-- eslint-disable max-len -->
 <template>
   <button
     @click="toggleAccordion()"
-    class="text-gray-800 dark:text-gray-500 bg-transparent hover:bg-gray-200 dark:hover:bg-gray-700 w-full flex text-left rounded-md box-border p-3"
+    class="box-border flex w-full p-3 text-left text-gray-800 bg-transparent rounded-md dark:text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700"
     :aria-expanded="isOpen"
     :aria-controls="`collapse${_uid}`"
     :class="{
@@ -34,21 +35,22 @@
 </template>
 
 <script>
-  import { Icon } from "@iconify/vue";
-  export default {
-    data() {
-      return {
-        isOpen: false,
-      };
-    },
+import { Icon } from '@iconify/vue'
 
-    methods: {
-      toggleAccordion() {
-        this.isOpen = !this.isOpen;
-      },
+export default {
+  data() {
+    return {
+      isOpen: false,
+    }
+  },
+
+  methods: {
+    toggleAccordion() {
+      this.isOpen = !this.isOpen
     },
-    components: {
-      Icon,
-    },
-  };
+  },
+  components: {
+    Icon,
+  },
+}
 </script>

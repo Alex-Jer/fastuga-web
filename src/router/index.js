@@ -1,15 +1,16 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router'
 
 // Default Pages
-import Dashboard from '../views/Dashboard.vue';
+import Dashboard from '../views/Dashboard.vue'
 // Component Pages
-import Valert from '../views/components/alert.vue';
-import Vaccrodion from '../views/components/accordion.vue';
-import Vbadges from '../views/components/badges.vue';
-import Vbreadcumb from '../views/components/breadcumbs.vue';
-import Vbutton from '../views/components/button.vue';
-import Vcard from '../views/components/card.vue';
-var appname = ' - Windzo Dashboard Admin Template';
+import Vaccrodion from '../views/components/accordion.vue'
+import Valert from '../views/components/alert.vue'
+import Vbadges from '../views/components/badges.vue'
+import Vbreadcumb from '../views/components/breadcumbs.vue'
+import Vbutton from '../views/components/button.vue'
+import Vcard from '../views/components/card.vue'
+
+const appname = ' - Windzo Dashboard Admin Template'
 
 const routes = [
   // Routes
@@ -17,7 +18,7 @@ const routes = [
     path: '/',
     name: 'Dashboard',
     component: Dashboard,
-    meta: { title: 'Dashboard ' + appname },
+    meta: { title: `Dashboard ${appname}` },
   },
 
   // Components based Routes
@@ -25,50 +26,50 @@ const routes = [
     path: '/component/alert',
     name: 'Valert',
     component: Valert,
-    meta: { title: 'Alert' + appname },
+    meta: { title: `Alert${appname}` },
   },
   {
     path: '/component/accordion',
     name: 'Vaccordion',
     component: Vaccrodion,
-    meta: { title: 'Accordion' + appname },
+    meta: { title: `Accordion${appname}` },
   },
   {
     path: '/component/badge',
     name: 'Vbadge',
     component: Vbadges,
-    meta: { title: 'Badge' + appname },
+    meta: { title: `Badge${appname}` },
   },
   {
     path: '/component/breadcumb',
     name: 'Vbreadcumb',
     component: Vbreadcumb,
-    meta: { title: 'Breadcumb' + appname },
+    meta: { title: `Breadcumb${appname}` },
   },
   {
     path: '/component/button',
     name: 'Vbutton',
     component: Vbutton,
-    meta: { title: 'Button' + appname },
+    meta: { title: `Button${appname}` },
   },
   {
     path: '/component/card',
     name: 'Vcard',
     component: Vcard,
-    meta: { title: 'Card' + appname },
+    meta: { title: `Card${appname}` },
   },
-];
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 
   linkExactActiveClass: 'exact-active',
-});
+})
 
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title;
-  next();
-});
+  document.title = to.meta.title
+  next()
+})
 
-export default router;
+export default router
