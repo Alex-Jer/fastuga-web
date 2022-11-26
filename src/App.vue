@@ -1,91 +1,66 @@
-<script setup>
-import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
-</script>
-
 <template>
-  <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <!-- App -->
+  <div class="flex bg-packed font-lexend dark:bg-gray-900">
+    <div
+      id="sidebar-scroll"
+      class="fixed z-40 hidden h-screen overflow-auto bg-white border-r-2 flex-sidebar lg:flex-auto w-sidebar lg:block dark:bg-gray-800 dark:border-gray-700 lg:z-0 lg:relative"
+    >
+      <Sidebar />
     </div>
-  </header>
-
-  <RouterView />
+    <div class="flex-auto w-full h-screen overflow-auto" id="body-scroll">
+      <Header />
+      <router-view />
+      <Footer />
+    </div>
+  </div>
+  <!-- end app -->
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script>
+// vue Components
+import Sidebar from '@/components/Sidebar.vue';
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
+// npm-js
+import Scrollbar from 'smooth-scrollbar';
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+export default {
+  name: 'App',
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
+  components: {
+    Header,
+    Footer,
+    Sidebar,
+  },
+  mounted() {
+    Scrollbar.init(document.querySelector('#body-scroll'));
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
+    setTimeout(() => {
+      var alert_dis = document.querySelectorAll('.alert-dismiss');
+      alert_dis.forEach((x) =>
+        x.addEventListener('click', function () {
+          x.parentElement.classList.add('hidden');
+        })
+      );
+    }, 100);
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
+    // var acc = document.getElementsByClassName("accordion");
+    // var i;
+    // for (i = 0; i < acc.length; i++) {
+    //   acc[i].addEventListener("click", function () {
+    //     this.classList.toggle("active");
+    //     var panel = this.nextElementSibling;
+    //     if (panel.style.display === "block") {
+    //       panel.style.display = "none";
+    //       this.classList.remove("bg-gray-100");
+    //       this.classList.add("bg-transparent");
+    //     } else {
+    //       panel.style.display = "block";
+    //       this.classList.add("bg-gray-100");
+    //       this.classList.remove("bg-transparent");
+    //     }
+    //   });
+    // }
+  },
+};
+</script>
