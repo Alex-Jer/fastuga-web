@@ -1,75 +1,90 @@
-import { createRouter, createWebHistory } from 'vue-router'
-
-// Default Pages
-import Dashboard from '../views/Dashboard.vue'
-// Component Pages
-import Vaccrodion from '../views/components/accordion.vue'
-import Valert from '../views/components/alert.vue'
-import Vbadges from '../views/components/badges.vue'
-import Vbreadcumb from '../views/components/breadcumbs.vue'
-import Vbutton from '../views/components/button.vue'
-import Vcard from '../views/components/card.vue'
-
-const appname = ' - Windzo Dashboard Admin Template'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import Style from '@/views/StyleView.vue'
+import Home from '@/views/HomeView.vue'
 
 const routes = [
-  // Routes
   {
+    meta: {
+      title: 'Select style',
+    },
     path: '/',
-    name: 'Dashboard',
-    component: Dashboard,
-    meta: { title: `Dashboard ${appname}` },
-  },
-
-  // Components based Routes
-  {
-    path: '/component/alert',
-    name: 'Valert',
-    component: Valert,
-    meta: { title: `Alert${appname}` },
+    name: 'style',
+    component: Style,
   },
   {
-    path: '/component/accordion',
-    name: 'Vaccordion',
-    component: Vaccrodion,
-    meta: { title: `Accordion${appname}` },
+    // Document title tag
+    // We combine it with defaultDocumentTitle set in `src/main.js` on router.afterEach hook
+    meta: {
+      title: 'Dashboard',
+    },
+    path: '/dashboard',
+    name: 'dashboard',
+    component: Home,
   },
   {
-    path: '/component/badge',
-    name: 'Vbadge',
-    component: Vbadges,
-    meta: { title: `Badge${appname}` },
+    meta: {
+      title: 'Tables',
+    },
+    path: '/tables',
+    name: 'tables',
+    component: () => import('@/views/TablesView.vue'),
   },
   {
-    path: '/component/breadcumb',
-    name: 'Vbreadcumb',
-    component: Vbreadcumb,
-    meta: { title: `Breadcumb${appname}` },
+    meta: {
+      title: 'Forms',
+    },
+    path: '/forms',
+    name: 'forms',
+    component: () => import('@/views/FormsView.vue'),
   },
   {
-    path: '/component/button',
-    name: 'Vbutton',
-    component: Vbutton,
-    meta: { title: `Button${appname}` },
+    meta: {
+      title: 'Profile',
+    },
+    path: '/profile',
+    name: 'profile',
+    component: () => import('@/views/ProfileView.vue'),
   },
   {
-    path: '/component/card',
-    name: 'Vcard',
-    component: Vcard,
-    meta: { title: `Card${appname}` },
+    meta: {
+      title: 'Ui',
+    },
+    path: '/ui',
+    name: 'ui',
+    component: () => import('@/views/UiView.vue'),
+  },
+  {
+    meta: {
+      title: 'Responsive layout',
+    },
+    path: '/responsive',
+    name: 'responsive',
+    component: () => import('@/views/ResponsiveView.vue'),
+  },
+  {
+    meta: {
+      title: 'Login',
+    },
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/LoginView.vue'),
+  },
+  {
+    meta: {
+      title: 'Error',
+    },
+    path: '/error',
+    name: 'error',
+    component: () => import('@/views/ErrorView.vue'),
   },
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(),
   routes,
-
-  linkExactActiveClass: 'exact-active',
-})
-
-router.beforeEach((to, from, next) => {
-  document.title = to.meta.title
-  next()
+  scrollBehavior(to, from, savedPosition) {
+    return savedPosition || { top: 0 }
+  },
 })
 
 export default router
