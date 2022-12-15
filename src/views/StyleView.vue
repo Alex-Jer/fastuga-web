@@ -1,23 +1,23 @@
 <script setup>
-import { useRouter } from "vue-router";
-import { useStyleStore } from "@/stores/style.js";
-import { gradientBgPurplePink } from "@/colors.js";
-import SectionMain from "@/components/SectionMain.vue";
-import CardBox from "@/components/CardBox.vue";
-import LayoutGuest from "@/layouts/LayoutGuest.vue";
+import { useRouter } from 'vue-router'
+import { useStyleStore } from '@/stores/style.js'
+import { gradientBgPurplePink } from '@/colors.js'
+import SectionMain from '@/components/SectionMain.vue'
+import CardBox from '@/components/CardBox.vue'
+import LayoutGuest from '@/layouts/LayoutGuest.vue'
 
-const styles = ["white", "basic"];
+const styles = ['white', 'basic']
 
-const styleStore = useStyleStore();
+const styleStore = useStyleStore()
 
-styleStore.setDarkMode(false);
+styleStore.setDarkMode(false)
 
-const router = useRouter();
+const router = useRouter()
 
 const click = (slug) => {
-  styleStore.setStyle(slug);
-  router.push("/dashboard");
-};
+  styleStore.setStyle(slug)
+  router.push('/dashboard')
+}
 </script>
 
 <template>

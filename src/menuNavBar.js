@@ -1,29 +1,8 @@
-import {
-  mdiAccount,
-  mdiCogOutline,
-  mdiEmail,
-  mdiGithub,
-  mdiLogout,
-  mdiReact,
-  mdiThemeLightDark,
-} from '@mdi/js'
-import { useUserStore } from './stores/user'
-
-// const userStore = useUserStore()
-// const { user } = userStore.user
-
-if (useUserStore) {
-  console.log('Pinia is working')
-  console.log("User's name: ", useUserStore.user?.name)
-} else {
-  console.log('Pinia is not working')
-}
+import { mdiAccount, mdiLogout, mdiThemeLightDark } from '@mdi/js'
 
 export default [
-  // userStore?.user.name && {
   {
-    icon: mdiAccount,
-    // label: userStore.user.name,
+    isCurrentUser: true,
     menu: [
       {
         icon: mdiAccount,
@@ -35,7 +14,7 @@ export default [
       },
       {
         icon: mdiLogout,
-        label: 'Sair',
+        label: 'Terminar Sessão',
         isLogout: true,
       },
     ],

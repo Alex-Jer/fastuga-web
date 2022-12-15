@@ -38,7 +38,7 @@ const login = async () => {
 }
 
 // const submit = () => {
-//   router.push('/dashboard')
+//   router.push('/')
 // }
 </script>
 
@@ -75,7 +75,7 @@ const login = async () => {
         <template #footer>
           <BaseButtons>
             <BaseButton type="submit" color="info" label="Login" />
-            <BaseButton to="/dashboard" color="info" outline label="Back" />
+            <BaseButton to="/" color="info" outline label="Back" />
           </BaseButtons>
         </template>
       </CardBox>

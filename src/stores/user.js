@@ -2,7 +2,6 @@ import { ref, computed, inject } from 'vue'
 import { defineStore } from 'pinia'
 import avatarNoneUrl from '@/assets/avatar-none.png'
 import axios from 'axios'
-// import { useProjectsStore } from './projects.js'
 
 export const useUserStore = defineStore('user', () => {
   // const projectsStore = useProjectsStore()
@@ -68,9 +67,8 @@ export const useUserStore = defineStore('user', () => {
     let storedToken = sessionStorage.getItem('token')
     if (storedToken) {
       axios.defaults.headers.common.Authorization = 'Bearer ' + storedToken
-      storedToken ? console.log('Token restored!!!') : console.log('No token')
       await loadUser()
-      console.log(user.value.name)
+      // console.log(user.value.name)
       // await projectsStore.loadProjects()
       return true
     }
