@@ -9,6 +9,17 @@ import { darkModeKey, styleKey } from '@/config.js'
 
 import './css/main.css'
 
+/* Init API */
+const apiDomain = process.env.VUE_APP_API_DOMAIN
+const wsConnection = process.env.VUE_APP_WS_CONNECTION
+
+const socketIO = new VueSocketIO({
+  connection: wsConnection,
+})
+
+// axios.defaults.baseURL = `${apiDomain}/api`
+// app.config.globalProperties.$serverUrl = apiDomain
+
 /* Init Pinia */
 const pinia = createPinia()
 
