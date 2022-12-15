@@ -1,6 +1,5 @@
 <script setup>
 import { computed, ref, onMounted } from 'vue'
-import { useMainStore } from '@/stores/main'
 import {
   mdiAccountMultiple,
   mdiCartOutline,
@@ -10,6 +9,7 @@ import {
   mdiGithub,
   mdiChartPie,
 } from '@mdi/js'
+import { useMainStore } from '@/stores/main.js'
 import * as chartConfig from '@/components/Charts/chart.config.js'
 import LineChart from '@/components/Charts/LineChart.vue'
 import SectionMain from '@/components/SectionMain.vue'
@@ -59,7 +59,7 @@ const transactionBarItems = computed(() => mainStore.history)
         />
       </SectionTitleLineWithButton>
 
-      <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 mb-6">
+      <div class="grid grid-cols-1 gap-6 mb-6 lg:grid-cols-3">
         <CardBoxWidget
           trend="12%"
           trend-type="up"
@@ -88,7 +88,7 @@ const transactionBarItems = computed(() => mainStore.history)
         />
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div class="grid grid-cols-1 gap-6 mb-6 lg:grid-cols-2">
         <div class="flex flex-col justify-between">
           <CardBoxTransaction
             v-for="(transaction, index) in transactionBarItems"

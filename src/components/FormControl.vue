@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
-import { useMainStore } from '@/stores/main'
+import { useMainStore } from '@/stores/main.js'
 import FormControlIcon from '@/components/FormControlIcon.vue'
 
 const props = defineProps({
@@ -55,6 +55,8 @@ const computedValue = computed({
   },
 })
 
+const computedType = computed(() => (props.options ? 'select' : props.type))
+
 const inputElClass = computed(() => {
   const base = [
     'px-3 py-2 max-w-full focus:ring focus:outline-none border-gray-700 rounded w-full',
@@ -70,8 +72,6 @@ const inputElClass = computed(() => {
 
   return base
 })
-
-const computedType = computed(() => (props.options ? 'select' : props.type))
 
 const controlIconH = computed(() =>
   props.type === 'textarea' ? 'h-full' : 'h-12'

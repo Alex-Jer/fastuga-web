@@ -31,7 +31,7 @@ const emit = defineEmits(['update:modelValue', 'cancel', 'confirm'])
 
 const value = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
+  set: (val) => emit('update:modelValue', val),
 })
 
 const confirmCancel = (mode) => {
@@ -54,7 +54,7 @@ window.addEventListener('keydown', (e) => {
   <OverlayLayer v-show="value" @overlay-click="cancel">
     <CardBox
       v-show="value"
-      class="shadow-lg max-h-modal w-11/12 md:w-3/5 lg:w-2/5 xl:w-4/12 z-50"
+      class="z-50 w-11/12 shadow-lg max-h-modal md:w-3/5 lg:w-2/5 xl:w-4/12"
       is-modal
     >
       <CardBoxComponentTitle :title="title">

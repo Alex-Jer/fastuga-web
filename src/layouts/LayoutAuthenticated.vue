@@ -1,18 +1,17 @@
 <script setup>
-import { mdiForwardburger, mdiBackburger, mdiMenu } from '@mdi/js'
+import { mdiBackburger, mdiForwardburger, mdiMenu } from '@mdi/js'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import menuAside from '@/menuAside.js'
-import menuNavBar from '@/menuNavBar.js'
-import { useMainStore } from '@/stores/main.js'
-import { useStyleStore } from '@/stores/style.js'
+import AsideMenu from '@/components/AsideMenu.vue'
 import BaseIcon from '@/components/BaseIcon.vue'
+import FooterBar from '@/components/FooterBar.vue'
 import FormControl from '@/components/FormControl.vue'
 import NavBar from '@/components/NavBar.vue'
 import NavBarItemPlain from '@/components/NavBarItemPlain.vue'
-import AsideMenu from '@/components/AsideMenu.vue'
-import FooterBar from '@/components/FooterBar.vue'
-import { useUserStore } from '@/stores/user'
+import menuAside from '@/menuAside.js'
+import menuNavBar from '@/menuNavBar.js'
+import { useStyleStore } from '@/stores/style.js'
+import { useUserStore } from '@/stores/user.js'
 
 // useMainStore().setUser({
 //   name: 'John Doe',
@@ -26,7 +25,7 @@ const layoutAsidePadding = 'xl:pl-60'
 const styleStore = useStyleStore()
 const userStore = useUserStore()
 
-console.log(userStore.user)
+// console.log(userStore.user)
 
 const router = useRouter()
 
@@ -59,7 +58,7 @@ const menuClick = (event, item) => {
   >
     <div
       :class="[layoutAsidePadding, { 'ml-60 lg:ml-0': isAsideMobileExpanded }]"
-      class="pt-14 min-h-screen w-screen transition-position lg:w-auto bg-gray-50 dark:bg-slate-800 dark:text-slate-100"
+      class="w-screen min-h-screen pt-14 transition-position lg:w-auto bg-gray-50 dark:bg-slate-800 dark:text-slate-100"
     >
       <NavBar
         :menu="menuNavBar"

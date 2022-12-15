@@ -1,16 +1,15 @@
 <script setup>
+import { mdiAccount, mdiAsterisk } from '@mdi/js'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import CardBox from '@/components/CardBox.vue'
-import FormCheckRadio from '@/components/FormCheckRadio.vue'
 import FormControl from '@/components/FormControl.vue'
 import FormField from '@/components/FormField.vue'
 import SectionFullScreen from '@/components/SectionFullScreen.vue'
 import LayoutGuest from '@/layouts/LayoutGuest.vue'
-import { useUserStore } from '@/stores/user'
-import { mdiAccount, mdiAsterisk } from '@mdi/js'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user.js'
 
 const form = ref({
   email: 'manager_1@mail.pt',

@@ -1,7 +1,7 @@
 import { ref, computed, inject } from 'vue'
 import { defineStore } from 'pinia'
-import avatarNoneUrl from '@/assets/avatar-none.png'
 import axios from 'axios'
+import avatarNoneUrl from '@/assets/avatar-none.png'
 
 export const useUserStore = defineStore('user', () => {
   // const projectsStore = useProjectsStore()
@@ -13,12 +13,18 @@ export const useUserStore = defineStore('user', () => {
     if (!user.value?.photo_url) {
       return avatarNoneUrl
     }
-    return serverBaseUrl + '/storage/fotos/' + user.value.photo_url
+    return `${serverBaseUrl}/storage/fotos/${user.value.photo_url}`
   })
 
   const userId = computed(() => {
     return user.value?.id ?? -1
   })
+
+  function clearUser() {
+    delete axios.defaults.headers.common.Authorization
+    sessionStorage.removeItem('token')
+    user.value = null
+  }
 
   async function loadUser() {
     try {
@@ -30,17 +36,10 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  function clearUser() {
-    delete axios.defaults.headers.common.Authorization
-    sessionStorage.removeItem('token')
-    user.value = null
-  }
-
   async function login(credentials) {
     try {
       const response = await axios.post('login', credentials)
-      axios.defaults.headers.common.Authorization =
-        'Bearer ' + response.data.access_token
+      axios.defaults.headers.common.Authorization = `Bearer ${response.data.access_token}`
       sessionStorage.setItem('token', response.data.access_token)
       await loadUser()
       // await projectsStore.loadProjects()
@@ -64,9 +63,9 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function restoreToken() {
-    let storedToken = sessionStorage.getItem('token')
+    const storedToken = sessionStorage.getItem('token')
     if (storedToken) {
-      axios.defaults.headers.common.Authorization = 'Bearer ' + storedToken
+      axios.defaults.headers.common.Authorization = `Bearer ${storedToken}`
       await loadUser()
       // console.log(user.value.name)
       // await projectsStore.loadProjects()

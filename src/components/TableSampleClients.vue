@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { useMainStore } from '@/stores/main'
 import { mdiEye, mdiTrashCan } from '@mdi/js'
+import { useMainStore } from '@/stores/main.js'
 import CardBoxModal from '@/components/CardBoxModal.vue'
 import TableCheckboxCell from '@/components/TableCheckboxCell.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
@@ -39,13 +39,13 @@ const numPages = computed(() => Math.ceil(items.value.length / perPage.value))
 const currentPageHuman = computed(() => currentPage.value + 1)
 
 const pagesList = computed(() => {
-  const pagesList = []
+  const list = []
 
-  for (let i = 0; i < numPages.value; i++) {
-    pagesList.push(i)
+  for (let i = 0; i < numPages.value; i += 1) {
+    list.push(i)
   }
 
-  return pagesList
+  return list
 })
 
 const remove = (arr, cb) => {
@@ -89,7 +89,7 @@ const checked = (isChecked, client) => {
     <span
       v-for="checkedRow in checkedRows"
       :key="checkedRow.id"
-      class="inline-block px-2 py-1 rounded-sm mr-2 text-sm bg-gray-100 dark:bg-slate-700"
+      class="inline-block px-2 py-1 mr-2 text-sm bg-gray-100 rounded-sm dark:bg-slate-700"
     >
       {{ checkedRow.name }}
     </span>
@@ -131,7 +131,7 @@ const checked = (isChecked, client) => {
         </td>
         <td data-label="Progress" class="lg:w-32">
           <progress
-            class="flex w-2/5 self-center lg:w-full"
+            class="flex self-center w-2/5 lg:w-full"
             max="100"
             :value="client.progress"
           >
@@ -164,7 +164,7 @@ const checked = (isChecked, client) => {
       </tr>
     </tbody>
   </table>
-  <div class="p-3 lg:px-6 border-t border-gray-100 dark:border-slate-800">
+  <div class="p-3 border-t border-gray-100 lg:px-6 dark:border-slate-800">
     <BaseLevel>
       <BaseButtons>
         <BaseButton

@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useStyleStore } from '@/stores/style.js'
 import { mdiMinus, mdiPlus } from '@mdi/js'
+import { useStyleStore } from '@/stores/style.js'
 import { getButtonColor } from '@/colors.js'
 import BaseIcon from '@/components/BaseIcon.vue'
 import AsideMenuList from '@/components/AsideMenuList.vue'

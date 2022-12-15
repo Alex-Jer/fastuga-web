@@ -3,8 +3,7 @@ import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
 import { RouterLink } from 'vue-router'
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useStyleStore } from '@/stores/style.js'
-import { useMainStore } from '@/stores/main.js'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/user.js'
 import BaseIcon from '@/components/BaseIcon.vue'
 import UserAvatarCurrentUser from '@/components/UserAvatarCurrentUser.vue'
 import NavBarMenuList from '@/components/NavBarMenuList.vue'
@@ -33,6 +32,8 @@ const is = computed(() => {
 
 const styleStore = useStyleStore()
 
+const isDropdownActive = ref(false)
+
 const componentClass = computed(() => {
   const base = [
     isDropdownActive.value
@@ -51,8 +52,6 @@ const componentClass = computed(() => {
 const itemLabel = computed(() =>
   props.item.isCurrentUser ? useUserStore().user?.name : props.item.label
 )
-
-const isDropdownActive = ref(false)
 
 const menuClick = (event) => {
   emit('menu-click', event, props.item)
@@ -93,7 +92,7 @@ onBeforeUnmount(() => {
     :is="is"
     v-else
     ref="root"
-    class="block lg:flex items-center relative cursor-pointer"
+    class="relative items-center block cursor-pointer lg:flex"
     :class="componentClass"
     :to="item.to ?? null"
     :href="item.href ?? null"
@@ -109,7 +108,7 @@ onBeforeUnmount(() => {
     >
       <UserAvatarCurrentUser
         v-if="item.isCurrentUser"
-        class="w-6 h-6 mr-3 inline-flex"
+        class="inline-flex w-6 h-6 mr-3"
       />
       <BaseIcon v-if="item.icon" :path="item.icon" class="transition-colors" />
       <span
@@ -120,7 +119,7 @@ onBeforeUnmount(() => {
       <BaseIcon
         v-if="item.menu"
         :path="isDropdownActive ? mdiChevronUp : mdiChevronDown"
-        class="hidden lg:inline-flex transition-colors"
+        class="hidden transition-colors lg:inline-flex"
       />
     </div>
     <div

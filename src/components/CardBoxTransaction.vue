@@ -44,12 +44,14 @@ const icon = computed(() => {
       icon: mdiCashMinus,
       type: 'danger',
     }
-  } else if (props.type === 'deposit') {
+  }
+  if (props.type === 'deposit') {
     return {
       icon: mdiCashPlus,
       type: 'success',
     }
-  } else if (props.type === 'invoice') {
+  }
+  if (props.type === 'invoice') {
     return {
       icon: mdiReceipt,
       type: 'warning',

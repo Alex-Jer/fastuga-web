@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { basic as styleDefault } from '@/styles'
-import { darkModeKey } from '@/config'
+import { basic as styleDefault } from '@/styles.js'
+import { darkModeKey } from '@/config.js'
 
 export const useStyleStore = defineStore('style', {
   state: () => ({
@@ -21,9 +21,15 @@ export const useStyleStore = defineStore('style', {
   }),
   actions: {
     setStyle() {
-      for (const key in styleDefault) {
+      // for (const key in styleDefault) {
+      //   this[`${key}Style`] = styleDefault[key]
+      // }
+
+      // for..in loops iterat over the entire prototype chain, which is virtually never what you want. Use Object.{keys,values,entries}, and iterate over the resulting array.
+
+      Object.keys(styleDefault).forEach((key) => {
         this[`${key}Style`] = styleDefault[key]
-      }
+      })
     },
 
     setDarkMode(payload = null) {
@@ -45,3 +51,5 @@ export const useStyleStore = defineStore('style', {
     },
   },
 })
+
+// export default useStyleStore

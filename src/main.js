@@ -11,7 +11,7 @@ import './css/main.css'
 
 /* API and Webserver */
 const apiDomain = import.meta.env.VITE_API_DOMAIN
-const wsConnection = import.meta.env.VITE_WS_CONNECTION
+// const wsConnection = import.meta.env.VITE_WS_CONNECTION
 
 /* Init Pinia */
 const pinia = createPinia()

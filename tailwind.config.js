@@ -1,5 +1,4 @@
-/* eslint-env node */
-
+/* eslint-disable */
 const plugin = require('tailwindcss/plugin')
 
 module.exports = {

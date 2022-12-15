@@ -2,12 +2,12 @@
 import { mdiGithub } from '@mdi/js'
 import BaseButton from '@/components/BaseButton.vue'
 import SectionBanner from '@/components/SectionBanner.vue'
-import { gradientBgPinkRed } from '@/colors'
+import { gradientBgPinkRed } from '@/colors.js'
 </script>
 
 <template>
   <SectionBanner :class="gradientBgPinkRed">
-    <h1 class="text-3xl text-white mb-6">
+    <h1 class="mb-6 text-3xl text-white">
       Like the project? Please star on <b>GitHub</b> ;-)
     </h1>
     <div>

@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { useMainStore } from '@/stores/main'
 import { mdiCheckDecagram } from '@mdi/js'
+import { useMainStore } from '@/stores/main.js'
 import BaseLevel from '@/components/BaseLevel.vue'
 import UserAvatarCurrentUser from '@/components/UserAvatarCurrentUser.vue'
 import CardBox from '@/components/CardBox.vue'
