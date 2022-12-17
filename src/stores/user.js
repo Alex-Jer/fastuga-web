@@ -29,6 +29,7 @@ export const useUserStore = defineStore('user', () => {
   async function loadUser() {
     try {
       const response = await axios.get('users/me')
+      // const response = await axiosReq('users/me')
       user.value = response.data.data
     } catch (error) {
       clearUser()
@@ -39,6 +40,7 @@ export const useUserStore = defineStore('user', () => {
   async function login(credentials) {
     try {
       const response = await axios.post('login', credentials)
+      // const response = await axiosReq('login', 'POST', credentials)
       axios.defaults.headers.common.Authorization = `Bearer ${response.data.access_token}`
       sessionStorage.setItem('token', response.data.access_token)
       await loadUser()

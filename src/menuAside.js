@@ -1,6 +1,7 @@
 import {
   mdiAccountCircle,
   mdiAlertCircle,
+  mdiFoodApple,
   mdiGithub,
   mdiLock,
   mdiMonitor,
@@ -17,6 +18,11 @@ export default [
     to: '/',
     icon: mdiMonitor,
     label: 'Dashboard',
+  },
+  {
+    to: '/products',
+    label: 'Products',
+    icon: mdiFoodApple,
   },
   {
     to: '/tables',

@@ -4,7 +4,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AsideMenu from '@/components/AsideMenu.vue'
 import BaseIcon from '@/components/BaseIcon.vue'
-import FooterBar from '@/components/FooterBar.vue'
 import NavBar from '@/components/NavBar.vue'
 import NavBarItemPlain from '@/components/NavBarItemPlain.vue'
 import menuAside from '@/menuAside.js'
@@ -24,8 +23,6 @@ const layoutAsidePadding = 'xl:pl-60'
 const styleStore = useStyleStore()
 const userStore = useUserStore()
 
-// console.log(userStore.user)
-
 const router = useRouter()
 
 const isAsideMobileExpanded = ref(false)
@@ -43,7 +40,7 @@ const menuClick = (event, item) => {
 
   if (item.isLogout) {
     userStore.logout()
-    router.push('/login')
+    router.push('login')
   }
 }
 </script>
@@ -91,15 +88,6 @@ const menuClick = (event, item) => {
         @aside-lg-close-click="isAsideLgActive = false"
       />
       <slot />
-      <FooterBar>
-        Get more with
-        <a
-          href="https://tailwind-vue.justboil.me/"
-          target="_blank"
-          class="text-blue-600"
-          >Premium version</a
-        >
-      </FooterBar>
     </div>
   </div>
 </template>

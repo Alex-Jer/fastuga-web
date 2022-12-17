@@ -1,5 +1,9 @@
 <script setup>
-import AsideMenuItem from '@/components/AsideMenuItem.vue'
+import { mdiFoodApple, mdiMonitor } from '@mdi/js'
+import { useUserStore } from '@/stores/user'
+import BaseIcon from './BaseIcon.vue'
+
+const userStore = useUserStore()
 
 defineProps({
   isDropdownList: Boolean,
@@ -9,21 +13,45 @@ defineProps({
   },
 })
 
-const emit = defineEmits(['menu-click'])
+// const emit = defineEmits(['menu-click'])
 
-const menuClick = (event, item) => {
-  emit('menu-click', event, item)
-}
+// const menuClick = (event, item) => {
+//   emit('menu-click', event, item)
+// }
 </script>
 
 <template>
   <ul>
-    <AsideMenuItem
-      v-for="(item, index) in menu"
-      :key="index"
-      :item="item"
-      :is-dropdown-list="isDropdownList"
-      @menu-click="menuClick"
-    />
+    <li>
+      <router-link to="/">
+        <div
+          class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
+          :class="
+            $route.name === 'dashboard'
+              ? 'dark:text-white font-bold'
+              : 'dark:text-slate-300'
+          "
+        >
+          <BaseIcon :path="mdiMonitor" class="pt-1" w="w-16" :size="18" />
+          <span class="pb-1">Dashboard</span>
+        </div>
+      </router-link>
+    </li>
+
+    <li v-show="userStore.user?.type === 'EM'">
+      <router-link to="/products">
+        <div
+          class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
+          :class="
+            $route.name === 'products'
+              ? 'dark:text-white font-bold'
+              : 'dark:text-slate-300'
+          "
+        >
+          <BaseIcon :path="mdiFoodApple" class="pt-1" w="w-16" :size="18" />
+          <span class="pb-1">Products</span>
+        </div>
+      </router-link>
+    </li>
   </ul>
 </template>

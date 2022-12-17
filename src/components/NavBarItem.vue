@@ -118,7 +118,7 @@ onBeforeUnmount(() => {
         v-if="!userStore.user"
         class="inline-flex items-center justify-center"
       >
-        <router-link to="/login">
+        <router-link to="login">
           <BaseButton
             :icon="mdiLogin"
             color="whiteDark"

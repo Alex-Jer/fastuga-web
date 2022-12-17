@@ -36,23 +36,23 @@ const asideLgCloseClick = (event) => {
 <template>
   <aside
     id="aside"
-    class="lg:py-2 lg:pl-2 w-60 fixed flex z-40 top-0 h-screen transition-position overflow-hidden"
+    class="fixed top-0 z-40 flex h-screen overflow-hidden lg:py-2 lg:pl-2 w-60 transition-position"
   >
     <div
       :class="styleStore.asideStyle"
-      class="lg:rounded-2xl flex-1 flex flex-col overflow-hidden dark:bg-slate-900"
+      class="flex flex-col flex-1 overflow-hidden lg:rounded-2xl dark:bg-slate-900"
     >
       <div
         :class="styleStore.asideBrandStyle"
-        class="flex flex-row h-14 items-center justify-between dark:bg-slate-900"
+        class="flex flex-row items-center justify-between h-14 dark:bg-slate-900"
       >
         <div
-          class="text-center flex-1 lg:text-left lg:pl-6 xl:text-center xl:pl-0"
+          class="flex-1 text-center lg:text-left lg:pl-6 xl:text-center xl:pl-0"
         >
-          <b class="font-black">One</b>
+          <b class="font-black">FasTuga</b>
         </div>
         <button
-          class="hidden lg:inline-block xl:hidden p-3"
+          class="hidden p-3 lg:inline-block xl:hidden"
           @click.prevent="asideLgCloseClick"
         >
           <BaseIcon :path="mdiClose" />
@@ -64,7 +64,7 @@ const asideLgCloseClick = (event) => {
             ? 'aside-scrollbars-[slate]'
             : styleStore.asideScrollbarsStyle
         "
-        class="flex-1 overflow-y-auto overflow-x-hidden"
+        class="flex-1 overflow-x-hidden overflow-y-auto"
       >
         <AsideMenuList :menu="menu" @menu-click="menuClick" />
       </div>

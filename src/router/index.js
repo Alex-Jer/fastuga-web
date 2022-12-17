@@ -1,16 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/HomeView.vue'
+import { useUserStore } from '@/stores/user'
 
 const routes = [
-  // TODO: delete comments
-  // {
-  //   meta: {
-  //     title: 'Select style',
-  //   },
-  //   path: '/',
-  //   name: 'style',
-  //   component: Style,
-  // },
   {
     // Document title tag
     // We combine it with defaultDocumentTitle set in `src/main.js` on router.afterEach hook
@@ -20,6 +12,14 @@ const routes = [
     path: '/',
     name: 'dashboard',
     component: Home,
+  },
+  {
+    meta: {
+      title: 'Products',
+    },
+    path: '/products',
+    name: 'products',
+    component: () => import('@/views/ProductsView.vue'),
   },
   {
     meta: {
@@ -85,6 +85,27 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     return savedPosition || { top: 0 }
   },
+})
+
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore()
+
+  if (to.name === 'login' || to.name === 'dashboard') {
+    next()
+    return
+  }
+
+  if (to.name === 'products') {
+    if (userStore.user?.type === 'EM') {
+      next()
+      return
+    }
+  }
+
+  if (!userStore.user) {
+    next({ name: 'login' })
+    // return
+  }
 })
 
 export default router
