@@ -1,6 +1,7 @@
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
+import axios from 'axios'
 import { darkModeKey } from '@/config.js'
 import { useMainStore } from '@/stores/main.js'
 import { useStyleStore } from '@/stores/style.js'
@@ -11,20 +12,31 @@ import './css/main.css'
 
 /* API and Webserver */
 const apiDomain = import.meta.env.VITE_API_DOMAIN
-// const wsConnection = import.meta.env.VITE_WS_CONNECTION
+// TODO: const wsConnection = import.meta.env.VITE_WS_CONNECTION
 
 /* Init Pinia */
 const pinia = createPinia()
 
 /* Create Vue app */
 const app = createApp(App).use(router).use(pinia)
-app.provide('apiDomain', apiDomain)
 
 /* Set API domain */
 pinia.state.value.apiDomain = `${apiDomain}/api`
-app.provide('serverUrl', apiDomain)
+
+/* Provide global variables */
+app.provide('apiDomain', apiDomain)
+app.provide(
+  'axios',
+  axios.create({
+    baseURL: `${apiDomain}/api`,
+    headers: {
+      'Content-type': 'application/json',
+    },
+  })
+)
 
 /* Init Pinia stores */
+// TODO: remove sample store
 const mainStore = useMainStore(pinia)
 const styleStore = useStyleStore(pinia)
 
@@ -32,9 +44,9 @@ const styleStore = useStyleStore(pinia)
 mainStore.fetch('clients')
 mainStore.fetch('history')
 
-mainStore.$state.axios.defaults.baseURL = `${apiDomain}/api`
+// mainStore.$state.axios.defaults.baseURL = `${apiDomain}/api`
 
-/* Websocket */
+/* TODO: Websocket */
 // if (wsConnection) {
 //   const ws = new WebSocket(wsConnection)
 //   ws.onopen = () => {

@@ -1,12 +1,27 @@
 <script setup>
 import { mdiFoodAppleOutline, mdiTableOff } from '@mdi/js'
+import { onMounted } from 'vue'
 import CardBox from '@/components/CardBox.vue'
 import CardBoxComponentEmpty from '@/components/CardBoxComponentEmpty.vue'
 import NotificationBar from '@/components/NotificationBar.vue'
 import SectionMain from '@/components/SectionMain.vue'
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
-import TableSampleClients from '@/components/TableSampleClients.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
+import ProductsTable from '@/components/products/ProductsTable.vue'
+import { useProductsStore } from '@/stores/products'
+
+const productsStore = useProductsStore()
+
+const loadProducts = () => {
+  productsStore.loadProducts().catch((error) => {
+    console.log(error)
+  })
+}
+
+onMounted(() => {
+  // Calling loadProjects refreshes the list of projects from the API
+  loadProducts()
+})
 </script>
 
 <template>
@@ -20,7 +35,8 @@ import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
       </SectionTitleLineWithButton>
 
       <CardBox class="mb-6" has-table>
-        <TableSampleClients checkable />
+        <!-- <TableSampleClients checkable /> -->
+        <products-table :products="products?.value"></products-table>
       </CardBox>
 
       <SectionTitleLineWithButton :icon="mdiTableOff" title="Empty variation" />

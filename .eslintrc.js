@@ -21,6 +21,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-console': 'off',
     'consistent-return': 'off',
+    'vue/multi-word-component-names': 'off',
     'prettier/prettier': [
       'error',
       {

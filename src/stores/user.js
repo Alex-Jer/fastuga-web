@@ -1,11 +1,12 @@
 import { ref, computed, inject } from 'vue'
 import { defineStore } from 'pinia'
-import axios from 'axios'
+// import axios from 'axios'
 // import avatarNoneUrl from '@/assets/avatar-none.png'
 
 export const useUserStore = defineStore('user', () => {
   // const projectsStore = useProjectsStore()
   const apiDomain = inject('apiDomain')
+  const axios = inject('axios')
 
   const user = ref(null)
 
