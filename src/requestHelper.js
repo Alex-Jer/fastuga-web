@@ -40,7 +40,8 @@ export const axiosReq = async (
   }
 
   if (res.status === 444 && storedToken) {
-    // what to do when not authenticated / token revoked etc
+    // When the user was suppoused to be logged in, but is not. Then "logout".
+    // Example: token revoked, token expired, blocked account, etc.
     const userStore = useUserStore()
     userStore.clearUser()
   }
