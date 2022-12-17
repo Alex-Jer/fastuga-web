@@ -39,7 +39,7 @@ export const axiosReq = async (
       break
   }
 
-  if (res.status === 444) {
+  if (res.status === 444 && storedToken) {
     // what to do when not authenticated / token revoked etc
     const userStore = useUserStore()
     userStore.clearUser()
