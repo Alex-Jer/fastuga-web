@@ -17,14 +17,7 @@ module.exports = {
   plugins: ['vue', 'prettier'],
   rules: {
     'import/no-unresolved': 'off',
-    'import/extensions': [
-      'error',
-      'ignorePackages',
-      {
-        js: 'ignorePackages',
-        vue: 'always',
-      },
-    ],
+    'import/extensions': 'off',
     'import/prefer-default-export': 'off',
     'no-console': 'off',
     'consistent-return': 'off',
