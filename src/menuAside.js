@@ -1,16 +1,15 @@
 import {
   mdiAccountCircle,
-  mdiMonitor,
+  mdiAlertCircle,
   mdiGithub,
   mdiLock,
-  mdiAlertCircle,
+  mdiMonitor,
+  mdiReact,
+  mdiResponsive,
   mdiSquareEditOutline,
   mdiTable,
-  mdiViewList,
   mdiTelevisionGuide,
-  mdiResponsive,
-  mdiPalette,
-  mdiReact,
+  mdiViewList,
 } from '@mdi/js'
 
 export default [
@@ -38,11 +37,6 @@ export default [
     to: '/responsive',
     label: 'Responsive',
     icon: mdiResponsive,
-  },
-  {
-    to: '/',
-    label: 'Styles',
-    icon: mdiPalette,
   },
   {
     to: '/profile',
