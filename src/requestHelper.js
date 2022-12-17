@@ -18,7 +18,7 @@ export const axiosReq = async (
   const storedToken = sessionStorage.getItem('token')
   if (storedToken) headers.Authorization = `Bearer ${storedToken}`
 
-  const url = `${API_URL}/${route}`
+  const url = `${API_URL}/api/${route}`
 
   let res = null
   switch (method.toUpperCase()) {
