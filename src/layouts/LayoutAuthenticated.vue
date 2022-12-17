@@ -5,7 +5,6 @@ import { useRouter } from 'vue-router'
 import AsideMenu from '@/components/AsideMenu.vue'
 import BaseIcon from '@/components/BaseIcon.vue'
 import FooterBar from '@/components/FooterBar.vue'
-import FormControl from '@/components/FormControl.vue'
 import NavBar from '@/components/NavBar.vue'
 import NavBarItemPlain from '@/components/NavBarItemPlain.vue'
 import menuAside from '@/menuAside.js'
@@ -82,14 +81,6 @@ const menuClick = (event, item) => {
           @click.prevent="isAsideLgActive = true"
         >
           <BaseIcon :path="mdiMenu" size="24" />
-        </NavBarItemPlain>
-        <NavBarItemPlain use-margin>
-          <FormControl
-            placeholder="Search (ctrl+k)"
-            ctrl-k-focus
-            transparent
-            borderless
-          />
         </NavBarItemPlain>
       </NavBar>
       <AsideMenu

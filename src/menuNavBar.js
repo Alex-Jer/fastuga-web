@@ -1,4 +1,4 @@
-import { mdiAccount, mdiLogout, mdiThemeLightDark } from '@mdi/js'
+import { mdiAccount, mdiLogout } from '@mdi/js'
 
 export default [
   {
@@ -18,17 +18,5 @@ export default [
         isLogout: true,
       },
     ],
-  },
-  {
-    icon: mdiThemeLightDark,
-    label: 'Light/Dark',
-    isDesktopNoLabel: true,
-    isToggleLightDark: true,
-  },
-  {
-    icon: mdiLogout,
-    label: 'Sair',
-    isDesktopNoLabel: true,
-    isLogout: true,
   },
 ]

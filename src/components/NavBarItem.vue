@@ -1,13 +1,16 @@
 <script setup>
-import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
+import { mdiChevronDown, mdiChevronUp, mdiLogin } from '@mdi/js'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import BaseDivider from '@/components/BaseDivider.vue'
+import BaseIcon from '@/components/BaseIcon.vue'
+import NavBarMenuList from '@/components/NavBarMenuList.vue'
+import UserAvatarCurrentUser from '@/components/UserAvatarCurrentUser.vue'
 import { useStyleStore } from '@/stores/style.js'
 import { useUserStore } from '@/stores/user.js'
-import BaseIcon from '@/components/BaseIcon.vue'
-import UserAvatarCurrentUser from '@/components/UserAvatarCurrentUser.vue'
-import NavBarMenuList from '@/components/NavBarMenuList.vue'
-import BaseDivider from '@/components/BaseDivider.vue'
+import BaseButton from './BaseButton.vue'
+
+const userStore = useUserStore()
 
 const props = defineProps({
   item: {
@@ -107,23 +110,40 @@ onBeforeUnmount(() => {
       }"
     >
       <UserAvatarCurrentUser
-        v-if="item.isCurrentUser"
+        v-if="userStore.user && item.isCurrentUser"
         class="inline-flex w-6 h-6 mr-3"
       />
       <BaseIcon v-if="item.icon" :path="item.icon" class="transition-colors" />
       <span
+        v-if="!userStore.user"
+        class="inline-flex items-center justify-center"
+      >
+        <router-link to="/login">
+          <BaseButton
+            :icon="mdiLogin"
+            color="whiteDark"
+            small
+            label="Login"
+            rounded-full
+            @click="login"
+          />
+        </router-link>
+      </span>
+      <span
+        v-if="userStore.user"
         class="px-2 transition-colors"
         :class="{ 'lg:hidden': item.isDesktopNoLabel && item.icon }"
-        >{{ itemLabel }}</span
       >
+        {{ itemLabel }}
+      </span>
       <BaseIcon
-        v-if="item.menu"
+        v-if="item.menu && userStore.user"
         :path="isDropdownActive ? mdiChevronUp : mdiChevronDown"
         class="hidden transition-colors lg:inline-flex"
       />
     </div>
     <div
-      v-if="item.menu"
+      v-if="item.menu && userStore.user"
       class="text-sm border-b border-gray-100 lg:border lg:bg-white lg:absolute lg:top-full lg:left-0 lg:min-w-full lg:z-20 lg:rounded-lg lg:shadow-lg lg:dark:bg-slate-800 dark:border-slate-700"
       :class="{ 'lg:hidden': !isDropdownActive }"
     >

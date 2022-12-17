@@ -1,19 +1,19 @@
 import { ref, computed, inject } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import avatarNoneUrl from '@/assets/avatar-none.png'
+// import avatarNoneUrl from '@/assets/avatar-none.png'
 
 export const useUserStore = defineStore('user', () => {
   // const projectsStore = useProjectsStore()
-  const serverBaseUrl = inject('serverBaseUrl')
+  const apiDomain = inject('apiDomain')
 
   const user = ref(null)
 
   const userPhotoUrl = computed(() => {
-    if (!user.value?.photo_url) {
-      return avatarNoneUrl
-    }
-    return `${serverBaseUrl}/storage/fotos/${user.value.photo_url}`
+    // if (!user.value?.photo_url) {
+    //   return avatarNoneUrl
+    // }
+    return `${apiDomain}/storage/fotos/${user.value?.photo_url}`
   })
 
   const userId = computed(() => {
@@ -53,7 +53,7 @@ export const useUserStore = defineStore('user', () => {
 
   async function logout() {
     try {
-      await axios.post('logout')
+      await axios.delete('logout')
       clearUser()
       // projectsStore.clearProjects()
       return true

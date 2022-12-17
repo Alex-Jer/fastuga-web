@@ -18,6 +18,7 @@ const pinia = createPinia()
 
 /* Create Vue app */
 const app = createApp(App).use(router).use(pinia)
+app.provide('apiDomain', apiDomain)
 
 /* Set API domain */
 pinia.state.value.apiDomain = `${apiDomain}/api`
