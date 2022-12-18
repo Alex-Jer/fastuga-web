@@ -31,11 +31,11 @@ export const axiosReq = async (
       res = await axios.post(url, formData, { headers })
       break
     case 'DELETE':
-      res = await axios.delete(url, formData, { headers })
+      res = await axios.delete(url, { headers })
       break
     case 'GET':
     default:
-      res = await axios.get(url, formData, { headers })
+      res = await axios.get(url, { headers })
       break
   }
 
