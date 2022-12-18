@@ -26,9 +26,7 @@ const props = defineProps({
 const toast = useToast()
 const productsStore = useProductsStore()
 
-const operation = computed(() =>
-  !props.id || props.id < 0 ? 'insert' : 'update'
-)
+const operation = computed(() => (!props.id || props.id < 0 ? 'insert' : 'update'))
 
 const emit = defineEmits(['update:modelValue', 'cancel', 'confirm'])
 
@@ -115,15 +113,11 @@ const save = () => {
       .then((insertedProduct) => {
         product.value = insertedProduct
         originalValueStr = dataAsString()
-        toast.success(
-          `Product #${insertedProduct.product_id} was created successfully.`
-        )
+        toast.success(`Product #${insertedProduct.product_id} was created successfully.`)
       })
       .catch((error) => {
         if (error.response.status === 422) {
-          const errorMsg = JSON.parse(
-            JSON.stringify(error.response.data.message)
-          )
+          const errorMsg = JSON.parse(JSON.stringify(error.response.data.message))
           toast.error(errorMsg)
         } else {
           toast.error('Product was not created due to unknown server error!')
@@ -139,14 +133,10 @@ const save = () => {
       })
       .catch((error) => {
         if (error.response.status === 422) {
-          const errorMsg = JSON.parse(
-            JSON.stringify(error.response.data.message)
-          )
+          const errorMsg = JSON.parse(JSON.stringify(error.response.data.message))
           toast.error(errorMsg)
         } else {
-          toast.error(
-            `Product #${props.id} was not updated due to unknown server error!`
-          )
+          toast.error(`Product #${props.id} was not updated due to unknown server error!`)
         }
       })
   }
@@ -207,63 +197,31 @@ const submit = () => {
 
 <template>
   <OverlayLayer v-show="value" @overlay-click="cancel">
-    <CardBox
-      v-show="value"
-      class="z-50 w-11/12 shadow-lg max-h-modal md:w-3/5 lg:w-2/5 xl:w-4/12"
-      is-modal
-    >
+    <CardBox v-show="value" class="z-50 w-11/12 shadow-lg max-h-modal md:w-3/5 lg:w-2/5 xl:w-4/12" is-modal>
       <CardBoxComponentTitle :title="title">
-        <BaseButton
-          :icon="mdiClose"
-          color="whiteDark"
-          small
-          rounded-full
-          @click.prevent="cancel"
-        />
+        <BaseButton :icon="mdiClose" color="whiteDark" small rounded-full @click.prevent="cancel" />
       </CardBoxComponentTitle>
 
       <CardBox form @submit.prevent="submit">
         <FormField label="Name and Price">
           <FormControl v-model="form.name" :icon="mdiFoodApple" />
-          <FormControl
-            v-model="form.price"
-            type="email"
-            :icon="mdiCurrencyEur"
-          />
+          <FormControl v-model="form.price" type="email" :icon="mdiCurrencyEur" />
         </FormField>
 
         <FormField label="Type">
           <FormControl v-model="form.type" :options="selectOptions" />
         </FormField>
 
-        <FormField
-          label="Description"
-          help="A brief description of the product. Max 255 characters"
-        >
-          <FormControl
-            v-model="form.description"
-            type="textarea"
-            placeholder="Product's description"
-          />
+        <FormField label="Description" help="A brief description of the product. Max 255 characters">
+          <FormControl v-model="form.description" type="textarea" placeholder="Product's description" />
         </FormField>
 
         <FormFilePicker v-model="form.photo" label="Upload an image" />
 
         <template #footer>
           <BaseButtons>
-            <BaseButton
-              type="submit"
-              color="info"
-              label="Submit"
-              @click="submit"
-            />
-            <BaseButton
-              type="reset"
-              color="info"
-              outline
-              label="Reset"
-              @click="reset"
-            />
+            <BaseButton type="submit" color="info" label="Submit" @click="submit" />
+            <BaseButton type="reset" color="info" outline label="Reset" @click="reset" />
           </BaseButtons>
         </template>
       </CardBox>

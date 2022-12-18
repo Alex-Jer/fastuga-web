@@ -50,11 +50,7 @@ onMounted(async () => {
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <NewProductModal
-        v-if="!isFetching"
-        v-model="isModalActive"
-        title="Add a new product"
-      >
+      <NewProductModal v-if="!isFetching" v-model="isModalActive" title="Add a new product">
         <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
         <p>This is sample modal</p>
       </NewProductModal>
@@ -62,26 +58,14 @@ onMounted(async () => {
       <!-- Start of header -->
       <section class="mb-6 flex items-center justify-between pt-6">
         <div class="flex items-center justify-start">
-          <IconRounded
-            :icon="mdiFoodAppleOutline"
-            color="light"
-            class="mr-3"
-            bg
-          />
+          <IconRounded :icon="mdiFoodAppleOutline" color="light" class="mr-3" bg />
           <h1 class="text-3xl leading-tight">Products</h1>
         </div>
-        <BaseButton
-          :icon="mdiPlus"
-          color="whiteDark"
-          @click="isModalActive = true"
-        />
+        <BaseButton :icon="mdiPlus" color="whiteDark" @click="isModalActive = true" />
       </section>
       <!-- End of header -->
 
-      <products-table
-        :products="filteredProducts"
-        :types="productsStore.types"
-      />
+      <products-table :products="filteredProducts" :types="productsStore.types" />
 
       <div class="mx-2 mt-2" v-if="!isFetching">
         <label class="mr-3">Filter by type:</label>
@@ -90,11 +74,7 @@ onMounted(async () => {
           v-model="filterByType"
         >
           <option :value="null">All</option>
-          <option
-            v-for="type in selectTypes"
-            :key="type.id"
-            :value="type.value"
-          >
+          <option v-for="type in selectTypes" :key="type.id" :value="type.value">
             {{ type.label }}
           </option>
         </select>

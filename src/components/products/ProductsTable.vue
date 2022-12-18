@@ -24,15 +24,10 @@ const itemsPerPage = ref(8)
 const currentPage = ref(0)
 
 const itemsPaginated = computed(() =>
-  products.value.slice(
-    itemsPerPage.value * currentPage.value,
-    itemsPerPage.value * (currentPage.value + 1)
-  )
+  products.value.slice(itemsPerPage.value * currentPage.value, itemsPerPage.value * (currentPage.value + 1))
 )
 
-const numPages = computed(() =>
-  Math.ceil(products.value.length / itemsPerPage.value)
-)
+const numPages = computed(() => Math.ceil(products.value.length / itemsPerPage.value))
 
 const pagesList = computed(() => {
   const list = []
@@ -56,10 +51,7 @@ const showDeleteModal = (product) => {
       <p>This is sample modal</p>
     </CardBoxModal>
 
-    <DeleteProductModal
-      v-model="dangerModalData.isModalActive"
-      :product="dangerModalData.product"
-    >
+    <DeleteProductModal v-model="dangerModalData.isModalActive" :product="dangerModalData.product">
       <p>
         Are you sure you want to delete the product
         <b>{{ dangerModalData.product.name }}</b
@@ -98,18 +90,8 @@ const showDeleteModal = (product) => {
           <td data-label="Price">{{ product.price }} €</td>
           <td class="before:hidden lg:w-1 whitespace-nowrap">
             <BaseButtons type="justify-start lg:justify-end" no-wrap>
-              <BaseButton
-                color="info"
-                :icon="mdiEye"
-                small
-                @click="isModalActive = true"
-              />
-              <BaseButton
-                color="danger"
-                :icon="mdiTrashCan"
-                small
-                @click="showDeleteModal(product)"
-              />
+              <BaseButton color="info" :icon="mdiEye" small @click="isModalActive = true" />
+              <BaseButton color="danger" :icon="mdiTrashCan" small @click="showDeleteModal(product)" />
             </BaseButtons>
           </td>
         </tr>
