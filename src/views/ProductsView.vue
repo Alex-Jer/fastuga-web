@@ -4,10 +4,10 @@ import { onMounted } from 'vue'
 import CardBox from '@/components/CardBox.vue'
 import CardBoxComponentEmpty from '@/components/CardBoxComponentEmpty.vue'
 import NotificationBar from '@/components/NotificationBar.vue'
+import ProductsTable from '@/components/products/ProductsTable.vue'
 import SectionMain from '@/components/SectionMain.vue'
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
-import ProductsTable from '@/components/products/ProductsTable.vue'
 import { useProductsStore } from '@/stores/products'
 
 const productsStore = useProductsStore()
@@ -35,16 +35,6 @@ onMounted(() => {
       </SectionTitleLineWithButton>
 
       <products-table :products="products?.value" checkable />
-
-      <SectionTitleLineWithButton :icon="mdiTableOff" title="Empty variation" />
-
-      <NotificationBar color="danger" :icon="mdiTableOff">
-        <b>Empty table.</b> When there's nothing to show
-      </NotificationBar>
-
-      <CardBox>
-        <CardBoxComponentEmpty />
-      </CardBox>
     </SectionMain>
   </LayoutAuthenticated>
 </template>

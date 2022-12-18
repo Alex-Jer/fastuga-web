@@ -2,11 +2,13 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
 import axios from 'axios'
+import Toast from 'vue-toastification'
 import { darkModeKey } from '@/config.js'
 import { useMainStore } from '@/stores/main.js'
 import { useStyleStore } from '@/stores/style.js'
 import App from './App.vue'
 import router from './router'
+import 'vue-toastification/dist/index.css'
 
 import './css/main.css'
 
@@ -17,8 +19,20 @@ const apiDomain = import.meta.env.VITE_API_DOMAIN
 /* Init Pinia */
 const pinia = createPinia()
 
+/* Toast options */
+const toastOptions = {
+  timeout: 5000,
+  closeOnClick: true,
+  pauseOnFocusLoss: true,
+  pauseOnHover: true,
+  draggable: true,
+  draggablePercent: 0.6,
+  showCloseButtonOnHover: false,
+  hideProgressBar: false,
+}
+
 /* Create Vue app */
-const app = createApp(App).use(router).use(pinia)
+const app = createApp(App).use(router).use(pinia).use(Toast, toastOptions)
 
 /* Set API domain */
 pinia.state.value.apiDomain = `${apiDomain}/api`

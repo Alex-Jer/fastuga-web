@@ -1,7 +1,7 @@
 <script setup>
 import { mdiClose, mdiCurrencyEur, mdiFoodApple } from '@mdi/js'
-import { computed, inject, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, reactive, ref } from 'vue'
+import { useToast } from 'vue-toastification'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import CardBox from '@/components/CardBox.vue'
@@ -32,10 +32,9 @@ const props = defineProps({
   },
 })
 
-const router = useRouter()
-const axios = inject('axios')
+const toast = useToast()
 const productsStore = useProductsStore()
-const errors = ref(null)
+
 const operation = computed(() => {
   return !props.id || props.id < 0 ? 'insert' : 'update'
 })
@@ -52,7 +51,7 @@ const confirmCancel = (mode) => {
   emit(mode)
 }
 
-const confirm = () => confirmCancel('confirm')
+// const confirm = () => confirmCancel('confirm')
 
 const cancel = () => confirmCancel('cancel')
 
@@ -96,27 +95,26 @@ const dataAsString = () => {
 }
 
 let originalValueStr = ''
-const loadProduct = (id) => {
-  originalValueStr = ''
-  // errors.value = null
-  if (!id || id < 0) {
-    product.value = newProduct()
-    originalValueStr = dataAsString()
-  } else {
-    axios
-      .get(`products/${id}`)
-      .then((response) => {
-        product.value = response.data.data
-        originalValueStr = dataAsString()
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-}
+// const loadProduct = (id) => {
+//   originalValueStr = ''
+//   errors.value = null
+//   if (!id || id < 0) {
+//     product.value = newProduct()
+//     originalValueStr = dataAsString()
+//   } else {
+//     axios
+//       .get(`products/${id}`)
+//       .then((response) => {
+//         product.value = response.data.data
+//         originalValueStr = dataAsString()
+//       })
+//       .catch((error) => {
+//         console.log(error)
+//       })
+//   }
+// }
 
 const save = () => {
-  errors.value = null
   product.value = newProduct()
 
   if (operation.value === 'insert') {
@@ -125,20 +123,18 @@ const save = () => {
       .then((insertedProduct) => {
         product.value = insertedProduct
         originalValueStr = dataAsString()
-        // toast.success(
-        //   'Product #' + product.value.id + ' was created successfully.'
-        // )
-        console.log('Product created')
-        router.back()
+        toast.success(
+          `Product #${insertedProduct.product_id} was created successfully.`
+        )
       })
       .catch((error) => {
         if (error.response.status === 422) {
-          // toast.error('Product was not created due to validation errors!')
-          errors.value = error.response.data.errors
-          console.log('Product was not created due to validation errors!')
+          const errorMsg = JSON.parse(
+            JSON.stringify(error.response.data.errors.name[0])
+          )
+          toast.error(errorMsg)
         } else {
-          // toast.error('Product was not created due to unknown server error!')
-          console.log('Product was not created due to unknown server error!')
+          toast.error('Product was not created due to unknown server error!')
         }
       })
   } else {
@@ -147,35 +143,45 @@ const save = () => {
       .then((updatedProduct) => {
         product.value = updatedProduct
         originalValueStr = dataAsString()
-        // toast.success(
-        //   'Product #' + product.value.id + ' was updated successfully.'
-        // )
-        console.log('Product updated')
-        router.back()
+        toast.success(`Product #${product.value.id} was updated successfully.`)
       })
       .catch((error) => {
         if (error.response.status === 422) {
-          // toast.error(
-          //   'Product #' +
-          //     props.id +
-          //     ' was not updated due to validation errors!'
-          // )
-          errors.value = error.response.data.errors
-          console.log(
-            `Product #${props.id} was not updated due to validation errors!`
+          const errorMsg = JSON.parse(
+            JSON.stringify(error.response.data.errors.name[0])
           )
+          toast.error(errorMsg)
         } else {
-          // toast.error(
-          //   'Product #' +
-          //     props.id +
-          //     ' was not updated due to unknown server error!'
-          // )
-          console.log(
+          toast.error(
             `Product #${props.id} was not updated due to unknown server error!`
           )
         }
       })
   }
+}
+
+const validateForm = () => {
+  const msg = "Please insert the product's"
+
+  const formErrors = [
+    !form.name && 'name',
+    !form.price && 'price',
+    !form.type && 'type',
+    !form.description && 'description',
+    !form.photo && 'photo',
+  ].filter((error) => error)
+
+  if (formErrors.length === 2) {
+    toast.error(`${msg} ${formErrors.join(' and ')}`)
+    return false
+  }
+
+  if (formErrors.length > 0) {
+    toast.error(`${msg} ${formErrors.join(', ')}`)
+    return false
+  }
+
+  return true
 }
 
 const reset = () => {
@@ -187,6 +193,8 @@ const reset = () => {
 }
 
 const submit = () => {
+  if (!validateForm()) return
+
   if (dataAsString() !== originalValueStr) {
     save()
   } else {

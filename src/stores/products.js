@@ -39,7 +39,7 @@ export const useProductsStore = defineStore('products', () => {
     products.value = []
   }
 
-  async function loadProducts() {
+  const loadProducts = async () => {
     try {
       const response = await axios.get('products')
       products.value = response.data.data
@@ -50,16 +50,13 @@ export const useProductsStore = defineStore('products', () => {
     }
   }
 
-  async function insertProduct(newProduct) {
-    console.log(newProduct)
+  const insertProduct = async (newProduct) => {
     const response = await axiosReq('products', 'POST', newProduct, true)
-    products.value.push(response.data.data)
-    return response.data.data
+    products.value.push(response.data.product)
+    return response.data.product
   }
 
-  async function updateProduct(updatedProduct) {
-    // Note that when an error occours, the exception should be
-    // catch by the function that called the updateProduct
+  const updateProduct = async (updatedProduct) => {
     const response = await axios.put(
       `products/${updatedProduct.id}`,
       updatedProduct
@@ -71,9 +68,7 @@ export const useProductsStore = defineStore('products', () => {
     return response.data.data
   }
 
-  async function deleteProduct(deletedProduct) {
-    // Note that when an error occours, the exception should be
-    // catch by the function that called the deleteProduct
+  const deleteProduct = async (deletedProduct) => {
     const response = await axios.delete(`products/${deletedProduct.id}`)
     const idx = products.value.findIndex((t) => t.id === response.data.data.id)
     if (idx >= 0) {
