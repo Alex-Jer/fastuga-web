@@ -6,6 +6,7 @@ import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import CardBox from '@/components/CardBox.vue'
 import CardBoxModal from '@/components/CardBoxModal.vue'
+import DeleteProductModal from './DeleteProductModal.vue'
 
 const props = defineProps({
   products: {
@@ -18,7 +19,7 @@ const apiDomain = inject('apiDomain')
 const products = computed(() => props.products)
 
 const isModalActive = ref(false)
-const isModalDangerActive = ref(false)
+const dangerModalData = ref({ isModalActive: false, product: {} })
 const itemsPerPage = ref(8)
 const currentPage = ref(0)
 
@@ -42,6 +43,10 @@ const pagesList = computed(() => {
 
   return list
 })
+
+const showDeleteModal = (product) => {
+  dangerModalData.value = { isModalActive: true, product }
+}
 </script>
 
 <template>
@@ -51,15 +56,16 @@ const pagesList = computed(() => {
       <p>This is sample modal</p>
     </CardBoxModal>
 
-    <CardBoxModal
-      v-model="isModalDangerActive"
-      title="Please confirm"
-      button="danger"
-      has-cancel
+    <DeleteProductModal
+      v-model="dangerModalData.isModalActive"
+      :product="dangerModalData.product"
     >
-      <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-      <p>This is sample modal</p>
-    </CardBoxModal>
+      <p>
+        Are you sure you want to delete the product
+        <b>{{ dangerModalData.product.name }}</b
+        >?
+      </p>
+    </DeleteProductModal>
 
     <table>
       <thead>
@@ -102,7 +108,7 @@ const pagesList = computed(() => {
                 color="danger"
                 :icon="mdiTrashCan"
                 small
-                @click="isModalDangerActive = true"
+                @click="showDeleteModal(product)"
               />
             </BaseButtons>
           </td>

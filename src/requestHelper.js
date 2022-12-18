@@ -3,17 +3,10 @@ import { useUserStore } from './stores/user.js'
 
 const API_URL = import.meta.env.VITE_API_DOMAIN
 
-export const axiosReq = async (
-  route,
-  method = 'GET',
-  formData = [],
-  hasFiles = false
-) => {
+export const axiosReq = async (route, method = 'GET', formData = [], hasFiles = false) => {
   const headers = {
     Accept: 'application/json',
-    'Content-Type': hasFiles
-      ? 'multipart/form-data'
-      : 'application/x-www-form-urlencoded',
+    'Content-Type': hasFiles ? 'multipart/form-data' : 'application/x-www-form-urlencoded',
   }
   const storedToken = sessionStorage.getItem('token')
   if (storedToken) headers.Authorization = `Bearer ${storedToken}`
@@ -31,7 +24,9 @@ export const axiosReq = async (
       res = await axios.post(url, formData, { headers })
       break
     case 'DELETE':
-      res = await axios.delete(url, { headers })
+      res = await axios.delete(url, { headers }).catch((error) => {
+        return error.response
+      })
       break
     case 'GET':
     default:

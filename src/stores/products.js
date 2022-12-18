@@ -69,10 +69,7 @@ export const useProductsStore = defineStore('products', () => {
   }
 
   const updateProduct = async (updatedProduct) => {
-    const response = await axios.put(
-      `products/${updatedProduct.id}`,
-      updatedProduct
-    )
+    const response = await axios.put(`products/${updatedProduct.id}`, updatedProduct)
     const idx = products.value.findIndex((t) => t.id === response.data.data.id)
     if (idx >= 0) {
       products.value[idx] = response.data.data
@@ -81,12 +78,10 @@ export const useProductsStore = defineStore('products', () => {
   }
 
   const deleteProduct = async (deletedProduct) => {
-    const response = await axios.delete(`products/${deletedProduct.id}`)
-    const idx = products.value.findIndex((t) => t.id === response.data.data.id)
-    if (idx >= 0) {
-      products.value.splice(idx, 1)
-    }
-    return response.data.data
+    const response = await axiosReq(`products/${deletedProduct.product_id}`, 'DELETE')
+    if (response.status !== 200) throw response
+    products.value.splice(products.value.indexOf(deletedProduct), 1)
+    return response
   }
 
   return {
