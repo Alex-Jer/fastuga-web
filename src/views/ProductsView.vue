@@ -13,6 +13,7 @@ const productsStore = useProductsStore()
 const isModalActive = ref(false)
 const filterByType = ref('hot dish')
 const isFetching = ref(true)
+const selectTypes = ref([])
 
 const loadProducts = async () => {
   await productsStore.loadProducts().catch((error) => {
@@ -35,6 +36,22 @@ onMounted(async () => {
   await loadProducts()
   await loadTypes()
   isFetching.value = false
+
+  selectTypes.value = productsStore.types.map((type, index) => {
+    return {
+      id: index + 1,
+      value: type,
+      label: type.charAt(0).toUpperCase() + type.slice(1),
+    }
+  })
+
+  // selectTypes.value.forEach((option) => {
+  //   console.log(option.label)
+  // })
+
+  // productsStore.types.forEach((type) => {
+  //   console.log(type)
+  // })
 })
 </script>
 
@@ -69,10 +86,41 @@ onMounted(async () => {
       </section>
       <!-- End of header -->
 
+      <!-- <div class="relative">
+        <select
+          v-if="!isFetching"
+          class="pl-3 pr-12 py-2 focus:ring focus:outline-none border-gray-700 rounded bg-slate-800"
+        >
+          <option
+            v-for="option in [1, 2, 3]"
+            :key="option.id ?? option"
+            :value="option.value"
+          >
+            {{ 'option.label ?? option' }}
+          </option>
+        </select>
+      </div> -->
+
       <products-table
         :products="filteredProducts"
         :types="productsStore.types"
       />
+
+      <div class="mx-2 mt-2" v-if="!isFetching">
+        <label class="mr-3">Filter by type:</label>
+        <select
+          class="pl-3 pr-12 py-2 focus:ring focus:outline-none border-gray-700 rounded bg-slate-800"
+          v-model="filterByType"
+        >
+          <option
+            v-for="type in selectTypes"
+            :key="type.id"
+            :value="type.value"
+          >
+            {{ type.label }}
+          </option>
+        </select>
+      </div>
     </SectionMain>
   </LayoutAuthenticated>
 </template>

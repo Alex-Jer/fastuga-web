@@ -64,7 +64,7 @@ const selectOptions = productsStore.types.map((type, index) => {
 const form = reactive({
   name: 'Carbonara',
   price: '8.75',
-  type: selectOptions[0].value,
+  type: selectOptions[0]?.value,
   description: 'Description blablabla',
   photo: null,
 })
