@@ -1,9 +1,6 @@
 <script setup>
-import { mdiFoodAppleOutline, mdiTableOff } from '@mdi/js'
-import { onMounted } from 'vue'
-import CardBox from '@/components/CardBox.vue'
-import CardBoxComponentEmpty from '@/components/CardBoxComponentEmpty.vue'
-import NotificationBar from '@/components/NotificationBar.vue'
+import { mdiFoodAppleOutline } from '@mdi/js'
+import { onMounted, computed, ref } from 'vue'
 import ProductsTable from '@/components/products/ProductsTable.vue'
 import SectionMain from '@/components/SectionMain.vue'
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
@@ -11,6 +8,7 @@ import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { useProductsStore } from '@/stores/products'
 
 const productsStore = useProductsStore()
+const filterByType = ref('hot dish')
 
 const loadProducts = () => {
   productsStore.loadProducts().catch((error) => {
@@ -18,9 +16,20 @@ const loadProducts = () => {
   })
 }
 
+const loadTypes = () => {
+  productsStore.loadTypes().catch((error) => {
+    console.log(error)
+  })
+}
+
+const filteredProducts = computed(() => {
+  return productsStore.getProductsByFilter(filterByType.value)
+})
+
 onMounted(() => {
   // Calling loadProjects refreshes the list of projects from the API
   loadProducts()
+  loadTypes()
 })
 </script>
 
@@ -34,7 +43,7 @@ onMounted(() => {
       >
       </SectionTitleLineWithButton>
 
-      <products-table :products="products?.value" checkable />
+      <products-table :products="filteredProducts" checkable />
     </SectionMain>
   </LayoutAuthenticated>
 </template>

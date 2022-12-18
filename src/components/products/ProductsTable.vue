@@ -8,9 +8,7 @@ import CardBox from '@/components/CardBox.vue'
 import CardBoxModal from '@/components/CardBoxModal.vue'
 import TableCheckboxCell from '@/components/TableCheckboxCell.vue'
 
-import { useProductsStore } from '@/stores/products'
-
-defineProps({
+const props = defineProps({
   products: {
     type: Array,
     default: () => [],
@@ -18,10 +16,10 @@ defineProps({
   checkable: Boolean,
 })
 
-const productsStore = useProductsStore()
+console.log(props)
 
 const apiDomain = inject('apiDomain')
-const products = computed(() => productsStore.products)
+const products = computed(() => props.products)
 
 const isModalActive = ref(false)
 const isModalDangerActive = ref(false)

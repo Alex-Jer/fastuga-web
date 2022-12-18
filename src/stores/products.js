@@ -8,6 +8,7 @@ export const useProductsStore = defineStore('products', () => {
   const axios = inject('axios')
 
   const products = ref([])
+  const types = ref([])
 
   const totalProducts = computed(() => {
     return products.value.length
@@ -23,20 +24,20 @@ export const useProductsStore = defineStore('products', () => {
   //   return myInprogressProjects.value.length
   // })
 
-  // function getProductsByFilter(responsibleId, status) {
-  //   return products.value.filter(
-  //     (prod) =>
-  //       (!responsibleId || responsibleId === prod.responsible_id) &&
-  //       (!status || status === prod.status)
-  //   )
-  // }
+  function getProductsByFilter(type) {
+    return products.value.filter((prod) => !type || type === prod.type)
+  }
 
-  // function getProductsByFilterTotal(responsibleId, status) {
-  //   return getProductsByFilter(responsibleId, status).length
-  // }
+  function getProductsByFilterTotal(type) {
+    return getProductsByFilter(type).length
+  }
 
-  function clearProducts() {
+  const clearProducts = () => {
     products.value = []
+  }
+
+  const clearTypes = () => {
+    types.value = []
   }
 
   const loadProducts = async () => {
@@ -46,6 +47,17 @@ export const useProductsStore = defineStore('products', () => {
       return products.value
     } catch (error) {
       clearProducts()
+      throw error
+    }
+  }
+
+  const loadTypes = async () => {
+    try {
+      const response = await axios.get('products/types')
+      types.value = response.data.data
+      return types.value
+    } catch (error) {
+      clearTypes()
       throw error
     }
   }
@@ -82,10 +94,12 @@ export const useProductsStore = defineStore('products', () => {
     totalProducts,
     // myInprogressProjects,
     // totalMyInprogressProjects,
-    // getProductsByFilter,
-    // getProductsByFilterTotal,
-    loadProducts,
+    getProductsByFilter,
+    getProductsByFilterTotal,
     clearProducts,
+    clearTypes,
+    loadProducts,
+    loadTypes,
     insertProduct,
     updateProduct,
     deleteProduct,
