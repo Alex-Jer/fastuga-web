@@ -1,5 +1,6 @@
 import { ref, computed, inject } from 'vue'
 import { defineStore } from 'pinia'
+import { axiosReq } from '@/requestHelper'
 
 export const useProductsStore = defineStore('products', () => {
   // const userStore = useUserStore()
@@ -50,9 +51,8 @@ export const useProductsStore = defineStore('products', () => {
   }
 
   async function insertProduct(newProduct) {
-    // Note that when an error occours, the exception should be
-    // catch by the function that called the insertProduct
-    const response = await axios.post('products', newProduct)
+    console.log(newProduct)
+    const response = await axiosReq('products', 'POST', newProduct, true)
     products.value.push(response.data.data)
     return response.data.data
   }

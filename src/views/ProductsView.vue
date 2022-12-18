@@ -34,7 +34,6 @@ onMounted(() => {
       >
       </SectionTitleLineWithButton>
 
-      <!-- <TableSampleClients checkable /> -->
       <products-table :products="products?.value" checkable />
 
       <SectionTitleLineWithButton :icon="mdiTableOff" title="Empty variation" />

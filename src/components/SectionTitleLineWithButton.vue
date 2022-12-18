@@ -1,9 +1,10 @@
 <script setup>
-import { mdiCog } from '@mdi/js'
-import { useSlots, computed } from 'vue'
-import BaseIcon from '@/components/BaseIcon.vue'
+import { mdiPlus } from '@mdi/js'
+import { computed, useSlots, ref } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
+import BaseIcon from '@/components/BaseIcon.vue'
 import IconRounded from '@/components/IconRounded.vue'
+import NewProductModal from '@/components/products/NewProductModal.vue'
 
 defineProps({
   icon: {
@@ -18,9 +19,14 @@ defineProps({
 })
 
 const hasSlot = computed(() => useSlots().default)
+const isModalActive = ref(false)
 </script>
 
 <template>
+  <NewProductModal v-model="isModalActive" title="Add a new product" has-cancel>
+    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
+    <p>This is sample modal</p>
+  </NewProductModal>
   <section
     :class="{ 'pt-6': !main }"
     class="mb-6 flex items-center justify-between"
@@ -39,6 +45,11 @@ const hasSlot = computed(() => useSlots().default)
       </h1>
     </div>
     <slot v-if="hasSlot" />
-    <BaseButton v-else :icon="mdiCog" color="whiteDark" />
+    <BaseButton
+      v-else
+      :icon="mdiPlus"
+      color="whiteDark"
+      @click="isModalActive = true"
+    />
   </section>
 </template>
