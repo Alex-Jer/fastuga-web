@@ -54,7 +54,7 @@ export const useProductsStore = defineStore('products', () => {
   const loadTypes = async () => {
     try {
       const response = await axios.get('products/types')
-      types.value = response.data.data
+      types.value = response.data
       return types.value
     } catch (error) {
       clearTypes()
@@ -91,6 +91,7 @@ export const useProductsStore = defineStore('products', () => {
 
   return {
     products,
+    types,
     totalProducts,
     // myInprogressProjects,
     // totalMyInprogressProjects,

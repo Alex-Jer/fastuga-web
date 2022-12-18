@@ -17,15 +17,6 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  button: {
-    type: String,
-    default: 'info',
-  },
-  buttonLabel: {
-    type: String,
-    default: 'Done',
-  },
-  hasCancel: Boolean,
   modelValue: {
     type: [String, Number, Boolean],
     default: null,
@@ -35,9 +26,9 @@ const props = defineProps({
 const toast = useToast()
 const productsStore = useProductsStore()
 
-const operation = computed(() => {
-  return !props.id || props.id < 0 ? 'insert' : 'update'
-})
+const operation = computed(() =>
+  !props.id || props.id < 0 ? 'insert' : 'update'
+)
 
 const emit = defineEmits(['update:modelValue', 'cancel', 'confirm'])
 
@@ -62,17 +53,18 @@ window.addEventListener('keydown', (e) => {
 })
 
 /* Form */
-const selectOptions = [
-  { id: 1, label: 'Hot dish' },
-  { id: 2, label: 'Cold dish' },
-  { id: 3, label: 'Drink' },
-  { id: 4, label: 'Dessert' },
-]
+const selectOptions = productsStore.types.map((type, index) => {
+  return {
+    id: index + 1,
+    value: type,
+    label: type.charAt(0).toUpperCase() + type.slice(1),
+  }
+})
 
 const form = reactive({
   name: 'Carbonara',
   price: '8.75',
-  type: selectOptions[0],
+  type: selectOptions[0].value,
   description: 'Description blablabla',
   photo: null,
 })
@@ -82,7 +74,7 @@ const newProduct = () => {
     id: null,
     name: form.name,
     description: form.description,
-    type: form.type.label.toLowerCase(),
+    type: form.type,
     price: form.price,
     photo: form.photo,
   }
@@ -130,7 +122,7 @@ const save = () => {
       .catch((error) => {
         if (error.response.status === 422) {
           const errorMsg = JSON.parse(
-            JSON.stringify(error.response.data.errors.name[0])
+            JSON.stringify(error.response.data.message)
           )
           toast.error(errorMsg)
         } else {
@@ -148,7 +140,7 @@ const save = () => {
       .catch((error) => {
         if (error.response.status === 422) {
           const errorMsg = JSON.parse(
-            JSON.stringify(error.response.data.errors.name[0])
+            JSON.stringify(error.response.data.message)
           )
           toast.error(errorMsg)
         } else {
@@ -222,7 +214,6 @@ const submit = () => {
     >
       <CardBoxComponentTitle :title="title">
         <BaseButton
-          v-if="hasCancel"
           :icon="mdiClose"
           color="whiteDark"
           small
