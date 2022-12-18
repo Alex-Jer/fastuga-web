@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/HomeView.vue'
 import { useUserStore } from '@/stores/user'
+import RouteRedirector from '@/components/global/RouteRedirector.vue'
 
 const routes = [
   {
@@ -12,6 +13,12 @@ const routes = [
     path: '/',
     name: 'dashboard',
     component: Home,
+  },
+  {
+    path: '/redirect/:redirectTo',
+    name: 'Redirect',
+    component: RouteRedirector,
+    props: (route) => ({ redirectTo: route.params.redirectTo }),
   },
   {
     meta: {
@@ -87,7 +94,20 @@ const router = createRouter({
   },
 })
 
+let handlingFirstRoute = true
+
 router.beforeEach((to, from, next) => {
+  if (handlingFirstRoute) {
+    handlingFirstRoute = false
+    next({ name: 'Redirect', params: { redirectTo: to.fullPath } })
+    return
+  }
+
+  if (to.name === 'Redirect') {
+    next()
+    return
+  }
+
   const userStore = useUserStore()
 
   if (to.name === 'login' || to.name === 'dashboard') {
