@@ -34,10 +34,8 @@ onMounted(() => {
       >
       </SectionTitleLineWithButton>
 
-      <CardBox class="mb-6" has-table>
-        <!-- <TableSampleClients checkable /> -->
-        <products-table :products="products?.value"></products-table>
-      </CardBox>
+      <!-- <TableSampleClients checkable /> -->
+      <products-table :products="products?.value" checkable />
 
       <SectionTitleLineWithButton :icon="mdiTableOff" title="Empty variation" />
 
