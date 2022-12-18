@@ -43,7 +43,7 @@ onMounted(() => {
       >
       </SectionTitleLineWithButton>
 
-      <products-table :products="filteredProducts" checkable />
+      <products-table :products="filteredProducts" />
     </SectionMain>
   </LayoutAuthenticated>
 </template>
