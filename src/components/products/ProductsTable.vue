@@ -1,15 +1,19 @@
 <script setup>
-import { mdiEye, mdiTrashCan } from '@mdi/js'
+import { mdiPencil, mdiTrashCan } from '@mdi/js'
 import { computed, inject, ref } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import CardBox from '@/components/CardBox.vue'
-import CardBoxModal from '@/components/CardBoxModal.vue'
 import DeleteProductModal from './DeleteProductModal.vue'
+import ProductModal from './ProductModal.vue'
 
 const props = defineProps({
   products: {
+    type: Array,
+    default: () => [],
+  },
+  types: {
     type: Array,
     default: () => [],
   },
@@ -18,8 +22,7 @@ const props = defineProps({
 const apiDomain = inject('apiDomain')
 const products = computed(() => props.products)
 
-const isModalActive = ref(false)
-const dangerModalData = ref({ isModalActive: false, product: {} })
+const modalData = ref({ showDeleteModal: false, showUpdateModal: false, product: {}, action: '' })
 const itemsPerPage = ref(8)
 const currentPage = ref(0)
 
@@ -40,21 +43,28 @@ const pagesList = computed(() => {
 })
 
 const showDeleteModal = (product) => {
-  dangerModalData.value = { isModalActive: true, product }
+  modalData.value = { showDeleteModal: true, product }
+}
+
+const showUpdateModal = (product) => {
+  modalData.value = { showUpdateModal: true, product }
 }
 </script>
 
 <template>
   <CardBox class="mb-6" has-table>
-    <CardBoxModal v-model="isModalActive" title="Sample modal">
-      <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-      <p>This is sample modal</p>
-    </CardBoxModal>
+    <ProductModal
+      v-model="modalData.showUpdateModal"
+      :product="modalData.product"
+      :types="props.types"
+      title="Edit Product"
+      action="update"
+    />
 
-    <DeleteProductModal v-model="dangerModalData.isModalActive" :product="dangerModalData.product">
+    <DeleteProductModal v-model="modalData.showDeleteModal" :product="modalData.product">
       <p>
         Are you sure you want to delete the product
-        <b>{{ dangerModalData.product.name }}</b
+        <b>{{ modalData.product.name }}</b
         >?
       </p>
     </DeleteProductModal>
@@ -90,7 +100,7 @@ const showDeleteModal = (product) => {
           <td data-label="Price">{{ product.price }} €</td>
           <td class="before:hidden lg:w-1 whitespace-nowrap">
             <BaseButtons type="justify-start lg:justify-end" no-wrap>
-              <BaseButton color="info" :icon="mdiEye" small @click="isModalActive = true" />
+              <BaseButton color="info" :icon="mdiPencil" small @click="showUpdateModal(product)" />
               <BaseButton color="danger" :icon="mdiTrashCan" small @click="showDeleteModal(product)" />
             </BaseButtons>
           </td>

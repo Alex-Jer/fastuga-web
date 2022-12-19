@@ -1,6 +1,49 @@
+<template>
+  <OverlayLayer v-show="value" @overlay-click="cancel">
+    <CardBox v-show="value" class="z-50 w-11/12 shadow-lg max-h-modal md:w-3/5 lg:w-2/5 xl:w-4/12" is-modal>
+      <CardBoxComponentTitle :title="title">
+        <BaseButton :icon="mdiClose" color="whiteDark" small rounded-full @click.prevent="cancel" />
+      </CardBoxComponentTitle>
+
+      <CardBox form @submit.prevent="submit">
+        <FormField label="Name and Price">
+          <FormControl v-model="form.name" :icon="mdiFoodApple" :disabled="props.action === 'view'" />
+          <FormControl v-model="form.price" :icon="mdiCurrencyEur" :disabled="props.action === 'view'" />
+        </FormField>
+
+        <FormField label="Type">
+          <FormControl v-model="form.type" :options="props.types" :disabled="props.action === 'view'" />
+        </FormField>
+
+        <FormField label="Description" help="A brief description of the product. Max 255 characters">
+          <FormControl
+            v-model="form.description"
+            type="textarea"
+            placeholder="Product's description"
+            :disabled="props.action === 'view'"
+          />
+        </FormField>
+
+        <FormFilePicker
+          v-if="props.action === 'insert' || props.action === 'update'"
+          v-model="form.photo"
+          label="Upload an image"
+        />
+
+        <template #footer>
+          <BaseButtons v-if="props.action === 'insert' || props.action === 'update'">
+            <BaseButton type="submit" color="info" label="Submit" @click="submit" />
+            <BaseButton type="reset" color="info" outline label="Reset" @click="reset" />
+          </BaseButtons>
+        </template>
+      </CardBox>
+    </CardBox>
+  </OverlayLayer>
+</template>
+
 <script setup>
 import { mdiClose, mdiCurrencyEur, mdiFoodApple } from '@mdi/js'
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { useToast } from 'vue-toastification'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
@@ -21,12 +64,22 @@ const props = defineProps({
     type: [String, Number, Boolean],
     default: null,
   },
+  product: {
+    type: Object,
+    default: null,
+  },
+  types: {
+    type: Array,
+    default: () => [],
+  },
+  action: {
+    type: String,
+    default: '',
+  },
 })
 
 const toast = useToast()
 const productsStore = useProductsStore()
-
-const operation = computed(() => (!props.id || props.id < 0 ? 'insert' : 'update'))
 
 const emit = defineEmits(['update:modelValue', 'cancel', 'confirm'])
 
@@ -50,22 +103,25 @@ window.addEventListener('keydown', (e) => {
   }
 })
 
-/* Form */
-const selectOptions = productsStore.types.map((type, index) => {
-  return {
-    id: index + 1,
-    value: type,
-    label: type.charAt(0).toUpperCase() + type.slice(1),
-  }
-})
-
 const form = reactive({
-  name: 'Carbonara',
-  price: '8.75',
-  type: selectOptions[0]?.value,
-  description: 'Description blablabla',
+  name: props.product?.name,
+  price: props.product?.price || '',
+  type: props.product?.type || props.types[0]?.value,
+  description: props.product?.description || '',
   photo: null,
 })
+
+watch(
+  () => [props.product, props.types],
+  ([product, types]) => {
+    form.name = product?.name
+    form.price = product?.price || ''
+    form.type = product?.type || types[0]?.value
+    form.description = product?.description || ''
+    form.photo = null
+  },
+  { immediate: true }
+)
 
 const newProduct = () => {
   return {
@@ -106,8 +162,8 @@ let originalValueStr = ''
 
 const save = () => {
   product.value = newProduct()
-
-  if (operation.value === 'insert') {
+  console.log(props.action)
+  if (props.action === 'insert') {
     productsStore
       .insertProduct(product.value)
       .then((insertedProduct) => {
@@ -123,23 +179,23 @@ const save = () => {
           toast.error('Product was not created due to unknown server error!')
         }
       })
-  } else {
-    productsStore
-      .updateProduct(product.value)
-      .then((updatedProduct) => {
-        product.value = updatedProduct
-        originalValueStr = dataAsString()
-        toast.success(`Product #${product.value.id} was updated successfully.`)
-      })
-      .catch((error) => {
-        if (error.response.status === 422) {
-          const errorMsg = JSON.parse(JSON.stringify(error.response.data.message))
-          toast.error(errorMsg)
-        } else {
-          toast.error(`Product #${props.id} was not updated due to unknown server error!`)
-        }
-      })
+    return
   }
+  productsStore
+    .updateProduct(product.value)
+    .then((updatedProduct) => {
+      product.value = updatedProduct
+      originalValueStr = dataAsString()
+      toast.success(`Product #${product.value.id} was updated successfully.`)
+    })
+    .catch((error) => {
+      if (error.response.status === 422) {
+        const errorMsg = JSON.parse(JSON.stringify(error.response.data.message))
+        toast.error(errorMsg)
+      } else {
+        toast.error(`Product #${props.id} was not updated due to unknown server error!`)
+      }
+    })
 }
 
 const validateForm = () => {
@@ -169,7 +225,7 @@ const validateForm = () => {
 const reset = () => {
   form.name = ''
   form.price = ''
-  ;[form.type] = selectOptions
+  ;[form.type] = props.types
   form.description = ''
   form.photo = null
 }
@@ -194,37 +250,3 @@ const submit = () => {
 //     : 0
 // }
 </script>
-
-<template>
-  <OverlayLayer v-show="value" @overlay-click="cancel">
-    <CardBox v-show="value" class="z-50 w-11/12 shadow-lg max-h-modal md:w-3/5 lg:w-2/5 xl:w-4/12" is-modal>
-      <CardBoxComponentTitle :title="title">
-        <BaseButton :icon="mdiClose" color="whiteDark" small rounded-full @click.prevent="cancel" />
-      </CardBoxComponentTitle>
-
-      <CardBox form @submit.prevent="submit">
-        <FormField label="Name and Price">
-          <FormControl v-model="form.name" :icon="mdiFoodApple" />
-          <FormControl v-model="form.price" type="email" :icon="mdiCurrencyEur" />
-        </FormField>
-
-        <FormField label="Type">
-          <FormControl v-model="form.type" :options="selectOptions" />
-        </FormField>
-
-        <FormField label="Description" help="A brief description of the product. Max 255 characters">
-          <FormControl v-model="form.description" type="textarea" placeholder="Product's description" />
-        </FormField>
-
-        <FormFilePicker v-model="form.photo" label="Upload an image" />
-
-        <template #footer>
-          <BaseButtons>
-            <BaseButton type="submit" color="info" label="Submit" @click="submit" />
-            <BaseButton type="reset" color="info" outline label="Reset" @click="reset" />
-          </BaseButtons>
-        </template>
-      </CardBox>
-    </CardBox>
-  </OverlayLayer>
-</template>

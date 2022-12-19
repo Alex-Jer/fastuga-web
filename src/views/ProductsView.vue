@@ -3,7 +3,7 @@ import { mdiFoodAppleOutline, mdiPlus } from '@mdi/js'
 import { computed, onMounted, ref } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import IconRounded from '@/components/IconRounded.vue'
-import NewProductModal from '@/components/products/NewProductModal.vue'
+import ProductModal from '@/components/products/ProductModal.vue'
 import ProductsTable from '@/components/products/ProductsTable.vue'
 import SectionMain from '@/components/SectionMain.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
@@ -50,10 +50,13 @@ onMounted(async () => {
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <NewProductModal v-if="!isFetching" v-model="isModalActive" title="Add a new product">
-        <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
-        <p>This is sample modal</p>
-      </NewProductModal>
+      <ProductModal
+        v-if="!isFetching"
+        v-model="isModalActive"
+        title="Add a new product"
+        :types="selectTypes"
+        action="insert"
+      />
 
       <!-- Start of header -->
       <section class="mb-6 flex items-center justify-between pt-6">
@@ -65,7 +68,7 @@ onMounted(async () => {
       </section>
       <!-- End of header -->
 
-      <products-table :products="filteredProducts" :types="productsStore.types" />
+      <products-table :products="filteredProducts" :types="selectTypes" />
 
       <div class="mx-2 mt-2" v-if="!isFetching">
         <label class="mr-3">Filter by type:</label>

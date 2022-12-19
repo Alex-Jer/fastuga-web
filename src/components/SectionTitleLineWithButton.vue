@@ -4,7 +4,7 @@ import { computed, useSlots, ref } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseIcon from '@/components/BaseIcon.vue'
 import IconRounded from '@/components/IconRounded.vue'
-import NewProductModal from '@/components/products/NewProductModal.vue'
+import ProductModal from '@/components/products/ProductModal.vue'
 
 defineProps({
   icon: {
@@ -23,33 +23,19 @@ const isModalActive = ref(false)
 </script>
 
 <template>
-  <NewProductModal v-model="isModalActive" title="Add a new product" has-cancel>
+  <ProductModal v-model="isModalActive" title="Add a new product" has-cancel>
     <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
     <p>This is sample modal</p>
-  </NewProductModal>
-  <section
-    :class="{ 'pt-6': !main }"
-    class="mb-6 flex items-center justify-between"
-  >
+  </ProductModal>
+  <section :class="{ 'pt-6': !main }" class="mb-6 flex items-center justify-between">
     <div class="flex items-center justify-start">
-      <IconRounded
-        v-if="icon && main"
-        :icon="icon"
-        color="light"
-        class="mr-3"
-        bg
-      />
+      <IconRounded v-if="icon && main" :icon="icon" color="light" class="mr-3" bg />
       <BaseIcon v-else-if="icon" :path="icon" class="mr-2" size="20" />
       <h1 :class="main ? 'text-3xl' : 'text-2xl'" class="leading-tight">
         {{ title }}
       </h1>
     </div>
     <slot v-if="hasSlot" />
-    <BaseButton
-      v-else
-      :icon="mdiPlus"
-      color="whiteDark"
-      @click="isModalActive = true"
-    />
+    <BaseButton v-else :icon="mdiPlus" color="whiteDark" @click="isModalActive = true" />
   </section>
 </template>

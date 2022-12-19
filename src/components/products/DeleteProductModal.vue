@@ -29,6 +29,8 @@ const value = computed({
   set: (val) => emit('update:modelValue', val),
 })
 
+// make it so that the form's input fields are reactive
+
 const confirmCancel = (mode) => {
   value.value = false
   emit(mode)
@@ -53,9 +55,7 @@ const deleteProduct = () => {
 }
 
 window.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && value.value) {
-    cancel()
-  }
+  if (e.key === 'Escape' && value.value) cancel()
 })
 </script>
 
