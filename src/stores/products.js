@@ -69,12 +69,10 @@ export const useProductsStore = defineStore('products', () => {
   }
 
   const updateProduct = async (updatedProduct) => {
-    const response = await axios.put(`products/${updatedProduct.id}`, updatedProduct)
-    const idx = products.value.findIndex((t) => t.id === response.data.data.id)
-    if (idx >= 0) {
-      products.value[idx] = response.data.data
-    }
-    return response.data.data
+    const response = await axiosReq(`products/${updatedProduct.product_id}`, 'PUT', updatedProduct, true)
+    const index = products.value.findIndex((prod) => prod.product_id === updatedProduct.product_id)
+    products.value[index] = updatedProduct
+    return response
   }
 
   const deleteProduct = async (deletedProduct) => {

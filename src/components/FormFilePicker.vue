@@ -33,7 +33,7 @@ const root = ref(null)
 
 const file = ref(props.modelValue)
 
-const showFilename = computed(() => !props.isRoundIcon && file.value)
+const showFilename = computed(() => (!props.isRoundIcon && file.value) || props.showName)
 
 const modelValueProp = computed(() => props.modelValue)
 

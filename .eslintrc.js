@@ -16,6 +16,7 @@ module.exports = {
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
     'no-console': 'off',
+    'no-underscore-dangle': 'off',
     'consistent-return': 'off',
     'vue/multi-word-component-names': 'off',
     'prettier/prettier': [

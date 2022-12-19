@@ -24,11 +24,22 @@
           />
         </FormField>
 
-        <FormFilePicker
-          v-if="props.action === 'insert' || props.action === 'update'"
-          v-model="form.photo"
-          label="Upload an image"
-        />
+        <div class="grid grid-cols-2 gap-4">
+          <FormFilePicker
+            v-if="props.action === 'insert' || props.action === 'update'"
+            label="Upload an image"
+            v-model="form.photo"
+          />
+
+          <div class="w-12 h-12 rounded">
+            <img
+              :src="`${apiDomain}/storage/products/${props.product?.photo_url}`"
+              :alt="form.name"
+              :title="form.name"
+              class="w-full h-full bg-gray-100 rounded-full dark:bg-slate-800"
+            />
+          </div>
+        </div>
 
         <template #footer>
           <BaseButtons v-if="props.action === 'insert' || props.action === 'update'">
@@ -43,7 +54,7 @@
 
 <script setup>
 import { mdiClose, mdiCurrencyEur, mdiFoodApple } from '@mdi/js'
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, inject, reactive, ref, watch } from 'vue'
 import { useToast } from 'vue-toastification'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
@@ -80,6 +91,7 @@ const props = defineProps({
 
 const toast = useToast()
 const productsStore = useProductsStore()
+const apiDomain = inject('apiDomain')
 
 const emit = defineEmits(['update:modelValue', 'cancel', 'confirm'])
 
@@ -125,7 +137,7 @@ watch(
 
 const newProduct = () => {
   return {
-    id: null,
+    product_id: props.product?.product_id || null,
     name: form.name,
     description: form.description,
     type: form.type,
@@ -160,16 +172,23 @@ let originalValueStr = ''
 //   }
 // }
 
+// const test = (action) => {
+//   if (action === 'insert')
+//   return productsStore.insertProduct(product.value)
+// }
+
 const save = () => {
   product.value = newProduct()
-  console.log(props.action)
+
   if (props.action === 'insert') {
+    console.log('insert')
     productsStore
       .insertProduct(product.value)
       .then((insertedProduct) => {
         product.value = insertedProduct
         originalValueStr = dataAsString()
         toast.success(`Product #${insertedProduct.product_id} was created successfully.`)
+        cancel()
       })
       .catch((error) => {
         if (error.response.status === 422) {
@@ -181,19 +200,21 @@ const save = () => {
       })
     return
   }
+
   productsStore
     .updateProduct(product.value)
     .then((updatedProduct) => {
       product.value = updatedProduct
       originalValueStr = dataAsString()
-      toast.success(`Product #${product.value.id} was updated successfully.`)
+      toast.success(`Product #${props.product.product_id} was updated successfully.`)
     })
     .catch((error) => {
-      if (error.response.status === 422) {
-        const errorMsg = JSON.parse(JSON.stringify(error.response.data.message))
+      console.log({ error })
+      if (error.status === 422) {
+        const errorMsg = JSON.parse(JSON.stringify(error.data.message))
         toast.error(errorMsg)
       } else {
-        toast.error(`Product #${props.id} was not updated due to unknown server error!`)
+        toast.error(`Product #${props.product.product_id} was not updated due to unknown server error!`)
       }
     })
 }
@@ -227,7 +248,7 @@ const reset = () => {
   form.price = ''
   ;[form.type] = props.types
   form.description = ''
-  form.photo = null
+  // form.photo = null
 }
 
 const submit = () => {
