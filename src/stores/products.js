@@ -72,6 +72,7 @@ export const useProductsStore = defineStore('products', () => {
     const response = await axiosReq(`products/${updatedProduct.product_id}`, 'PUT', updatedProduct, true)
     const index = products.value.findIndex((prod) => prod.product_id === updatedProduct.product_id)
     products.value[index] = updatedProduct
+    console.log(products.value[index])
     return response
   }
 

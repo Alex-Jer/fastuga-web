@@ -24,22 +24,11 @@
           />
         </FormField>
 
-        <div class="grid grid-cols-2 gap-4">
-          <FormFilePicker
-            v-if="props.action === 'insert' || props.action === 'update'"
-            label="Upload an image"
-            v-model="form.photo"
-          />
-
-          <div class="w-12 h-12 rounded">
-            <img
-              :src="`${apiDomain}/storage/products/${props.product?.photo_url}`"
-              :alt="form.name"
-              :title="form.name"
-              class="w-full h-full bg-gray-100 rounded-full dark:bg-slate-800"
-            />
-          </div>
-        </div>
+        <FormFilePicker
+          v-if="props.action === 'insert' || props.action === 'update'"
+          label="Upload an image"
+          v-model="form.photo"
+        />
 
         <template #footer>
           <BaseButtons v-if="props.action === 'insert' || props.action === 'update'">
@@ -54,7 +43,7 @@
 
 <script setup>
 import { mdiClose, mdiCurrencyEur, mdiFoodApple } from '@mdi/js'
-import { computed, inject, reactive, ref, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { useToast } from 'vue-toastification'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
@@ -91,7 +80,6 @@ const props = defineProps({
 
 const toast = useToast()
 const productsStore = useProductsStore()
-const apiDomain = inject('apiDomain')
 
 const emit = defineEmits(['update:modelValue', 'cancel', 'confirm'])
 
@@ -123,6 +111,14 @@ const form = reactive({
   photo: null,
 })
 
+const reset = () => {
+  form.name = ''
+  form.price = ''
+  ;[form.type] = props.types
+  form.description = ''
+  // form.photo = null
+}
+
 watch(
   () => [props.product, props.types],
   ([product, types]) => {
@@ -143,39 +139,17 @@ const newProduct = () => {
     type: form.type,
     price: form.price,
     photo: form.photo,
+    photo_url: props.product?.photo_url || null,
   }
 }
 
 const product = ref(newProduct())
 
-const dataAsString = () => {
-  return JSON.stringify(product.value)
-}
-
-let originalValueStr = ''
-// const loadProduct = (id) => {
-//   originalValueStr = ''
-//   errors.value = null
-//   if (!id || id < 0) {
-//     product.value = newProduct()
-//     originalValueStr = dataAsString()
-//   } else {
-//     axios
-//       .get(`products/${id}`)
-//       .then((response) => {
-//         product.value = response.data.data
-//         originalValueStr = dataAsString()
-//       })
-//       .catch((error) => {
-//         console.log(error)
-//       })
-//   }
+// const dataAsString = () => {
+//   return JSON.stringify(product.value)
 // }
 
-// const test = (action) => {
-//   if (action === 'insert')
-//   return productsStore.insertProduct(product.value)
-// }
+// let originalValueStr = ''
 
 const save = () => {
   product.value = newProduct()
@@ -186,7 +160,7 @@ const save = () => {
       .insertProduct(product.value)
       .then((insertedProduct) => {
         product.value = insertedProduct
-        originalValueStr = dataAsString()
+        // originalValueStr = dataAsString()
         toast.success(`Product #${insertedProduct.product_id} was created successfully.`)
         cancel()
       })
@@ -205,8 +179,9 @@ const save = () => {
     .updateProduct(product.value)
     .then((updatedProduct) => {
       product.value = updatedProduct
-      originalValueStr = dataAsString()
+      // originalValueStr = dataAsString()
       toast.success(`Product #${props.product.product_id} was updated successfully.`)
+      cancel()
     })
     .catch((error) => {
       console.log({ error })
@@ -227,7 +202,7 @@ const validateForm = () => {
     !form.price && 'price',
     !form.type && 'type',
     !form.description && 'description',
-    !form.photo && 'photo',
+    !form.photo && props.action === 'insert' && 'photo',
   ].filter((error) => error)
 
   if (formErrors.length === 2) {
@@ -243,22 +218,16 @@ const validateForm = () => {
   return true
 }
 
-const reset = () => {
-  form.name = ''
-  form.price = ''
-  ;[form.type] = props.types
-  form.description = ''
-  // form.photo = null
-}
-
 const submit = () => {
   if (!validateForm()) return
+  // console.log(originalValueStr)
+  save()
 
-  if (dataAsString() !== originalValueStr) {
-    save()
-  } else {
-    cancel()
-  }
+  // if (dataAsString() !== originalValueStr) {
+  //   save()
+  // } else {
+  //   cancel()
+  // }
 }
 
 // const formStatusCurrent = ref(0)

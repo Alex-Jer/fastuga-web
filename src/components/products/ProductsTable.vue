@@ -20,7 +20,15 @@ const props = defineProps({
 })
 
 const apiDomain = inject('apiDomain')
-const products = computed(() => props.products)
+const products = computed(() => {
+  // return props.products
+  // add a photo_path property to each product using the apiDomain and the photo_url property
+  props.products.forEach((product) => {
+    product.photo_path = `${apiDomain}/storage/products/${product.photo_url}`
+  })
+  // console.log(props.products)
+  return props.products
+})
 
 const modalData = ref({ showDeleteModal: false, showUpdateModal: false, product: {}, action: '' })
 const itemsPerPage = ref(8)
@@ -84,7 +92,7 @@ const showUpdateModal = (product) => {
           <td class="border-b-0 lg:w-6 before:hidden">
             <div class="w-24 h-24 mx-auto lg:w-10 lg:h-10">
               <img
-                :src="`${apiDomain}/storage/products/${product.photo_url}`"
+                :src="product.photo_path"
                 :alt="product.name"
                 :title="product.name"
                 class="w-full h-full bg-gray-100 rounded-full dark:bg-slate-800"

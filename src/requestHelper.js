@@ -22,7 +22,6 @@ export const axiosReq = async (route, method = 'GET', formData = [], hasFiles = 
     case 'PATCH':
       /* eslint-disable no-param-reassign */
       formData._method = method.toUpperCase()
-      console.log({ formData })
       res = await axios.post(url, formData, { headers })
       break
     case 'DELETE':
