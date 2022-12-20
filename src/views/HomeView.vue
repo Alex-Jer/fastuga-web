@@ -1,141 +1,66 @@
 <script setup>
-import { computed, ref, onMounted } from 'vue'
-import {
-  mdiAccountMultiple,
-  mdiCartOutline,
-  mdiChartTimelineVariant,
-  mdiMonitorCellphone,
-  mdiReload,
-  mdiGithub,
-  mdiChartPie,
-} from '@mdi/js'
-import { useMainStore } from '@/stores/main.js'
-import * as chartConfig from '@/components/Charts/chart.config.js'
-import LineChart from '@/components/Charts/LineChart.vue'
+import { mdiClipboardListOutline } from '@mdi/js'
+import { computed, onMounted, ref } from 'vue'
+import ProductsTable from '@/components/products/ProductsTable.vue'
 import SectionMain from '@/components/SectionMain.vue'
-import CardBoxWidget from '@/components/CardBoxWidget.vue'
-import CardBox from '@/components/CardBox.vue'
-import TableSampleClients from '@/components/TableSampleClients.vue'
-import NotificationBar from '@/components/NotificationBar.vue'
-import BaseButton from '@/components/BaseButton.vue'
-import CardBoxTransaction from '@/components/CardBoxTransaction.vue'
-import CardBoxClient from '@/components/CardBoxClient.vue'
+import SectionTitleLine from '@/components/SectionTitleLine.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
-import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
+import { useProductsStore } from '@/stores/products'
 
-const chartData = ref(null)
+const productsStore = useProductsStore()
+const filterByType = ref('')
+const isFetching = ref(true)
+const selectTypes = ref([])
 
-const fillChartData = () => {
-  chartData.value = chartConfig.sampleChartData()
+const loadProducts = async () => {
+  await productsStore.loadProducts().catch((error) => {
+    console.log(error)
+  })
 }
 
-onMounted(() => {
-  fillChartData()
+const loadTypes = async () => {
+  await productsStore.loadTypes().catch((error) => {
+    console.log(error)
+  })
+}
+
+const filteredProducts = computed(() => {
+  return productsStore.getProductsByFilter(filterByType.value)
 })
 
-const mainStore = useMainStore()
+onMounted(async () => {
+  // Calling loadProjects refreshes the list of projects from the API
+  await loadProducts()
+  await loadTypes()
+  isFetching.value = false
 
-const clientBarItems = computed(() => mainStore.clients.slice(0, 4))
-
-const transactionBarItems = computed(() => mainStore.history)
+  productsStore.types.forEach((type, index) => {
+    selectTypes.value.push({
+      id: index + 1,
+      value: type,
+      label: type.charAt(0).toUpperCase() + type.slice(1),
+    })
+  })
+})
 </script>
 
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <SectionTitleLineWithButton
-        :icon="mdiChartTimelineVariant"
-        title="Overview"
-        main
-      >
-        <BaseButton
-          href="https://github.com/justboil/admin-one-vue-tailwind"
-          target="_blank"
-          :icon="mdiGithub"
-          label="Star on GitHub"
-          color="contrast"
-          rounded-full
-          small
-        />
-      </SectionTitleLineWithButton>
-
-      <div class="grid grid-cols-1 gap-6 mb-6 lg:grid-cols-3">
-        <CardBoxWidget
-          trend="12%"
-          trend-type="up"
-          color="text-emerald-500"
-          :icon="mdiAccountMultiple"
-          :number="512"
-          label="Clients"
-        />
-        <CardBoxWidget
-          trend="12%"
-          trend-type="down"
-          color="text-blue-500"
-          :icon="mdiCartOutline"
-          :number="7770"
-          prefix="$"
-          label="Sales"
-        />
-        <CardBoxWidget
-          trend="Overflow"
-          trend-type="alert"
-          color="text-red-500"
-          :icon="mdiChartTimelineVariant"
-          :number="256"
-          suffix="%"
-          label="Performance"
-        />
+      <SectionTitleLine :icon="mdiClipboardListOutline" title="Menu" main />
+      <products-table :products="filteredProducts" :types="selectTypes" />
+      <div class="mx-2 mt-2" v-if="!isFetching">
+        <label class="mr-3">Filter by type:</label>
+        <select
+          class="pl-3 pr-12 py-2 focus:ring focus:outline-none border-gray-700 rounded bg-slate-800"
+          v-model="filterByType"
+        >
+          <option :value="null" />
+          <option v-for="item in selectTypes" :key="item.id" :value="item.value">
+            {{ item.label }}
+          </option>
+        </select>
       </div>
-
-      <div class="grid grid-cols-1 gap-6 mb-6 lg:grid-cols-2">
-        <div class="flex flex-col justify-between">
-          <CardBoxTransaction
-            v-for="(transaction, index) in transactionBarItems"
-            :key="index"
-            :amount="transaction.amount"
-            :date="transaction.date"
-            :business="transaction.business"
-            :type="transaction.type"
-            :name="transaction.name"
-            :account="transaction.account"
-          />
-        </div>
-        <div class="flex flex-col justify-between">
-          <CardBoxClient
-            v-for="client in clientBarItems"
-            :key="client.id"
-            :name="client.name"
-            :login="client.login"
-            :date="client.created"
-            :progress="client.progress"
-          />
-        </div>
-      </div>
-
-      <SectionTitleLineWithButton :icon="mdiChartPie" title="Trends overview">
-        <BaseButton
-          :icon="mdiReload"
-          color="whiteDark"
-          @click="fillChartData"
-        />
-      </SectionTitleLineWithButton>
-
-      <CardBox class="mb-6">
-        <div v-if="chartData">
-          <line-chart :data="chartData" class="h-96" />
-        </div>
-      </CardBox>
-
-      <SectionTitleLineWithButton :icon="mdiAccountMultiple" title="Clients" />
-
-      <NotificationBar color="info" :icon="mdiMonitorCellphone">
-        <b>Responsive table.</b> Collapses on mobile
-      </NotificationBar>
-
-      <CardBox has-table>
-        <TableSampleClients />
-      </CardBox>
     </SectionMain>
   </LayoutAuthenticated>
 </template>

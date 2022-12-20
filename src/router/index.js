@@ -1,17 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/views/HomeView.vue'
-import { useUserStore } from '@/stores/user'
 import RouteRedirector from '@/components/global/RouteRedirector.vue'
+import { useUserStore } from '@/stores/user'
+import Home from '@/views/HomeView.vue'
+import Products from '@/views/ProductsView.vue'
+import Dashboard from '@/views/DashboardView.vue'
 
 const routes = [
   {
     // Document title tag
     // We combine it with defaultDocumentTitle set in `src/main.js` on router.afterEach hook
     meta: {
-      title: 'Dashboard',
+      title: 'Home',
     },
     path: '/',
-    name: 'dashboard',
+    name: 'home',
     component: Home,
   },
   {
@@ -22,11 +24,19 @@ const routes = [
   },
   {
     meta: {
+      title: 'Dashboard',
+    },
+    path: '/dashboard',
+    name: 'dashboard',
+    component: Dashboard,
+  },
+  {
+    meta: {
       title: 'Products',
     },
     path: '/products',
     name: 'products',
-    component: () => import('@/views/ProductsView.vue'),
+    component: Products,
   },
   {
     meta: {
@@ -110,7 +120,12 @@ router.beforeEach((to, from, next) => {
 
   const userStore = useUserStore()
 
-  if (to.name === 'login' || to.name === 'dashboard') {
+  if (to.name === 'login' || to.name === 'home') {
+    next()
+    return
+  }
+
+  if (to.name === 'dashboard') {
     next()
     return
   }

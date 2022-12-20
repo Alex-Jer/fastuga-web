@@ -18,6 +18,10 @@ const props = defineProps({
     type: Object,
     default: null,
   },
+  isDelete: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const toast = useToast()
@@ -52,6 +56,10 @@ const deleteProduct = () => {
   cancel()
 }
 
+const addProductToCart = () => {
+  toast(`${props.product.name} was added to the cart`)
+}
+
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && value.value) cancel()
 })
@@ -60,7 +68,7 @@ window.addEventListener('keydown', (e) => {
 <template>
   <OverlayLayer v-show="value" @overlay-click="cancel">
     <CardBox v-show="value" class="z-50 w-11/12 shadow-lg max-h-modal md:w-3/5 lg:w-2/5 xl:w-4/12" is-modal>
-      <CardBoxComponentTitle :title="`Delete product #${product.product_id}?`">
+      <CardBoxComponentTitle :title="props.isDelete ? `Delete product #${product.product_id}?` : 'Add to cart'">
         <BaseButton :icon="mdiClose" color="whiteDark" small rounded-full @click.prevent="cancel" />
       </CardBoxComponentTitle>
 
@@ -70,7 +78,11 @@ window.addEventListener('keydown', (e) => {
 
       <template #footer>
         <BaseButtons>
-          <BaseButton label="Delete" color="danger" @click="deleteProduct" />
+          <BaseButton
+            :label="props.isDelete ? 'Delete' : 'Confirm'"
+            :color="props.isDelete ? 'danger' : 'info'"
+            @click="props.isDelete ? deleteProduct() : addProductToCart()"
+          />
           <BaseButton label="Cancel" :color="button" outline @click="cancel" />
         </BaseButtons>
       </template>

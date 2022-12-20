@@ -1,11 +1,11 @@
 <script setup>
-import { mdiPencil, mdiTrashCan } from '@mdi/js'
+import { mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js'
 import { computed, inject, ref } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import CardBox from '@/components/CardBox.vue'
-import DeleteProductModal from './DeleteProductModal.vue'
+import ConfirmModal from './ConfirmModal.vue'
 import ProductModal from './ProductModal.vue'
 
 const props = defineProps({
@@ -23,6 +23,7 @@ const apiDomain = inject('apiDomain')
 const products = computed(() => props.products)
 
 const modalData = ref({
+  showAddToCartModal: false,
   showDetailsModal: false,
   showUpdateModal: false,
   showDeleteModal: false,
@@ -46,6 +47,10 @@ const pagesList = computed(() => {
   return list
 })
 
+const showAddToCartModal = (product) => {
+  modalData.value = { showAddToCartModal: true, product }
+}
+
 const showDetailsModal = (product) => {
   modalData.value = { showDetailsModal: true, product }
 }
@@ -61,6 +66,14 @@ const showDeleteModal = (product) => {
 
 <template>
   <CardBox class="mb-6" has-table>
+    <ConfirmModal v-model="modalData.showAddToCartModal" :product="modalData.product">
+      <p>
+        Do you wish to add the product
+        <b>{{ modalData.product.name }}</b>
+        to your cart?
+      </p>
+    </ConfirmModal>
+
     <ProductModal
       v-model="modalData.showDetailsModal"
       :product="modalData.product"
@@ -77,13 +90,13 @@ const showDeleteModal = (product) => {
       action="update"
     />
 
-    <DeleteProductModal v-model="modalData.showDeleteModal" :product="modalData.product">
+    <ConfirmModal v-model="modalData.showDeleteModal" :product="modalData.product" is-delete>
       <p>
         Are you sure you want to delete the product
         <b>{{ modalData.product.name }}</b
         >?
       </p>
-    </DeleteProductModal>
+    </ConfirmModal>
 
     <table>
       <thead>
@@ -119,10 +132,15 @@ const showDeleteModal = (product) => {
             {{ product.type }}
           </td>
           <td data-label="Price">{{ product.price }} €</td>
-          <td class="before:hidden lg:w-1 whitespace-nowrap">
+          <td class="before:hidden lg:w-1 whitespace-nowrap" v-if="$route.name === 'products'">
             <BaseButtons type="justify-start lg:justify-end" no-wrap>
               <BaseButton color="info" :icon="mdiPencil" small @click.stop="showUpdateModal(product)" />
               <BaseButton color="danger" :icon="mdiTrashCan" small @click.stop="showDeleteModal(product)" />
+            </BaseButtons>
+          </td>
+          <td class="before:hidden lg:w-1 whitespace-nowrap" v-if="$route.name === 'home'">
+            <BaseButtons type="justify-start lg:justify-end" no-wrap>
+              <BaseButton color="info" :icon="mdiPlus" small @click.stop="showAddToCartModal(product)" />
             </BaseButtons>
           </td>
         </tr>

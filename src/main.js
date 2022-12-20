@@ -50,7 +50,7 @@ app.provide(
 )
 
 /* Init Pinia stores */
-// TODO: remove sample store
+// TODO: remove sample mainStore
 const mainStore = useMainStore(pinia)
 const styleStore = useStyleStore(pinia)
 
@@ -79,8 +79,7 @@ styleStore.setStyle()
 
 /* Dark mode */
 if (
-  (!localStorage[darkModeKey] &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+  (!localStorage[darkModeKey] && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
   localStorage[darkModeKey] === '1'
 ) {
   styleStore.setDarkMode(true)
@@ -91,9 +90,7 @@ const defaultDocumentTitle = 'Fastuga'
 
 /* Set document title from route meta */
 router.afterEach((to) => {
-  document.title = to.meta?.title
-    ? `${to.meta.title} — ${defaultDocumentTitle}`
-    : defaultDocumentTitle
+  document.title = to.meta?.title ? `${to.meta.title} — ${defaultDocumentTitle}` : defaultDocumentTitle
 })
 
 app.mount('#app')

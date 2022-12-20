@@ -59,7 +59,7 @@ onMounted(async () => {
       />
 
       <!-- Start of header -->
-      <section class="mb-6 flex items-center justify-between pt-6">
+      <section class="mb-6 flex items-center justify-between">
         <div class="flex items-center justify-start">
           <IconRounded :icon="mdiFoodAppleOutline" color="light" class="mr-3" bg />
           <h1 class="text-3xl leading-tight">Products</h1>
