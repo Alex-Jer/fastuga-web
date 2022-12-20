@@ -19,7 +19,19 @@ export const axiosReq = async (route, method = 'GET', formData = [], hasFiles = 
       res = await axios.post(url, formData, { headers })
       break
     case 'PUT':
+      if (formData === []) {
+        res = await axios.put(url, formData, { headers })
+        break
+      }
+      /* eslint-disable no-param-reassign */
+      formData._method = method.toUpperCase()
+      res = await axios.post(url, formData, { headers })
+      break
     case 'PATCH':
+      if (formData === []) {
+        res = await axios.patch(url, formData, { headers })
+        break
+      }
       /* eslint-disable no-param-reassign */
       formData._method = method.toUpperCase()
       res = await axios.post(url, formData, { headers })
