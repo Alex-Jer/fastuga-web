@@ -22,7 +22,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  isBlock: {
+  isBlocking: {
+    type: Boolean,
+    default: false,
+  },
+  isUnblocking: {
     type: Boolean,
     default: false,
   },
@@ -105,7 +109,11 @@ window.addEventListener('keydown', (e) => {
         <BaseButton :icon="mdiClose" color="whiteDark" small rounded-full @click.prevent="cancel" />
       </CardBoxComponentTitle>
 
-      <CardBoxComponentTitle v-if="props.isBlock" :title="`Block user #${user.user_id}?`">
+      <CardBoxComponentTitle v-if="props.isBlocking" :title="`Block user #${user.user_id}?`">
+        <BaseButton :icon="mdiClose" color="whiteDark" small rounded-full @click.prevent="cancel" />
+      </CardBoxComponentTitle>
+
+      <CardBoxComponentTitle v-if="props.isUnblocking" :title="`Unblock user #${user.user_id}?`">
         <BaseButton :icon="mdiClose" color="whiteDark" small rounded-full @click.prevent="cancel" />
       </CardBoxComponentTitle>
 
@@ -116,7 +124,8 @@ window.addEventListener('keydown', (e) => {
       <template #footer>
         <BaseButtons>
           <BaseButton v-if="props.isDelete" label="Delete" color="danger" @click="deleteUser" />
-          <BaseButton v-if="props.isBlock" label="Block" color="danger" @click="toggleBlockUser" />
+          <BaseButton v-if="props.isBlocking" label="Block" color="danger" @click="toggleBlockUser" />
+          <BaseButton v-if="props.isUnblocking" label="Unblock" color="info" @click="toggleBlockUser" />
           <BaseButton label="Cancel" :color="button" outline @click="cancel" />
         </BaseButtons>
       </template>

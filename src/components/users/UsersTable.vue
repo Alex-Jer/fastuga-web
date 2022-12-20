@@ -26,15 +26,16 @@ const users = computed(() => props.users)
 const toast = useToast()
 
 const modalData = ref({
+  user: {},
+  user_id: '',
+  action: '',
   showAddToCartModal: false,
   showCustomerDetailsModal: false,
   showEmployeeDetailsModal: false,
   showUpdateModal: false,
   showDeleteModal: false,
   showBlockModal: false,
-  user: {},
-  user_id: '',
-  action: '',
+  showUnblockModal: false,
 })
 
 const itemsPerPage = ref(8)
@@ -74,11 +75,13 @@ const showDeleteModal = (user) => {
 const showBlockModal = (user) => {
   modalData.value = { showBlockModal: true, user }
 }
+
+const showUnblockModal = (user) => {
+  modalData.value = { showUnblockModal: true, user }
+}
 /* End of Modals */
 
 const generateAvatar = (name) => {
-  // 'https://ui-avatars.com/api/?name=John+Doe'
-  // convert spaces to +
   const nameWithPlus = name.replace(/ /g, '+')
   return `https://avatar.oxro.io/avatar.svg?name=${nameWithPlus}&bold=true&width=60&height=60&fontSize=20&background=3b82f6&color=ffffff`
 }
@@ -118,9 +121,17 @@ const generateAvatar = (name) => {
       </p>
     </ConfirmModal>
 
-    <ConfirmModal v-model="modalData.showBlockModal" :user="modalData.user" is-block>
+    <ConfirmModal v-model="modalData.showBlockModal" :user="modalData.user" is-blocking>
       <p>
         Are you sure you want to block the user
+        <b>{{ modalData.user.name }}</b
+        >?
+      </p>
+    </ConfirmModal>
+
+    <ConfirmModal v-model="modalData.showUnblockModal" :user="modalData.user" is-unblocking>
+      <p>
+        Are you sure you want to unblock the user
         <b>{{ modalData.user.name }}</b
         >?
       </p>
@@ -154,7 +165,11 @@ const generateAvatar = (name) => {
           <td data-label="Type">
             {{ user.type }}
           </td>
-          <td data-label="Blocked">{{ user.blocked ? 'Yes' : 'No' }}</td>
+          <td data-label="Blocked">
+            <span :class="user.blocked ? 'text-red-500' : 'text-blue-500'" class="font-bold">
+              {{ user.blocked ? 'Yes' : 'No' }}
+            </span>
+          </td>
           <td class="before:hidden lg:w-1 whitespace-nowrap" v-if="$route.name === 'users'">
             <BaseButtons type="justify-start lg:justify-end" no-wrap>
               <BaseButton
@@ -164,7 +179,12 @@ const generateAvatar = (name) => {
                 @click.stop="showUpdateModal(user)"
                 :disabled="user.customer"
               />
-              <BaseButton color="white" :icon="mdiBlockHelper" small @click.stop="showBlockModal(user)" />
+              <BaseButton
+                color="white"
+                :icon="mdiBlockHelper"
+                small
+                @click.stop="user.blocked ? showUnblockModal(user) : showBlockModal(user)"
+              />
               <BaseButton color="danger" :icon="mdiTrashCan" small @click.stop="showDeleteModal(user)" />
             </BaseButtons>
           </td>
