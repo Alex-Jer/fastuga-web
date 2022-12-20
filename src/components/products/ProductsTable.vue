@@ -22,7 +22,15 @@ const props = defineProps({
 const apiDomain = inject('apiDomain')
 const products = computed(() => props.products)
 
-const modalData = ref({ showDeleteModal: false, showUpdateModal: false, product: {}, action: '' })
+const modalData = ref({
+  showDetailsModal: false,
+  showUpdateModal: false,
+  showDeleteModal: false,
+  product: {},
+  product_id: '',
+  action: '',
+})
+
 const itemsPerPage = ref(8)
 const currentPage = ref(0)
 
@@ -38,22 +46,34 @@ const pagesList = computed(() => {
   return list
 })
 
-const showDeleteModal = (product) => {
-  modalData.value = { showDeleteModal: true, product }
+const showDetailsModal = (product) => {
+  modalData.value = { showDetailsModal: true, product }
 }
 
 const showUpdateModal = (product) => {
   modalData.value = { showUpdateModal: true, product }
+}
+
+const showDeleteModal = (product) => {
+  modalData.value = { showDeleteModal: true, product }
 }
 </script>
 
 <template>
   <CardBox class="mb-6" has-table>
     <ProductModal
+      v-model="modalData.showDetailsModal"
+      :product="modalData.product"
+      :types="props.types"
+      :title="`Viewing Product #${modalData.product.product_id}`"
+      action="view"
+    />
+
+    <ProductModal
       v-model="modalData.showUpdateModal"
       :product="modalData.product"
       :types="props.types"
-      title="Edit Product"
+      :title="`Updating Product #${modalData.product.product_id}`"
       action="update"
     />
 
@@ -76,7 +96,12 @@ const showUpdateModal = (product) => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="product in itemsPaginated" :key="product.product_id">
+        <tr
+          v-for="product in itemsPaginated"
+          :key="product.product_id"
+          class="cursor-pointer"
+          @click="showDetailsModal(product)"
+        >
           <td class="border-b-0 lg:w-6 before:hidden">
             <div class="w-24 h-24 mx-auto lg:w-10 lg:h-10">
               <img
@@ -96,8 +121,8 @@ const showUpdateModal = (product) => {
           <td data-label="Price">{{ product.price }} €</td>
           <td class="before:hidden lg:w-1 whitespace-nowrap">
             <BaseButtons type="justify-start lg:justify-end" no-wrap>
-              <BaseButton color="info" :icon="mdiPencil" small @click="showUpdateModal(product)" />
-              <BaseButton color="danger" :icon="mdiTrashCan" small @click="showDeleteModal(product)" />
+              <BaseButton color="info" :icon="mdiPencil" small @click.stop="showUpdateModal(product)" />
+              <BaseButton color="danger" :icon="mdiTrashCan" small @click.stop="showDeleteModal(product)" />
             </BaseButtons>
           </td>
         </tr>

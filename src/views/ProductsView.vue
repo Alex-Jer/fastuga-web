@@ -76,9 +76,9 @@ onMounted(async () => {
           class="pl-3 pr-12 py-2 focus:ring focus:outline-none border-gray-700 rounded bg-slate-800"
           v-model="filterByType"
         >
-          <option :value="null">All</option>
-          <option v-for="type in selectTypes" :key="type.id" :value="type.value">
-            {{ type.label }}
+          <option :value="null" />
+          <option v-for="item in selectTypes" :key="item.id" :value="item.value">
+            {{ item.label }}
           </option>
         </select>
       </div>

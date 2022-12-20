@@ -15,7 +15,7 @@
           <FormControl v-model="form.type" :options="props.types" :disabled="props.action === 'view'" />
         </FormField>
 
-        <FormField label="Description" help="A brief description of the product. Max 255 characters">
+        <FormField label="Description" :help="descInfo">
           <FormControl
             v-model="form.description"
             type="textarea"
@@ -81,6 +81,8 @@ const props = defineProps({
 const toast = useToast()
 const productsStore = useProductsStore()
 
+const descInfo = props.action === 'view' ? '' : 'A brief description of the product. Max 255 characters'
+
 const emit = defineEmits(['update:modelValue', 'cancel', 'confirm'])
 
 const value = computed({
@@ -105,9 +107,9 @@ window.addEventListener('keydown', (e) => {
 
 const form = reactive({
   name: props.product?.name,
-  price: props.product?.price || '',
-  type: props.product?.type || props.types[0]?.value,
-  description: props.product?.description || '',
+  price: props.product?.price,
+  type: props.product?.type,
+  description: props.product?.description,
   photo: null,
 })
 

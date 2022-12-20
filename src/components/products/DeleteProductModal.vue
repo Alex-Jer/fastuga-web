@@ -29,8 +29,6 @@ const value = computed({
   set: (val) => emit('update:modelValue', val),
 })
 
-// make it so that the form's input fields are reactive
-
 const confirmCancel = (mode) => {
   value.value = false
   emit(mode)
@@ -62,7 +60,7 @@ window.addEventListener('keydown', (e) => {
 <template>
   <OverlayLayer v-show="value" @overlay-click="cancel">
     <CardBox v-show="value" class="z-50 w-11/12 shadow-lg max-h-modal md:w-3/5 lg:w-2/5 xl:w-4/12" is-modal>
-      <CardBoxComponentTitle title="Delete product?">
+      <CardBoxComponentTitle :title="`Delete product #${product.product_id}?`">
         <BaseButton :icon="mdiClose" color="whiteDark" small rounded-full @click.prevent="cancel" />
       </CardBoxComponentTitle>
 
