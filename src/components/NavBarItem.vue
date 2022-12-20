@@ -52,9 +52,7 @@ const componentClass = computed(() => {
   return base
 })
 
-const itemLabel = computed(() =>
-  props.item.isCurrentUser ? useUserStore().user?.name : props.item.label
-)
+const itemLabel = computed(() => (props.item.isCurrentUser ? useUserStore().user?.name : props.item.label))
 
 const menuClick = (event) => {
   emit('menu-click', event, props.item)
@@ -105,28 +103,14 @@ onBeforeUnmount(() => {
     <div
       class="flex items-center"
       :class="{
-        'bg-gray-100 dark:bg-slate-800 lg:bg-transparent lg:dark:bg-transparent p-3 lg:p-0':
-          item.menu,
+        'bg-gray-100 dark:bg-slate-800 lg:bg-transparent lg:dark:bg-transparent p-3 lg:p-0': item.menu,
       }"
     >
-      <UserAvatarCurrentUser
-        v-if="userStore.user && item.isCurrentUser"
-        class="inline-flex w-6 h-6 mr-3"
-      />
+      <UserAvatarCurrentUser v-if="userStore.user && item.isCurrentUser" class="inline-flex w-6 h-6 mr-3" />
       <BaseIcon v-if="item.icon" :path="item.icon" class="transition-colors" />
-      <span
-        v-if="!userStore.user"
-        class="inline-flex items-center justify-center"
-      >
+      <span v-if="!userStore.user" class="inline-flex items-center justify-center">
         <router-link to="login">
-          <BaseButton
-            :icon="mdiLogin"
-            color="whiteDark"
-            small
-            label="Login"
-            rounded-full
-            @click="login"
-          />
+          <BaseButton :icon="mdiLogin" color="whiteDark" small label="Login" rounded-full @click="login" />
         </router-link>
       </span>
       <span

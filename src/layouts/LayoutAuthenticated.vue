@@ -2,6 +2,7 @@
 import { mdiBackburger, mdiForwardburger, mdiMenu } from '@mdi/js'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
 import AsideMenu from '@/components/AsideMenu.vue'
 import BaseIcon from '@/components/BaseIcon.vue'
 import NavBar from '@/components/NavBar.vue'
@@ -10,14 +11,6 @@ import menuAside from '@/menuAside.js'
 import menuNavBar from '@/menuNavBar.js'
 import { useStyleStore } from '@/stores/style.js'
 import { useUserStore } from '@/stores/user.js'
-import { useToast } from 'vue-toastification'
-
-// useMainStore().setUser({
-//   name: 'John Doe',
-//   email: 'john@example.com',
-//   avatar:
-//     'https://avatars.dicebear.com/api/avataaars/example.svg?options[top][]=shortHair&options[accessoriesChance]=93',
-// })
 
 const layoutAsidePadding = 'xl:pl-60'
 
@@ -36,7 +29,7 @@ router.beforeEach(() => {
   isAsideLgActive.value = false
 })
 
-const menuClick = (item) => {
+const menuClick = (event, item) => {
   if (item.isLogout) {
     userStore.logout()
     router.push('/')

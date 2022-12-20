@@ -11,10 +11,9 @@ export const useUserStore = defineStore('user', () => {
   const user = ref(null)
 
   const userPhotoUrl = computed(() => {
-    // if (!user.value?.photo_url) {
-    //   return avatarNoneUrl
-    // }
-    return `${apiDomain}/storage/fotos/${user.value?.photo_url}`
+    const nameWithPlus = user.value?.name.replace(/ /g, '+')
+    const placeholder = `https://avatar.oxro.io/avatar.svg?name=${nameWithPlus}&bold=true&width=150&height=150&fontSize=50&background=3b82f6&color=ffffff`
+    return user.value?.photo_url ? `${apiDomain}/storage/fotos/${user.value?.photo_url}` : placeholder
   })
 
   const userId = computed(() => {

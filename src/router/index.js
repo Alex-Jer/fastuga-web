@@ -123,17 +123,9 @@ router.beforeEach((to, from, next) => {
     return
   }
 
-  if (to.name === 'Redirect') {
-    next()
-    return
-  }
+  const allowedRoutes = ['Redirect', 'login', 'home', 'dashboard', 'profile', 'error']
 
-  if (to.name === 'login' || to.name === 'home') {
-    next()
-    return
-  }
-
-  if (to.name === 'dashboard') {
+  if (allowedRoutes.includes(to.name)) {
     next()
     return
   }
@@ -149,8 +141,10 @@ router.beforeEach((to, from, next) => {
 
   if (!userStore.user) {
     next({ name: 'login' })
-    // return
+    return
   }
+
+  next({ name: 'error' })
 })
 
 export default router

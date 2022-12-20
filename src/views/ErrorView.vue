@@ -11,14 +11,14 @@ import LayoutGuest from '@/layouts/LayoutGuest.vue'
     <SectionFullScreen v-slot="{ cardClass }" bg="pinkRed">
       <CardBox :class="cardClass">
         <div class="space-y-3">
-          <h1 class="text-2xl">Unhandled exception</h1>
+          <h1 class="text-2xl">Forbidden</h1>
 
-          <p>An Error Occurred</p>
+          <p>The page you are looking for is forbidden. You do not have permission to access this page.</p>
         </div>
 
         <template #footer>
           <BaseButtons>
-            <BaseButton label="Done" to="/" color="danger" />
+            <BaseButton label="Home" to="/" color="info" />
           </BaseButtons>
         </template>
       </CardBox>

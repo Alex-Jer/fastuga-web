@@ -23,21 +23,14 @@ const isMenuNavBarActive = ref(false)
 </script>
 
 <template>
-  <nav
-    class="fixed inset-x-0 top-0 z-30 w-screen bg-gray-50 h-14 transition-position lg:w-auto dark:bg-slate-800"
-  >
+  <nav class="fixed inset-x-0 top-0 z-30 w-screen bg-gray-50 h-14 transition-position lg:w-auto dark:bg-slate-800">
     <div class="flex lg:items-stretch" :class="containerMaxW">
       <div class="flex items-stretch flex-1 h-14">
         <slot />
       </div>
       <div class="flex items-stretch flex-none h-14 lg:hidden">
-        <NavBarItemPlain
-          @click.prevent="isMenuNavBarActive = !isMenuNavBarActive"
-        >
-          <BaseIcon
-            :path="isMenuNavBarActive ? mdiClose : mdiDotsVertical"
-            size="24"
-          />
+        <NavBarItemPlain @click.prevent="isMenuNavBarActive = !isMenuNavBarActive">
+          <BaseIcon :path="isMenuNavBarActive ? mdiClose : mdiDotsVertical" size="24" />
         </NavBarItemPlain>
       </div>
       <div
