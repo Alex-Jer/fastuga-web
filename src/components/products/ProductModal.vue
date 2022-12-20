@@ -7,8 +7,18 @@
 
       <CardBox form @submit.prevent="submit">
         <FormField label="Name and Price">
-          <FormControl v-model="form.name" :icon="mdiFoodApple" :disabled="props.action === 'view'" />
-          <FormControl v-model="form.price" :icon="mdiCurrencyEur" :disabled="props.action === 'view'" />
+          <FormControl
+            v-model="form.name"
+            :icon="mdiFoodApple"
+            placeholder="Name"
+            :disabled="props.action === 'view'"
+          />
+          <FormControl
+            v-model="form.price"
+            :icon="mdiCurrencyEur"
+            placeholder="Price"
+            :disabled="props.action === 'view'"
+          />
         </FormField>
 
         <FormField label="Type">

@@ -24,13 +24,9 @@ export const useProductsStore = defineStore('products', () => {
   //   return myInprogressProjects.value.length
   // })
 
-  function getProductsByFilter(type) {
-    return products.value.filter((prod) => !type || type === prod.type)
-  }
+  const getProductsByFilter = (type) => products.value.filter((prod) => !type || type === prod.type)
 
-  function getProductsByFilterTotal(type) {
-    return getProductsByFilter(type).length
-  }
+  const getProductsByFilterTotal = (type) => getProductsByFilter(type).length
 
   const clearProducts = () => {
     products.value = []
