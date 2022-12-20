@@ -1,5 +1,5 @@
 <script setup>
-import { mdiClipboardListOutline, mdiFoodAppleOutline, mdiMonitor } from '@mdi/js'
+import { mdiAccountGroupOutline, mdiClipboardListOutline, mdiFoodAppleOutline, mdiMonitor } from '@mdi/js'
 import { useUserStore } from '@/stores/user'
 import BaseIcon from './BaseIcon.vue'
 
@@ -42,6 +42,18 @@ defineProps({
         >
           <BaseIcon :path="mdiFoodAppleOutline" class="pt-1" w="w-16" :size="18" />
           <span class="pb-1">Products</span>
+        </div>
+      </router-link>
+    </li>
+
+    <li v-show="userStore.user?.type === 'EM'">
+      <router-link to="/users">
+        <div
+          class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
+          :class="$route.name === 'users' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
+        >
+          <BaseIcon :path="mdiAccountGroupOutline" class="pt-1" w="w-16" :size="18" />
+          <span class="pb-1">Users</span>
         </div>
       </router-link>
     </li>

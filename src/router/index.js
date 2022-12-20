@@ -3,6 +3,7 @@ import RouteRedirector from '@/components/global/RouteRedirector.vue'
 import { useUserStore } from '@/stores/user'
 import Home from '@/views/HomeView.vue'
 import Products from '@/views/ProductsView.vue'
+import Users from '@/views/UsersView.vue'
 import Dashboard from '@/views/DashboardView.vue'
 
 const routes = [
@@ -24,20 +25,29 @@ const routes = [
   },
   {
     meta: {
-      title: 'Dashboard',
-    },
-    path: '/dashboard',
-    name: 'dashboard',
-    component: Dashboard,
-  },
-  {
-    meta: {
       title: 'Products',
     },
     path: '/products',
     name: 'products',
     component: Products,
   },
+  {
+    meta: {
+      title: 'Users',
+    },
+    path: '/users',
+    name: 'users',
+    component: Users,
+  },
+  {
+    meta: {
+      title: 'Dashboard',
+    },
+    path: '/dashboard',
+    name: 'dashboard',
+    component: Dashboard,
+  },
+
   {
     meta: {
       title: 'Tables',
@@ -118,8 +128,6 @@ router.beforeEach((to, from, next) => {
     return
   }
 
-  const userStore = useUserStore()
-
   if (to.name === 'login' || to.name === 'home') {
     next()
     return
@@ -130,8 +138,10 @@ router.beforeEach((to, from, next) => {
     return
   }
 
-  if (to.name === 'products') {
-    if (userStore.user?.type === 'EM') {
+  const userStore = useUserStore()
+
+  if (userStore.user?.type === 'EM') {
+    if (to.name === 'products' || to.name === 'users') {
       next()
       return
     }
