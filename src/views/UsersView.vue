@@ -3,11 +3,11 @@ import { mdiAccountGroupOutline, mdiPlus } from '@mdi/js'
 import { computed, onMounted, ref } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import IconRounded from '@/components/IconRounded.vue'
-import UserModal from '@/components/users/UserModal.vue'
 import UsersTable from '@/components/users/UsersTable.vue'
 import SectionMain from '@/components/SectionMain.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { useUsersStore } from '@/stores/users'
+import EmployeeModal from '@/components/users/EmployeeModal.vue'
 
 const usersStore = useUsersStore()
 const isModalActive = ref(false)
@@ -49,10 +49,10 @@ onMounted(async () => {
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <UserModal
+      <EmployeeModal
         v-if="!isFetching"
         v-model="isModalActive"
-        title="Add a new user"
+        title="Add a new employee"
         :types="selectTypes"
         action="insert"
       />

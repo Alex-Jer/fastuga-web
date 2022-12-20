@@ -10,17 +10,22 @@
           <FormControl v-model="form.name" :icon="mdiAccount" placeholder="Name" :disabled="props.action === 'view'" />
         </FormField>
 
-        <FormField label="Email">
+        <FormField label="Email" v-if="props.action !== 'update'">
           <FormControl v-model="form.email" :icon="mdiEmail" placeholder="Email" :disabled="props.action === 'view'" />
         </FormField>
 
         <FormField label="Type">
-          <FormControl v-model="form.type" :options="props.types" :disabled="props.action === 'view'" />
+          <FormControl v-model="form.type" :options="types" :disabled="props.action === 'view'" />
         </FormField>
 
-        <FormField label="Password" v-if="props.action !== 'view'">
-          <FormControl v-model="form.password" :icon="mdiAccount" placeholder="Password" />
-          <FormControl v-model="form.confirmPassword" :icon="mdiAccount" placeholder="Confirm password" />
+        <FormField label="Password" v-if="props.action === 'insert'">
+          <FormControl v-model="form.password" :icon="mdiAccount" type="password" placeholder="Password" />
+          <FormControl
+            v-model="form.confirmPassword"
+            :icon="mdiAccount"
+            type="password"
+            placeholder="Confirm password"
+          />
         </FormField>
 
         <FormFilePicker
@@ -32,7 +37,14 @@
         <template #footer>
           <BaseButtons v-if="props.action === 'insert' || props.action === 'update'">
             <BaseButton type="submit" color="info" label="Submit" @click="submit" />
-            <BaseButton type="reset" color="info" outline label="Reset" @click="reset" />
+            <BaseButton
+              v-if="props.action === 'insert'"
+              type="reset"
+              color="info"
+              outline
+              label="Reset"
+              @click="reset"
+            />
           </BaseButtons>
         </template>
       </CardBox>
@@ -79,6 +91,7 @@ const props = defineProps({
 
 const toast = useToast()
 const usersStore = useUsersStore()
+const types = computed(() => props.types.filter((type) => type.value !== 'C'))
 
 const emit = defineEmits(['update:modelValue', 'cancel', 'confirm'])
 
@@ -114,18 +127,18 @@ const form = reactive({
 const reset = () => {
   form.name = ''
   form.email = ''
-  ;[form.type] = props.types
+  form.type = types.value[0]?.value
   form.password = ''
   form.confirmPassword = ''
   // form.photo = null
 }
 
 watch(
-  () => [props.user, props.types],
-  ([user, types]) => {
+  () => [props.user, types],
+  ([user]) => {
     form.name = user?.name
     form.email = user?.email
-    form.type = user?.type || types[0]?.value
+    form.type = user?.type || types.value[0]?.value
     form.photo = null
   },
   { immediate: true }
@@ -138,6 +151,7 @@ const newUser = () => {
     email: form.email,
     type: form.type,
     password: form.password,
+    password_confirmation: form.confirmPassword,
     photo: form.photo,
     photo_url: props.user?.photo_url || null,
   }
@@ -173,6 +187,7 @@ const save = () => {
     .then((updatedUser) => {
       user.value = updatedUser
       toast.success(`User #${props.user.user_id} was updated successfully.`)
+      reset()
       cancel()
     })
     .catch((error) => {
@@ -193,8 +208,8 @@ const validateForm = () => {
     !form.name && 'name',
     !form.email && 'email',
     !form.type && 'type',
-    !form.password && 'password',
-    !form.confirmPassword && 'password',
+    props.action === 'insert' && !form.password && 'password',
+    props.action === 'insert' && !form.confirmPassword && 'password',
   ].filter((error) => error)
 
   if (formErrors.length === 2) {
@@ -204,6 +219,11 @@ const validateForm = () => {
 
   if (formErrors.length > 0) {
     toast.error(`${msg} ${formErrors.join(', ')}`)
+    return false
+  }
+
+  if (form.password !== form.confirmPassword) {
+    toast.error("Passwords don't match")
     return false
   }
 

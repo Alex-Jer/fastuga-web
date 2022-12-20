@@ -64,6 +64,14 @@ export const useUsersStore = defineStore('users', () => {
     return response
   }
 
+  const blockUser = async (blockedUserId) => {
+    const response = await axiosReq(`users/${blockedUserId}/block`, 'PATCH')
+    if (response.status !== 200) throw response
+    const index = users.value.findIndex((user) => user.user_id === blockedUserId)
+    users.value[index].blocked = true
+    return response
+  }
+
   return {
     users,
     types,
@@ -77,5 +85,6 @@ export const useUsersStore = defineStore('users', () => {
     insertUser,
     updateUser,
     deleteUser,
+    blockUser,
   }
 })

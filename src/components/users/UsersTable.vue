@@ -1,12 +1,14 @@
 <script setup>
-import { mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js'
+import { useToast } from 'vue-toastification'
+import { mdiBlockHelper, mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js'
 import { computed, inject, ref } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import CardBox from '@/components/CardBox.vue'
 import ConfirmModal from './ConfirmModal.vue'
-import UserModal from './UserModal.vue'
+import EmployeeModal from './EmployeeModal.vue'
+import CustomerModal from './CustomerModal.vue'
 
 const props = defineProps({
   users: {
@@ -21,12 +23,15 @@ const props = defineProps({
 
 const apiDomain = inject('apiDomain')
 const users = computed(() => props.users)
+const toast = useToast()
 
 const modalData = ref({
   showAddToCartModal: false,
-  showDetailsModal: false,
+  showCustomerDetailsModal: false,
+  showEmployeeDetailsModal: false,
   showUpdateModal: false,
   showDeleteModal: false,
+  showBlockModal: false,
   user: {},
   user_id: '',
   action: '',
@@ -53,15 +58,21 @@ const showAddToCartModal = (user) => {
 }
 
 const showDetailsModal = (user) => {
-  modalData.value = { showDetailsModal: true, user }
+  if (user.customer) modalData.value = { showCustomerDetailsModal: true, user }
+  else modalData.value = { showEmployeeDetailsModal: true, user }
 }
 
 const showUpdateModal = (user) => {
+  if (user.customer) return toast.error('This user is a customer!')
   modalData.value = { showUpdateModal: true, user }
 }
 
 const showDeleteModal = (user) => {
   modalData.value = { showDeleteModal: true, user }
+}
+
+const showBlockModal = (user) => {
+  modalData.value = { showBlockModal: true, user }
 }
 /* End of Modals */
 
@@ -75,15 +86,23 @@ const generateAvatar = (name) => {
 
 <template>
   <CardBox class="mb-6" has-table>
-    <UserModal
-      v-model="modalData.showDetailsModal"
+    <EmployeeModal
+      v-model="modalData.showEmployeeDetailsModal"
       :user="modalData.user"
       :types="props.types"
       :title="`Viewing User #${modalData.user.user_id}`"
       action="view"
     />
 
-    <UserModal
+    <CustomerModal
+      v-model="modalData.showCustomerDetailsModal"
+      :user="modalData.user"
+      :types="props.types"
+      :title="`Viewing User #${modalData.user.user_id}`"
+      action="view"
+    />
+
+    <EmployeeModal
       v-model="modalData.showUpdateModal"
       :user="modalData.user"
       :types="props.types"
@@ -91,9 +110,17 @@ const generateAvatar = (name) => {
       action="update"
     />
 
-    <ConfirmModal v-model="modalData.showDeleteModal" :user="modalData.user">
+    <ConfirmModal v-model="modalData.showDeleteModal" :user="modalData.user" is-delete>
       <p>
         Are you sure you want to delete the user
+        <b>{{ modalData.user.name }}</b
+        >?
+      </p>
+    </ConfirmModal>
+
+    <ConfirmModal v-model="modalData.showBlockModal" :user="modalData.user" is-block>
+      <p>
+        Are you sure you want to block the user
         <b>{{ modalData.user.name }}</b
         >?
       </p>
@@ -130,7 +157,14 @@ const generateAvatar = (name) => {
           <td data-label="Price">{{ user.price }} €</td>
           <td class="before:hidden lg:w-1 whitespace-nowrap" v-if="$route.name === 'users'">
             <BaseButtons type="justify-start lg:justify-end" no-wrap>
-              <BaseButton color="info" :icon="mdiPencil" small @click.stop="showUpdateModal(user)" />
+              <BaseButton
+                color="info"
+                :icon="mdiPencil"
+                small
+                @click.stop="showUpdateModal(user)"
+                :disabled="user.customer"
+              />
+              <BaseButton color="white" :icon="mdiBlockHelper" small @click.stop="showBlockModal(user)" />
               <BaseButton color="danger" :icon="mdiTrashCan" small @click.stop="showDeleteModal(user)" />
             </BaseButtons>
           </td>
