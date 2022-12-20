@@ -2,6 +2,7 @@
 import { mdiAccount, mdiAsterisk } from '@mdi/js'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import CardBox from '@/components/CardBox.vue'
@@ -14,31 +15,26 @@ import { useUserStore } from '@/stores/user.js'
 const form = ref({
   email: 'manager_1@mail.pt',
   password: '123',
-  // remember: true,
 })
 
 const router = useRouter()
-
 const userStore = useUserStore()
+const toast = useToast()
 
 const emit = defineEmits(['login'])
 
 const login = async () => {
+  toast.info('Logging in...')
   if (await userStore.login(form.value)) {
-    // toast.success('User ' + userStore.user.name + ' has entered the application.')
-    console.log(`User "${userStore.user.name}" has entered the application.`)
+    toast.clear()
     emit('login')
     router.push('/')
   } else {
+    toast.clear()
     form.value.password = ''
-    // toast.error('User credentials are invalid!')
-    console.log('User credentials are invalid!')
+    toast.error('User credentials are invalid!')
   }
 }
-
-// const submit = () => {
-//   router.push('/')
-// }
 </script>
 
 <template>
@@ -46,12 +42,7 @@ const login = async () => {
     <SectionFullScreen v-slot="{ cardClass }" bg="purplePink">
       <CardBox :class="cardClass" is-form @submit.prevent="login">
         <FormField label="Login" help="Please enter your login">
-          <FormControl
-            v-model="form.email"
-            :icon="mdiAccount"
-            name="login"
-            autocomplete="email"
-          />
+          <FormControl v-model="form.email" :icon="mdiAccount" name="login" autocomplete="email" />
         </FormField>
 
         <FormField label="Password" help="Please enter your password">
@@ -63,13 +54,6 @@ const login = async () => {
             autocomplete="current-password"
           />
         </FormField>
-
-        <!-- <FormCheckRadio
-          v-model="form.remember"
-          name="remember"
-          label="Remember"
-          :input-value="true"
-        /> -->
 
         <template #footer>
           <BaseButtons>
