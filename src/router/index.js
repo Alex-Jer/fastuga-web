@@ -25,6 +25,14 @@ const routes = [
   },
   {
     meta: {
+      title: 'Login',
+    },
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/LoginView.vue'),
+  },
+  {
+    meta: {
       title: 'Products',
     },
     path: '/products',
@@ -47,7 +55,6 @@ const routes = [
     name: 'dashboard',
     component: Dashboard,
   },
-
   {
     meta: {
       title: 'Tables',
@@ -88,14 +95,7 @@ const routes = [
     name: 'responsive',
     component: () => import('@/views/ResponsiveView.vue'),
   },
-  {
-    meta: {
-      title: 'Login',
-    },
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/LoginView.vue'),
-  },
+
   {
     meta: {
       title: 'Error',

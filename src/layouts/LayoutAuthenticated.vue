@@ -10,6 +10,7 @@ import menuAside from '@/menuAside.js'
 import menuNavBar from '@/menuNavBar.js'
 import { useStyleStore } from '@/stores/style.js'
 import { useUserStore } from '@/stores/user.js'
+import { useToast } from 'vue-toastification'
 
 // useMainStore().setUser({
 //   name: 'John Doe',
@@ -25,6 +26,8 @@ const userStore = useUserStore()
 
 const router = useRouter()
 
+const toast = useToast()
+
 const isAsideMobileExpanded = ref(false)
 const isAsideLgActive = ref(false)
 
@@ -33,14 +36,11 @@ router.beforeEach(() => {
   isAsideLgActive.value = false
 })
 
-const menuClick = (event, item) => {
-  if (item.isToggleLightDark) {
-    styleStore.setDarkMode()
-  }
-
+const menuClick = (item) => {
   if (item.isLogout) {
     userStore.logout()
-    router.push('login')
+    router.push('/')
+    toast.info('You have been logged out.')
   }
 }
 </script>
@@ -58,25 +58,13 @@ const menuClick = (event, item) => {
     >
       <NavBar
         :menu="menuNavBar"
-        :class="[
-          layoutAsidePadding,
-          { 'ml-60 lg:ml-0': isAsideMobileExpanded },
-        ]"
+        :class="[layoutAsidePadding, { 'ml-60 lg:ml-0': isAsideMobileExpanded }]"
         @menu-click="menuClick"
       >
-        <NavBarItemPlain
-          display="flex lg:hidden"
-          @click.prevent="isAsideMobileExpanded = !isAsideMobileExpanded"
-        >
-          <BaseIcon
-            :path="isAsideMobileExpanded ? mdiBackburger : mdiForwardburger"
-            size="24"
-          />
+        <NavBarItemPlain display="flex lg:hidden" @click.prevent="isAsideMobileExpanded = !isAsideMobileExpanded">
+          <BaseIcon :path="isAsideMobileExpanded ? mdiBackburger : mdiForwardburger" size="24" />
         </NavBarItemPlain>
-        <NavBarItemPlain
-          display="hidden lg:flex xl:hidden"
-          @click.prevent="isAsideLgActive = true"
-        >
+        <NavBarItemPlain display="hidden lg:flex xl:hidden" @click.prevent="isAsideLgActive = true">
           <BaseIcon :path="mdiMenu" size="24" />
         </NavBarItemPlain>
       </NavBar>
