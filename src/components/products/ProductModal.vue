@@ -155,13 +155,13 @@ const save = () => {
   product.value = newProduct()
 
   if (props.action === 'insert') {
-    console.log('insert')
     productsStore
       .insertProduct(product.value)
       .then((insertedProduct) => {
         product.value = insertedProduct
         // originalValueStr = dataAsString()
         toast.success(`Product #${insertedProduct.product_id} was created successfully.`)
+        reset()
         cancel()
       })
       .catch((error) => {
