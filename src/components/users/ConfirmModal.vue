@@ -60,20 +60,37 @@ const deleteUser = () => {
   cancel()
 }
 
-const blockUser = () => {
+const toggleBlockUser = () => {
   const usersStore = useUsersStore()
+
+  if (!props.user.blocked) {
+    usersStore
+      .blockUser(props.user.user_id)
+      .then((res) => {
+        if (res.status === 200) toast.success('User was blocked successfully!')
+        cancel()
+      })
+      .catch((error) => {
+        if (error.status === 404) toast.error('User was not found!')
+        if (error.status === 422) toast.error(error.data.message)
+        if (error.status !== 404 && error.status !== 422)
+          toast.error('User was not blocked due to an unknown server error!')
+      })
+    return
+  }
+
   usersStore
-    .blockUser(props.user.user_id)
+    .unblockUser(props.user.user_id)
     .then((res) => {
-      if (res.status === 200) toast.success('User was blocked successfully!')
+      if (res.status === 200) toast.success('User was unblocked successfully!')
+      cancel()
     })
     .catch((error) => {
       if (error.status === 404) toast.error('User was not found!')
       if (error.status === 422) toast.error(error.data.message)
       if (error.status !== 404 && error.status !== 422)
-        toast.error('User was not blocked due to an unknown server error!')
+        toast.error('User was not unblocked due to an unknown server error!')
     })
-  cancel()
 }
 
 window.addEventListener('keydown', (e) => {
@@ -99,7 +116,7 @@ window.addEventListener('keydown', (e) => {
       <template #footer>
         <BaseButtons>
           <BaseButton v-if="props.isDelete" label="Delete" color="danger" @click="deleteUser" />
-          <BaseButton v-if="props.isBlock" label="Block" color="danger" @click="blockUser" />
+          <BaseButton v-if="props.isBlock" label="Block" color="danger" @click="toggleBlockUser" />
           <BaseButton label="Cancel" :color="button" outline @click="cancel" />
         </BaseButtons>
       </template>

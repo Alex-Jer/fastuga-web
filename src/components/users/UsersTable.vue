@@ -132,7 +132,7 @@ const generateAvatar = (name) => {
           <th />
           <th>Name</th>
           <th>Type</th>
-          <th>Price</th>
+          <th>Blocked</th>
           <th />
         </tr>
       </thead>
@@ -154,7 +154,7 @@ const generateAvatar = (name) => {
           <td data-label="Type">
             {{ user.type }}
           </td>
-          <td data-label="Price">{{ user.price }} €</td>
+          <td data-label="Blocked">{{ user.blocked ? 'Yes' : 'No' }}</td>
           <td class="before:hidden lg:w-1 whitespace-nowrap" v-if="$route.name === 'users'">
             <BaseButtons type="justify-start lg:justify-end" no-wrap>
               <BaseButton
