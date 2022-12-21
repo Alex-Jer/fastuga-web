@@ -1,12 +1,13 @@
 <script setup>
-import UserAvatar from '@/components/UserAvatar.vue'
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
 </script>
 
 <template>
-  <UserAvatar :username="userStore.user?.name" :avatar="userStore.userPhotoUrl">
-    <slot />
-  </UserAvatar>
+  <img
+    :src="userStore.userPhotoUrl"
+    :alt="userStore.user?.name"
+    class="block object-fill bg-gray-100 rounded-full dark:bg-slate-800"
+  />
 </template>
