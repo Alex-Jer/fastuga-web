@@ -67,6 +67,14 @@ const routes = [
   },
   {
     meta: {
+      title: 'Register',
+    },
+    path: '/register',
+    name: 'register',
+    component: Register,
+  },
+  {
+    meta: {
       title: 'Tables',
     },
     path: '/tables',
