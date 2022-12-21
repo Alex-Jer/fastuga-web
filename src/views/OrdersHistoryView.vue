@@ -75,7 +75,7 @@ onMounted(async () => {
       <section class="mb-6 flex items-center justify-between">
         <div class="flex items-center justify-start">
           <IconRounded :icon="mdiClipboardTextClockOutline" color="light" class="mr-3" bg />
-          <h1 class="text-3xl leading-tight">Orders History</h1>
+          <h1 class="text-3xl leading-tight">Orders {{ userStore.user?.type === 'C' ? 'History' : '' }}</h1>
         </div>
       </section>
       <!-- End of header -->

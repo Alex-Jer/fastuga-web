@@ -5,8 +5,10 @@ import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import CardBox from '@/components/CardBox.vue'
 import router from '@/router'
+import { useUserStore } from '@/stores/user'
 
 const moment = inject('moment')
+const userStore = useUserStore()
 
 const props = defineProps({
   orders: {
@@ -54,8 +56,8 @@ const showDetailsView = (id) => {
           <th>Reference</th>
           <th>Status</th>
           <th>Total Paid</th>
-          <th>Payment Type</th>
-          <th>Payment Reference</th>
+          <th v-if="userStore.user.type === 'C'">Payment Type</th>
+          <th v-if="userStore.user.type === 'C'">Payment Reference</th>
           <th>Date</th>
         </tr>
       </thead>
@@ -66,16 +68,12 @@ const showDetailsView = (id) => {
           class="cursor-pointer"
           @click="showDetailsView(order.id)"
         >
-          <td data-label="Ticket number">
-            {{ `${order.id} (#${order.ticket_number})` }}
-          </td>
-          <td data-label="Status">
-            {{ props.statuses.find((status) => status.value === order.status)?.label }}
-          </td>
-          <td data-label="Total Paid">{{ order.total_paid }} €</td>
-          <td data-label="Payment Type">{{ order.payment_type }}</td>
-          <td data-label="Payment Reference">{{ order.payment_reference }}</td>
-          <td data-label="Date">{{ formatDate(order.date) }}</td>
+          <td>{{ `${order.id} (#${order.ticket_number})` }}</td>
+          <td>{{ props.statuses.find((status) => status.value === order.status)?.label }}</td>
+          <td>{{ order.total_paid }} €</td>
+          <td v-if="userStore.user.type === 'C'">{{ order.payment_type }}</td>
+          <td v-if="userStore.user.type === 'C'">{{ order.payment_reference }}</td>
+          <td>{{ formatDate(order.date) }}</td>
         </tr>
       </tbody>
     </table>
