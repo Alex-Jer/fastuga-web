@@ -21,13 +21,13 @@ const router = useRouter()
 const userStore = useUserStore()
 const toast = useToast()
 
-const emit = defineEmits(['login'])
+const emit = defineEmits(['register'])
 
 const login = async () => {
   toast.info('Logging in...')
   if (await userStore.login(form.value)) {
     toast.clear()
-    emit('login')
+    emit('register')
     router.push('/')
   } else {
     toast.clear()

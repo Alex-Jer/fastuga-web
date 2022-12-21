@@ -1,5 +1,5 @@
 <script setup>
-import { mdiChevronDown, mdiChevronUp, mdiLogin } from '@mdi/js'
+import { mdiAccountPlusOutline, mdiChevronDown, mdiChevronUp, mdiLogin } from '@mdi/js'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import BaseDivider from '@/components/BaseDivider.vue'
@@ -108,9 +108,12 @@ onBeforeUnmount(() => {
     >
       <UserAvatarCurrentUser v-if="userStore.user && item.isCurrentUser" class="inline-flex w-6 h-6 mr-3" />
       <BaseIcon v-if="item.icon" :path="item.icon" class="transition-colors" />
-      <span v-if="!userStore.user" class="inline-flex items-center justify-center">
+      <span v-if="!userStore.user" class="inline-flex items-center justify-center space-x-2">
+        <router-link to="register">
+          <BaseButton :icon="mdiAccountPlusOutline" color="whiteDark" small label="Register" rounded-full />
+        </router-link>
         <router-link to="login">
-          <BaseButton :icon="mdiLogin" color="whiteDark" small label="Login" rounded-full @click="login" />
+          <BaseButton :icon="mdiLogin" color="whiteDark" small label="Login" rounded-full />
         </router-link>
       </span>
       <span
