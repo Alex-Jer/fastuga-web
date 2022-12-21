@@ -91,7 +91,7 @@ const showDetailsModal = (order) => {
     <table>
       <thead>
         <tr>
-          <th>Ticket Number</th>
+          <th>Ticket #</th>
           <th>Status</th>
           <th>Total Paid</th>
           <th>Payment Type</th>
