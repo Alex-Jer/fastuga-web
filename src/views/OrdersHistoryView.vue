@@ -6,15 +6,23 @@ import OrdersHistoryTable from '@/components/orders/OrdersHistoryTable.vue'
 import SectionMain from '@/components/SectionMain.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { useOrdersStore } from '@/stores/orders'
+import { useUserStore } from '@/stores/user'
 
+const userStore = useUserStore()
 const ordersStore = useOrdersStore()
 // const isModalActive = ref(false)
 // const filterByType = ref('')
 // const isFetching = ref(true)
 const selectStatuses = ref([])
 
-const loadOrders = async () => {
-  await ordersStore.loadUserOrders().catch((error) => {
+const loadMyOrders = async () => {
+  await ordersStore.loadMyOrders().catch((error) => {
+    console.log(error)
+  })
+}
+
+const loadAllOrders = async () => {
+  await ordersStore.loadAllOrders().catch((error) => {
     console.log(error)
   })
 }
@@ -31,8 +39,8 @@ const filteredOrders = computed(() => {
 })
 
 onMounted(async () => {
-  // Calling loadProjects refreshes the list of projects from the API
-  await loadOrders()
+  if (userStore.user.type === 'C') await loadMyOrders()
+  else await loadAllOrders()
   await loadStatuses()
   // isFetching.value = false
   ordersStore.statuses.forEach((status, index) => {

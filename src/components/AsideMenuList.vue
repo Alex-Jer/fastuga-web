@@ -42,7 +42,7 @@ const userStore = useUserStore()
     </li>
 
     <!-- Orders Historu -->
-    <li v-show="userStore.user?.type === 'C'">
+    <li v-show="userStore.user?.type === 'C' || userStore.user?.type === 'EM'">
       <router-link to="/orders-history">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
