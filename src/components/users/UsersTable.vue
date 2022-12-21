@@ -9,6 +9,7 @@ import CardBox from '@/components/CardBox.vue'
 import ConfirmModal from './ConfirmModal.vue'
 import EmployeeModal from './EmployeeModal.vue'
 import CustomerModal from './CustomerModal.vue'
+import router from '@/router'
 
 const props = defineProps({
   users: {
@@ -176,7 +177,7 @@ const generateAvatar = (name) => {
                 color="info"
                 :icon="mdiPencil"
                 small
-                @click.stop="showUpdateModal(user)"
+                @click.stop="user.id === user_id ? router.push('profile') : showUpdateModal(user)"
                 :disabled="user.customer"
               />
               <BaseButton
@@ -184,8 +185,15 @@ const generateAvatar = (name) => {
                 :icon="mdiBlockHelper"
                 small
                 @click.stop="user.blocked ? showUnblockModal(user) : showBlockModal(user)"
+                :disabled="user.id === user_id"
               />
-              <BaseButton color="danger" :icon="mdiTrashCan" small @click.stop="showDeleteModal(user)" />
+              <BaseButton
+                color="danger"
+                :icon="mdiTrashCan"
+                small
+                @click.stop="showDeleteModal(user)"
+                :disabled="user.id === user_id"
+              />
             </BaseButtons>
           </td>
           <td class="before:hidden lg:w-1 whitespace-nowrap" v-if="$route.name === 'home'">

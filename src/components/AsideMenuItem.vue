@@ -21,9 +21,7 @@ const styleStore = useStyleStore()
 
 const hasColor = computed(() => props.item && props.item.color)
 
-const asideMenuItemActiveStyle = computed(() =>
-  hasColor.value ? '' : styleStore.asideMenuItemActiveStyle
-)
+const asideMenuItemActiveStyle = computed(() => (hasColor.value ? '' : styleStore.asideMenuItemActiveStyle))
 
 const isDropdownActive = ref(false)
 
@@ -67,10 +65,7 @@ const menuClick = (event) => {
       />
       <span
         class="grow text-ellipsis line-clamp-1"
-        :class="[
-          { 'pr-12': !hasDropdown },
-          vSlot && vSlot.isExactActive ? asideMenuItemActiveStyle : '',
-        ]"
+        :class="[{ 'pr-12': !hasDropdown }, vSlot && vSlot.isExactActive ? asideMenuItemActiveStyle : '']"
         >{{ item.label }}</span
       >
       <BaseIcon
@@ -84,10 +79,7 @@ const menuClick = (event) => {
     <AsideMenuList
       v-if="hasDropdown"
       :menu="item.menu"
-      :class="[
-        styleStore.asideMenuDropdownStyle,
-        isDropdownActive ? 'block dark:bg-slate-800/50' : 'hidden',
-      ]"
+      :class="[styleStore.asideMenuDropdownStyle, isDropdownActive ? 'block dark:bg-slate-800/50' : 'hidden']"
       is-dropdown-list
     />
   </li>
