@@ -49,7 +49,7 @@ const userStore = useUserStore()
           :class="$route.name === 'orders-history' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
         >
           <BaseIcon :path="mdiClipboardTextClockOutline" class="pt-1" w="w-16" :size="18" />
-          <span class="pb-1">Orders History</span>
+          <span class="pb-1">Orders {{ userStore.user?.type === 'C' ? 'History' : '' }}</span>
         </div>
       </router-link>
     </li>

@@ -36,7 +36,6 @@ export const useOrdersStore = defineStore('orders', () => {
   const loadAllOrders = async () => {
     try {
       const response = await axiosReq('orders', 'GET')
-      console.log(response.data)
       orders.value = response.data.data
       return orders.value
     } catch (error) {
