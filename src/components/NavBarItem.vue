@@ -9,6 +9,7 @@ import UserAvatarCurrentUser from '@/components/UserAvatarCurrentUser.vue'
 import { useStyleStore } from '@/stores/style.js'
 import { useUserStore } from '@/stores/user.js'
 import BaseButton from './BaseButton.vue'
+import PillTag from '@/components/PillTag.vue'
 
 const userStore = useUserStore()
 
@@ -100,6 +101,9 @@ onBeforeUnmount(() => {
     :target="item.target ?? null"
     @click="menuClick"
   >
+    <div class="absolute right-40 w-32" v-if="userStore.user?.customer && item.isCurrentUser">
+      <PillTag :label="`${userStore.user.customer?.points} points`" color="info" :icon="mdiStarCircle" />
+    </div>
     <div
       class="flex items-center"
       :class="{
