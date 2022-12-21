@@ -47,6 +47,8 @@ const pagesList = computed(() => {
   return list
 })
 
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
+
 const showAddToCartModal = (product) => {
   modalData.value = { showAddToCartModal: true, product }
 }
@@ -125,12 +127,8 @@ const showDeleteModal = (product) => {
               />
             </div>
           </td>
-          <td data-label="Name">
-            {{ product.name }}
-          </td>
-          <td data-label="Type">
-            {{ product.type }}
-          </td>
+          <td data-label="Name">{{ product.name }}</td>
+          <td data-label="Type">{{ capitalize(product.type) }}</td>
           <td data-label="Price">{{ product.price }} €</td>
           <td class="before:hidden lg:w-1 whitespace-nowrap" v-if="$route.name === 'products'">
             <BaseButtons type="justify-start lg:justify-end" no-wrap>

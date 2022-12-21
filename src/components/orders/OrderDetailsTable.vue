@@ -44,15 +44,9 @@ const showDetailsModal = (product) => {
       </thead>
       <tbody>
         <tr v-for="item in props.order?.items" :key="item.id" class="cursor-pointer" @click="showDetailsModal(item)">
-          <td>
-            {{ item.product.name }}
-          </td>
-          <td class="whitespace-nowrap text-ellipsis overflow-hidden max-w-xs">
-            {{ item.notes }}
-          </td>
-          <td v-if="!props.order.all_dishes_ready">
-            {{ statuses[item.status] }}
-          </td>
+          <td>{{ item.product.name }}</td>
+          <td class="whitespace-nowrap text-ellipsis overflow-hidden max-w-xs">{{ item.notes }}</td>
+          <td v-if="!props.order.all_dishes_ready">{{ statuses[item.status] }}</td>
           <td>{{ item.price }} €</td>
         </tr>
       </tbody>
