@@ -20,10 +20,20 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  pageInfo: {
+    type: Object,
+    default: () => ({}),
+  },
+  changePage: {
+    type: Function,
+    default: () => {},
+  },
 })
 
 const apiDomain = inject('apiDomain')
 const users = computed(() => props.users)
+const pageInfo = computed(() => props.pageInfo.value)
+const changePage = computed(() => props.changePage)
 const toast = useToast()
 
 const modalData = ref({
@@ -39,20 +49,11 @@ const modalData = ref({
   showUnblockModal: false,
 })
 
-const itemsPerPage = ref(8)
-const currentPage = ref(0)
+const currentPage = computed(() => pageInfo.value.current_page)
 
-const itemsPaginated = computed(() =>
-  users.value.slice(itemsPerPage.value * currentPage.value, itemsPerPage.value * (currentPage.value + 1))
-)
+const itemsPaginated = computed(() => users.value)
 
-const numPages = computed(() => Math.ceil(users.value.length / itemsPerPage.value))
-
-const pagesList = computed(() => {
-  const list = []
-  for (let i = 0; i < numPages.value; i += 1) list.push(i)
-  return list
-})
+const numPages = computed(() => pageInfo.value.last_page)
 
 /* Modals */
 const showAddToCartModal = (user) => {
@@ -208,16 +209,16 @@ const generateAvatar = (name) => {
       <BaseLevel>
         <BaseButtons>
           <BaseButton
-            v-for="page in pagesList"
-            :key="page"
-            :active="page === currentPage"
-            :label="page + 1"
-            :color="page === currentPage ? 'lightDark' : 'whiteDark'"
+            v-for="page in pageInfo.links"
+            :key="page.label"
+            :active="page.url ? true : false"
+            :label="page.label"
+            :color="page.active ? 'lightDark' : 'whiteDark'"
             small
-            @click="currentPage = page"
+            @click="changePage(page.url)"
           />
         </BaseButtons>
-        <small>Page {{ currentPage + 1 }} of {{ numPages }}</small>
+        <small>Page {{ currentPage }} of {{ numPages }}</small>
       </BaseLevel>
     </div>
   </CardBox>

@@ -29,6 +29,12 @@ const loadTypes = async () => {
 
 const filteredUsers = computed(() => usersStore.getUsersByFilter(filterByType.value))
 
+const pageInfo = computed(() => usersStore.getPageInfo())
+
+const changePage = async (page) => {
+  await usersStore.loadUsers(page)
+}
+
 onMounted(async () => {
   // Calling loadUsers refreshes the list of users from the API
   await loadUsers()
@@ -67,7 +73,7 @@ onMounted(async () => {
       </section>
       <!-- End of header -->
 
-      <users-table :users="filteredUsers" :types="selectTypes" />
+      <users-table :users="filteredUsers" :types="selectTypes" :pageInfo="pageInfo" :changePage="changePage" />
 
       <div class="mx-2 mt-2" v-if="!isFetching">
         <label class="mr-3">Filter by type:</label>

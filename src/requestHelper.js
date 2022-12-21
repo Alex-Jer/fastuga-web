@@ -6,6 +6,15 @@ const toast = useToast()
 
 const API_URL = import.meta.env.VITE_API_DOMAIN
 
+const checkForAuthError = (res, storedToken) => {
+  if (res.status === 444 && storedToken) {
+    // When the user was suppoused to be logged in, but is not. Then "logout".
+    // Example: token revoked, token expired, blocked account, etc.
+    const userStore = useUserStore()
+    userStore.clearUser()
+  }
+}
+
 export const axiosReq = async (route, method = 'GET', formData = [], hasFiles = false) => {
   const headers = {
     Accept: 'application/json',
@@ -50,12 +59,22 @@ export const axiosReq = async (route, method = 'GET', formData = [], hasFiles = 
       break
   }
 
-  if (res.status === 444 && storedToken) {
-    // When the user was suppoused to be logged in, but is not. Then "logout".
-    // Example: token revoked, token expired, blocked account, etc.
-    const userStore = useUserStore()
-    userStore.clearUser()
+  checkForAuthError(res, storedToken)
+
+  return res
+}
+
+export const axiosReqPage = async (pageUrl) => {
+  const headers = {
+    Accept: 'application/json',
   }
+  const storedToken = sessionStorage.getItem('token')
+  if (storedToken) headers.Authorization = `Bearer ${storedToken}`
+
+  const res = await axios.get(pageUrl, { headers })
+
+  checkForAuthError(res, storedToken)
+
   return res
 }
 

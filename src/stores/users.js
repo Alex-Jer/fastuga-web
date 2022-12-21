@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import { axiosReq } from '@/requestHelper'
+import { axiosReq, axiosReqPage } from '@/requestHelper'
 
 export const useUsersStore = defineStore('users', () => {
   const users = ref([])
@@ -15,6 +15,8 @@ export const useUsersStore = defineStore('users', () => {
 
   const getUsersByFilterTotal = (type) => getUsersByFilter(type).length
 
+  const getPageInfo = () => pageInfo
+
   const clearUsers = () => {
     users.value = []
   }
@@ -23,10 +25,11 @@ export const useUsersStore = defineStore('users', () => {
     types.value = []
   }
 
-  const loadUsers = async () => {
+  const loadUsers = async (page) => {
     try {
-      const response = await axiosReq('users', 'GET')
+      const response = page ? await axiosReqPage(page) : await axiosReq('users', 'GET')
       users.value = response.data.data
+      pageInfo.value = response.data.meta
       return users.value
     } catch (error) {
       clearUsers()
@@ -84,6 +87,7 @@ export const useUsersStore = defineStore('users', () => {
   return {
     users,
     types,
+    pageInfo,
     totalUsers,
     getUsersByFilter,
     getUsersByFilterTotal,
@@ -96,5 +100,6 @@ export const useUsersStore = defineStore('users', () => {
     deleteUser,
     blockUser,
     unblockUser,
+    getPageInfo,
   }
 })
