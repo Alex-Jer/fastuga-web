@@ -8,6 +8,7 @@ import CardBox from '@/components/CardBox.vue'
 import CardBoxComponentTitle from '@/components/CardBoxComponentTitle.vue'
 import OverlayLayer from '@/components/OverlayLayer.vue'
 import { useUsersStore } from '@/stores/users'
+import { processGeneralError } from '@/requestHelper'
 
 const props = defineProps({
   modelValue: {
@@ -48,6 +49,10 @@ const confirmCancel = (mode) => {
 
 const cancel = () => confirmCancel('cancel')
 
+const processError = (error) => {
+  processGeneralError(error, 'user')
+}
+
 const deleteUser = () => {
   const usersStore = useUsersStore()
   usersStore
@@ -55,12 +60,7 @@ const deleteUser = () => {
     .then((res) => {
       if (res.status === 200) toast.success('User was deleted successfully!')
     })
-    .catch((error) => {
-      if (error.status === 404) toast.error('User was not found!')
-      if (error.status === 422) toast.error(error.data.message)
-      if (error.status !== 404 && error.status !== 422)
-        toast.error('User was not deleted due to an unknown server error!')
-    })
+    .catch(processError)
   cancel()
 }
 
@@ -74,12 +74,7 @@ const toggleBlockUser = () => {
         if (res.status === 200) toast.success('User was blocked successfully!')
         cancel()
       })
-      .catch((error) => {
-        if (error.status === 404) toast.error('User was not found!')
-        if (error.status === 422) toast.error(error.data.message)
-        if (error.status !== 404 && error.status !== 422)
-          toast.error('User was not blocked due to an unknown server error!')
-      })
+      .catch(processError)
     return
   }
 
@@ -89,12 +84,7 @@ const toggleBlockUser = () => {
       if (res.status === 200) toast.success('User was unblocked successfully!')
       cancel()
     })
-    .catch((error) => {
-      if (error.status === 404) toast.error('User was not found!')
-      if (error.status === 422) toast.error(error.data.message)
-      if (error.status !== 404 && error.status !== 422)
-        toast.error('User was not unblocked due to an unknown server error!')
-    })
+    .catch(processError)
 }
 
 window.addEventListener('keydown', (e) => {

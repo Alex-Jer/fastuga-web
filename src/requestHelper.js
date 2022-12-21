@@ -1,5 +1,8 @@
 import axios from 'axios'
+import { useToast } from 'vue-toastification'
 import { useUserStore } from './stores/user.js'
+
+const toast = useToast()
 
 const API_URL = import.meta.env.VITE_API_DOMAIN
 
@@ -54,4 +57,13 @@ export const axiosReq = async (route, method = 'GET', formData = [], hasFiles = 
     userStore.clearUser()
   }
   return res
+}
+
+export const processGeneralError = (error, model) => {
+  const actualError = error.response ? error.response : error
+  if (!actualError.status) toast.error("Couldn't connect to the server! Please try again later.")
+  const capitalModel = model.charAt(0).toUpperCase() + model.slice(1)
+  if (actualError.status === 404) toast.error(`${capitalModel} was not found!`)
+  else if (actualError.data?.message) toast.error(actualError.data.message)
+  else toast.error('An unknown server error has occurred!')
 }

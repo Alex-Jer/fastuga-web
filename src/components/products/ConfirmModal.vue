@@ -8,6 +8,7 @@ import CardBox from '@/components/CardBox.vue'
 import CardBoxComponentTitle from '@/components/CardBoxComponentTitle.vue'
 import OverlayLayer from '@/components/OverlayLayer.vue'
 import { useProductsStore } from '@/stores/products'
+import { processGeneralError } from '@/requestHelper'
 
 const props = defineProps({
   modelValue: {
@@ -40,6 +41,10 @@ const confirmCancel = (mode) => {
 
 const cancel = () => confirmCancel('cancel')
 
+const processError = (error) => {
+  processGeneralError(error, 'product')
+}
+
 const deleteProduct = () => {
   const productsStore = useProductsStore()
   productsStore
@@ -47,12 +52,7 @@ const deleteProduct = () => {
     .then((res) => {
       if (res.status === 200) toast.success('Product was deleted successfully!')
     })
-    .catch((error) => {
-      if (error.status === 404) toast.error('Product was not found!')
-      if (error.status === 422) toast.error(error.data.message)
-      if (error.status !== 404 && error.status !== 422)
-        toast.error('Product was not deleted due to an unknown server error!')
-    })
+    .catch(processError)
   cancel()
 }
 
