@@ -30,7 +30,7 @@ const loadTypes = async () => {
 const filteredUsers = computed(() => usersStore.getUsersByFilter(filterByType.value))
 
 onMounted(async () => {
-  // Calling loadProjects refreshes the list of projects from the API
+  // Calling loadUsers refreshes the list of users from the API
   await loadUsers()
   await loadTypes()
 
