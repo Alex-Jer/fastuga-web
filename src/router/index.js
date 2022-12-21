@@ -5,6 +5,7 @@ import Home from '@/views/HomeView.vue'
 import Products from '@/views/ProductsView.vue'
 import Users from '@/views/UsersView.vue'
 import Dashboard from '@/views/DashboardView.vue'
+import Register from '@/views/RegisterView.vue'
 
 const routes = [
   {
@@ -54,6 +55,14 @@ const routes = [
     path: '/dashboard',
     name: 'dashboard',
     component: Dashboard,
+  },
+  {
+    meta: {
+      title: 'Register',
+    },
+    path: '/register',
+    name: 'register',
+    component: Register,
   },
   {
     meta: {
@@ -123,7 +132,7 @@ router.beforeEach((to, from, next) => {
     return
   }
 
-  const allowedRoutes = ['Redirect', 'login', 'home', 'dashboard', 'profile', 'error']
+  const allowedRoutes = ['Redirect', 'login', 'home', 'dashboard', 'profile', 'error', 'register']
 
   if (allowedRoutes.includes(to.name)) {
     next()

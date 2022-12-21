@@ -106,6 +106,12 @@ export const useUserStore = defineStore('user', () => {
     return response
   }
 
+  const register = async (newUser) => {
+    const response = await axiosReq('users', 'POST', newUser, true)
+    products.value.push(response.data.user)
+    return response.data.user
+  }
+
   return {
     user,
     userId,
@@ -119,5 +125,6 @@ export const useUserStore = defineStore('user', () => {
     updateDetails,
     updateEmail,
     updatePassword,
+    register,
   }
 })

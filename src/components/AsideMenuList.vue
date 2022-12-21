@@ -81,5 +81,16 @@ defineProps({
         </div>
       </router-link>
     </li>
+    <li>
+      <router-link to="/register">
+        <div
+          class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
+          :class="$route.name === 'register' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
+        >
+          <BaseIcon :path="mdiAccount" class="pt-1" w="w-16" :size="18" />
+          <span class="pb-1">Register</span>
+        </div>
+      </router-link>
+    </li>
   </ul>
 </template>
