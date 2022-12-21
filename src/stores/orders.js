@@ -80,8 +80,6 @@ export const useOrdersStore = defineStore('orders', () => {
     totalOrders,
     pageInfo,
     getPageInfo,
-    // myInprogressProjects,
-    // totalMyInprogressProjects,
     getOrdersByFilter,
     getOrdersByFilterTotal,
     clearOrders,
