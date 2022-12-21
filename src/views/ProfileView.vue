@@ -14,6 +14,7 @@ import UserCard from '@/components/UserCard.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { useUserStore } from '@/stores/user'
 import BaseDivider from '@/components/BaseDivider.vue'
+import router from '@/router'
 
 const userStore = useUserStore()
 
@@ -46,12 +47,28 @@ const passwordForm = reactive({
   passwordConfirmation: '',
 })
 
+const newEmail = () => {
+  return {
+    email: profileForm.email || null,
+    email_confirmation: profileForm.email || null,
+  }
+}
+
+const newUserDetails = () => {
+  return {
+    name: profileForm.name || null,
+    // email: profileForm.email || null,
+    // email_confirmation: profileForm.email || null,
+    photo: profileForm.photo || null,
+  }
+}
+
 const newCustomerDetails = () => {
   return {
     user_id: userStore.user?.user_id || null,
     name: profileForm.name || null,
-    email: profileForm.email || null,
-    email_confirmation: profileForm.email || null,
+    // email: profileForm.email || null,
+    // email_confirmation: profileForm.email || null,
     phone: profileForm.phone || null,
     photo: profileForm.photo || null,
   }
@@ -76,11 +93,13 @@ const newPassword = () => {
 }
 
 const submitProfile = async () => {
+  const email = newEmail()
   const customerDetails = newCustomerDetails()
+  const userDetails = newUserDetails()
   let hasError = false
 
   await userStore
-    .updateEmail(customerDetails)
+    .updateEmail(email)
     .then((updatedUser) => {
       userStore.user.value = updatedUser
     })
@@ -97,8 +116,26 @@ const submitProfile = async () => {
 
   if (hasError) return
 
+  /* Update Customer Details */
+  if (userStore.user.customer)
+    return userStore
+      .updateCustomerDetails(customerDetails)
+      .then((updatedUser) => {
+        user.value = updatedUser
+        toast.success('Your profile was updated successfully.')
+      })
+      .catch((error) => {
+        if (error.response.status === 422) {
+          const errorMsg = JSON.parse(JSON.stringify(error.response.data.message))
+          toast.error(errorMsg)
+        } else {
+          toast.error(`User #${userStore.user.user_id} was not updated due to an unknown server error!`)
+        }
+      })
+
+  /* Update Employee Details */
   await userStore
-    .updateDetails(customerDetails)
+    .updateEmployeeDetails(userDetails)
     .then((updatedUser) => {
       user.value = updatedUser
       toast.success('Your profile was updated successfully.')
@@ -117,7 +154,7 @@ const submitPaymentDetails = () => {
   const paymentDetails = newPaymentDetails()
 
   userStore
-    .updateDetails(paymentDetails)
+    .updateCustomerDetails(paymentDetails)
     .then((updatedUser) => {
       user.value = updatedUser
       toast.success('Your payment details were updated successfully.')
@@ -172,9 +209,10 @@ const submitPass = () => {
     .then((updatedUser) => {
       userStore.user.value = updatedUser
       toast.success(`Your password was successfully updated.`)
+      router.push({ name: 'login' })
     })
     .catch((error) => {
-      if (error.response.status === 422) {
+      if (error.response.status === 401) {
         const errorMsg = JSON.parse(JSON.stringify(error.response.data.message))
         toast.error(errorMsg)
         return

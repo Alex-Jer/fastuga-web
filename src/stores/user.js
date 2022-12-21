@@ -89,8 +89,17 @@ export const useUserStore = defineStore('user', () => {
     return false
   }
 
-  const updateDetails = async (updatedUser) => {
-    const response = await axiosReq('customers/me', 'PUT', updatedUser, true)
+  const updateCustomerDetails = async (updatedCustomer) => {
+    const response = await axiosReq('customers/me', 'PUT', updatedCustomer, true)
+    user.value = response.data.user
+    return response
+  }
+
+  const updateEmployeeDetails = async (updatedEmployee) => {
+    /* eslint-disable no-param-reassign */
+    updatedEmployee.type = user.value.type
+    const response = await axiosReq('users/me', 'PUT', updatedEmployee, true)
+    // console.log(user.value)
     user.value = response.data.user
     return response
   }
@@ -120,7 +129,8 @@ export const useUserStore = defineStore('user', () => {
     register,
     logout,
     restoreToken,
-    updateDetails,
+    updateCustomerDetails,
+    updateEmployeeDetails,
     updateEmail,
     updatePassword,
   }
