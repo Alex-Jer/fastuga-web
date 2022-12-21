@@ -5,6 +5,7 @@ import { axiosReq } from '@/requestHelper'
 export const useUsersStore = defineStore('users', () => {
   const users = ref([])
   const types = ref([])
+  const pageInfo = ref([])
 
   const totalUsers = computed(() => {
     return users.value.length
