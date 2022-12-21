@@ -6,7 +6,7 @@ export default [
     menu: [
       {
         icon: mdiAccount,
-        label: 'Perfil',
+        label: 'Profile',
         to: '/profile',
       },
       {
@@ -14,7 +14,7 @@ export default [
       },
       {
         icon: mdiLogout,
-        label: 'Terminar Sessão',
+        label: 'Logout',
         isLogout: true,
       },
     ],
