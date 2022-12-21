@@ -1,27 +1,21 @@
 <script setup>
-import { mdiAccount, mdiAccountGroupOutline, mdiClipboardListOutline, mdiFoodAppleOutline, mdiMonitor } from '@mdi/js'
+import {
+  mdiAccount,
+  mdiAccountGroupOutline,
+  mdiClipboardListOutline,
+  mdiClipboardTextClockOutline,
+  mdiFoodAppleOutline,
+  mdiMonitor,
+} from '@mdi/js'
 import { useUserStore } from '@/stores/user'
 import BaseIcon from './BaseIcon.vue'
 
 const userStore = useUserStore()
-
-defineProps({
-  isDropdownList: Boolean,
-  menu: {
-    type: Array,
-    required: true,
-  },
-})
-
-// const emit = defineEmits(['menu-click'])
-
-// const menuClick = (event, item) => {
-//   emit('menu-click', event, item)
-// }
 </script>
 
 <template>
   <ul>
+    <!-- Menu -->
     <li>
       <router-link to="/">
         <div
@@ -34,6 +28,7 @@ defineProps({
       </router-link>
     </li>
 
+    <!-- Products -->
     <li v-show="userStore.user?.type === 'EM'">
       <router-link to="/products">
         <div
@@ -46,6 +41,20 @@ defineProps({
       </router-link>
     </li>
 
+    <!-- Orders Historu -->
+    <li v-show="userStore.user?.type === 'C'">
+      <router-link to="/orders-history">
+        <div
+          class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
+          :class="$route.name === 'orders-history' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
+        >
+          <BaseIcon :path="mdiClipboardTextClockOutline" class="pt-1" w="w-16" :size="18" />
+          <span class="pb-1">Orders History</span>
+        </div>
+      </router-link>
+    </li>
+
+    <!-- Users -->
     <li v-show="userStore.user?.type === 'EM'">
       <router-link to="/users">
         <div
@@ -58,6 +67,7 @@ defineProps({
       </router-link>
     </li>
 
+    <!-- Profile -->
     <li v-show="userStore.user">
       <router-link to="/profile">
         <div
@@ -70,6 +80,7 @@ defineProps({
       </router-link>
     </li>
 
+    <!-- TODO: remove dashboard -->
     <li>
       <router-link to="/dashboard">
         <div

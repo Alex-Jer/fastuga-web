@@ -7,6 +7,7 @@ import Users from '@/views/UsersView.vue'
 import Dashboard from '@/views/DashboardView.vue'
 import Login from '@/views/LoginView.vue'
 import Register from '@/views/RegisterView.vue'
+import OrdersHistory from '@/views/OrdersHistoryView.vue'
 
 const routes = [
   {
@@ -40,6 +41,14 @@ const routes = [
     path: '/register',
     name: 'register',
     component: () => Register,
+  },
+  {
+    meta: {
+      title: 'Orders History',
+    },
+    path: '/orders-history',
+    name: 'orders-history',
+    component: OrdersHistory,
   },
   {
     meta: {
@@ -135,6 +144,7 @@ router.beforeEach((to, from, next) => {
 
   const noLoginRoutes = ['Redirect', 'login', 'register', 'home', 'dashboard', 'error']
   const loginRoutes = ['profile']
+  const customerRoutes = ['orders-history']
   const managerRoutes = ['products', 'users']
 
   /* If the user is not logged in */
@@ -148,6 +158,14 @@ router.beforeEach((to, from, next) => {
   /* If the user is logge in */
   if (userStore.user) {
     if (loginRoutes.includes(to.name)) {
+      next()
+      return
+    }
+  }
+
+  /* If the user is a customer */
+  if (userStore.user?.type === 'C') {
+    if (customerRoutes.includes(to.name)) {
       next()
       return
     }

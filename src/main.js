@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 
 import axios from 'axios'
 import Toast from 'vue-toastification'
+import moment from 'moment'
 import { darkModeKey } from '@/config.js'
 import { useMainStore } from '@/stores/main.js'
 import { useStyleStore } from '@/stores/style.js'
@@ -48,6 +49,7 @@ app.provide(
     },
   })
 )
+app.provide('moment', moment)
 
 /* Init Pinia stores */
 // TODO: remove sample mainStore
