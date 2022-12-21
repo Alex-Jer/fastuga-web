@@ -58,7 +58,7 @@ defineProps({
       </router-link>
     </li>
 
-    <li>
+    <li v-show="userStore.user">
       <router-link to="/profile">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"

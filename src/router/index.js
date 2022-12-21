@@ -133,27 +133,41 @@ router.beforeEach((to, from, next) => {
     return
   }
 
-  const allowedRoutes = ['Redirect', 'login', 'register', 'home', 'dashboard', 'profile', 'error']
+  const noLoginRoutes = ['Redirect', 'login', 'register', 'home', 'dashboard', 'error']
+  const loginRoutes = ['profile']
+  const managerRoutes = ['products', 'users']
 
-  if (allowedRoutes.includes(to.name)) {
+  /* If the user is not logged in */
+  if (noLoginRoutes.includes(to.name)) {
     next()
     return
   }
 
   const userStore = useUserStore()
 
-  if (userStore.user?.type === 'EM') {
-    if (to.name === 'products' || to.name === 'users') {
+  /* If the user is logge in */
+  if (userStore.user) {
+    if (loginRoutes.includes(to.name)) {
       next()
       return
     }
   }
 
+  /* If the user is a manager */
+  if (userStore.user?.type === 'EM') {
+    if (managerRoutes.includes(to.name)) {
+      next()
+      return
+    }
+  }
+
+  /* If the user tried to access a route that requires login */
   if (!userStore.user) {
     next({ name: 'login' })
     return
   }
 
+  /* If the user does not have the necessary permissions */
   next({ name: 'error' })
 })
 
