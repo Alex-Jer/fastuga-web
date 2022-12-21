@@ -52,13 +52,8 @@ app.provide(
 app.provide('moment', moment)
 
 /* Init Pinia stores */
-// TODO: remove sample mainStore
-const mainStore = useMainStore(pinia)
+// TODO: remove template code
 const styleStore = useStyleStore(pinia)
-
-/* Fetch sample data */
-mainStore.fetch('clients')
-mainStore.fetch('history')
 
 // mainStore.$state.axios.defaults.baseURL = `${apiDomain}/api`
 

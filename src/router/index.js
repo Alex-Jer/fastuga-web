@@ -8,6 +8,7 @@ import Dashboard from '@/views/DashboardView.vue'
 import Login from '@/views/LoginView.vue'
 import Register from '@/views/RegisterView.vue'
 import OrdersHistory from '@/views/OrdersHistoryView.vue'
+import Order from '@/views/OrderView.vue'
 
 const routes = [
   {
@@ -49,6 +50,15 @@ const routes = [
     path: '/orders-history',
     name: 'orders-history',
     component: OrdersHistory,
+  },
+  {
+    meta: {
+      title: 'Order',
+    },
+    path: '/orders/:id',
+    name: 'order',
+    component: Order,
+    props: (route) => ({ order: parseInt(route.params.id, 10) }),
   },
   {
     meta: {
@@ -143,7 +153,7 @@ router.beforeEach((to, from, next) => {
   }
 
   const noLoginRoutes = ['Redirect', 'login', 'register', 'home', 'dashboard', 'error']
-  const loginRoutes = ['profile']
+  const loginRoutes = ['profile', 'order']
   const customerRoutes = ['orders-history']
   const managerRoutes = ['products', 'users']
 
