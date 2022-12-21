@@ -65,7 +65,6 @@ onMounted(async () => {
       </section>
       <!-- End of header -->
 
-      <!-- <products-table :products="filteredProducts" :types="selectTypes" /> -->
       <orders-history-table :orders="filteredOrders" :statuses="selectStatuses" />
 
       <!-- <div class="mx-2 mt-2" v-if="!isFetching">

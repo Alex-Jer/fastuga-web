@@ -4,6 +4,7 @@ import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import CardBox from '@/components/CardBox.vue'
+import router from '@/router'
 
 const moment = inject('moment')
 
@@ -19,16 +20,6 @@ const props = defineProps({
 })
 
 const orders = computed(() => props.orders)
-
-// const modalData = ref({
-//   showAddToCartModal: false,
-//   showDetailsModal: false,
-//   showUpdateModal: false,
-//   showDeleteModal: false,
-//   product: {},
-//   product_id: '',
-//   action: '',
-// })
 
 const itemsPerPage = ref(8)
 const currentPage = ref(0)
@@ -46,48 +37,16 @@ const pagesList = computed(() => {
 })
 
 const formatDate = (date) => {
-  return moment(date).format('DD/MM/YYYY')
+  return moment(date).format('DD/MM/YYYY HH:mm')
 }
 
-const showDetailsModal = (order) => {
-  // modalData.value = { showDetailsModal: true, order }
+const showDetailsView = (id) => {
+  router.push({ name: 'order', params: { id } })
 }
 </script>
 
 <template>
   <CardBox class="mb-6" has-table>
-    <!-- <ConfirmModal v-model="modalData.showAddToCartModal" :product="modalData.product">
-      <p>
-        Do you wish to add the product
-        <b>{{ modalData.product.name }}</b>
-        to your cart?
-      </p>
-    </ConfirmModal> -->
-
-    <!-- <ProductModal
-      v-model="modalData.showDetailsModal"
-      :product="modalData.product"
-      :types="props.types"
-      :title="`Viewing Product #${modalData.product.product_id}`"
-      action="view"
-    />
-
-    <ProductModal
-      v-model="modalData.showUpdateModal"
-      :product="modalData.product"
-      :types="props.types"
-      :title="`Updating Product #${modalData.product.product_id}`"
-      action="update"
-    />
-
-    <ConfirmModal v-model="modalData.showDeleteModal" :product="modalData.product" is-delete>
-      <p>
-        Are you sure you want to delete the product
-        <b>{{ modalData.product.name }}</b
-        >?
-      </p>
-    </ConfirmModal> -->
-
     <table>
       <thead>
         <tr>
@@ -104,7 +63,7 @@ const showDetailsModal = (order) => {
           v-for="order in itemsPaginated"
           :key="order.order_id"
           class="cursor-pointer"
-          @click="showDetailsModal(order)"
+          @click="showDetailsView(order.id)"
         >
           <td data-label="Ticket number">
             {{ order.ticket_number }}

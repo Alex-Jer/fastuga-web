@@ -13,7 +13,7 @@ import LayoutGuest from '@/layouts/LayoutGuest.vue'
 import { useUserStore } from '@/stores/user.js'
 
 const form = ref({
-  email: 'manager_1@mail.pt',
+  email: 'customer_1@mail.pt',
   password: '123',
 })
 
