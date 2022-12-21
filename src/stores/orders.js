@@ -41,7 +41,6 @@ export const useOrdersStore = defineStore('orders', () => {
   }
 
   const loadAllOrders = async (page) => {
-    console.log('loadMyOrders')
     await loadOrders('orders', page)
   }
 
