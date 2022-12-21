@@ -26,19 +26,16 @@ const newCustomer = () => {
   return {
     name: form.value.name,
     email: form.value.email,
-    // email_confirmation: form.value.email,
     phone: form.value.phone,
     password: form.value.password,
     password_confirmation: form.value.confirmPassword,
-    // photo: form.value.photo,
+    photo: form.value.photo,
   }
 }
 
 const router = useRouter()
 const userStore = useUserStore()
 const toast = useToast()
-
-const emit = defineEmits(['register'])
 
 const validate = () => {
   if (form.value.password.length < 6) {
