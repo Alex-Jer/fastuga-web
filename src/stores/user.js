@@ -1,14 +1,13 @@
 import { ref, computed, inject } from 'vue'
 import { defineStore } from 'pinia'
-// import axios from 'axios'
-// import avatarNoneUrl from '@/assets/avatar-none.png'
+import { axiosReq } from '@/requestHelper'
 
 export const useUserStore = defineStore('user', () => {
-  // const projectsStore = useProjectsStore()
   const apiDomain = inject('apiDomain')
   const axios = inject('axios')
 
   const user = ref(null)
+  const paymentTypes = ref([])
 
   const userPhotoUrl = computed(() => {
     const nameWithPlus = user.value?.name.replace(/ /g, '+')
@@ -20,16 +19,19 @@ export const useUserStore = defineStore('user', () => {
     return user.value?.id ?? -1
   })
 
-  function clearUser() {
+  const clearUser = () => {
     delete axios.defaults.headers.common.Authorization
     sessionStorage.removeItem('token')
     user.value = null
   }
 
-  async function loadUser() {
+  const clearPaymentTypes = () => {
+    paymentTypes.value = []
+  }
+
+  const loadUser = async () => {
     try {
       const response = await axios.get('users/me')
-      // const response = await axiosReq('users/me')
       user.value = response.data.data
     } catch (error) {
       clearUser()
@@ -37,46 +39,85 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  async function login(credentials) {
+  const loadPaymentTypes = async () => {
+    paymentTypes.value = ['PAYPAL', 'MBWAY', 'VISA']
+    // try {
+    //   const response = await axiosReq('users/types', 'GET')
+    //   types.value = response.data
+    //   return types.value
+    // } catch (error) {
+    //   clearTypes()
+    //   throw error
+    // }
+  }
+
+  const login = async (credentials) => {
     try {
       const response = await axios.post('login', credentials)
-      // const response = await axiosReq('login', 'POST', credentials)
       axios.defaults.headers.common.Authorization = `Bearer ${response.data.access_token}`
       sessionStorage.setItem('token', response.data.access_token)
       await loadUser()
-      // await projectsStore.loadProjects()
       return true
     } catch (error) {
       clearUser()
-      // projectsStore.clearProjects()
       return false
     }
   }
 
-  async function logout() {
+  const logout = async () => {
     try {
       await axios.delete('logout')
       clearUser()
-      // projectsStore.clearProjects()
       return true
     } catch (error) {
       return false
     }
   }
 
-  async function restoreToken() {
+  const restoreToken = async () => {
     const storedToken = sessionStorage.getItem('token')
     if (storedToken) {
       axios.defaults.headers.common.Authorization = `Bearer ${storedToken}`
       await loadUser()
-      // console.log(user.value.name)
-      // await projectsStore.loadProjects()
       return true
     }
     clearUser()
-    // projectsStore.clearProjects()
     return false
   }
 
-  return { user, userId, userPhotoUrl, login, logout, restoreToken }
+  const updateDetails = async (updatedUser) => {
+    const response = await axiosReq('customers/me', 'PUT', updatedUser)
+    // const index = users.value.findIndex((user) => user.user_id === updatedUser.user_id)
+    // users.value[index] = response.data.user
+    return response
+  }
+
+  const updateEmail = async (updatedEmail) => {
+    const response = await axiosReq('users/me/email', 'PATCH', updatedEmail)
+    // const index = users.value.findIndex((user) => user.user_id === updatedUser.user_id)
+    // users.value[index] = response.data.user
+    return response
+  }
+
+  const updatePassword = async (updatedPassword) => {
+    const response = await axiosReq('users/me/password', 'PATCH', updatedPassword)
+    // const index = users.value.findIndex((user) => user.user_id === updatedUser.user_id)
+    // users.value[index] = response.data.user
+    return response
+  }
+
+  return {
+    user,
+    userId,
+    paymentTypes,
+    userPhotoUrl,
+    clearPaymentTypes,
+    loadPaymentTypes,
+    login,
+    logout,
+    restoreToken,
+    updateDetails,
+    updateEmail,
+    updatePassword,
+  }
 })

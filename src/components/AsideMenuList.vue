@@ -62,7 +62,7 @@ defineProps({
       <router-link to="/profile">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
-          :class="$route.name === 'users' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
+          :class="$route.name === 'profile' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
         >
           <BaseIcon :path="mdiAccount" class="pt-1" w="w-16" :size="18" />
           <span class="pb-1">Profile</span>

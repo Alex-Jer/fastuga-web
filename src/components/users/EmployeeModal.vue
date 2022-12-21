@@ -191,7 +191,6 @@ const save = () => {
       cancel()
     })
     .catch((error) => {
-      console.log({ error })
       if (error.status === 422) {
         const errorMsg = JSON.parse(JSON.stringify(error.data.message))
         toast.error(errorMsg)
