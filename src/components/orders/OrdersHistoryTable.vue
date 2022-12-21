@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, inject } from 'vue'
+import { computed, inject } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
@@ -17,24 +17,25 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  pageInfo: {
+    type: Object,
+    default: () => ({}),
+  },
+  changePage: {
+    type: Function,
+    default: () => {},
+  },
 })
 
 const orders = computed(() => props.orders)
+const pageInfo = computed(() => props.pageInfo.value)
+const changePage = computed(() => props.changePage)
 
-const itemsPerPage = ref(8)
-const currentPage = ref(0)
+const currentPage = computed(() => pageInfo.value.current_page)
 
-const itemsPaginated = computed(() =>
-  orders.value.slice(itemsPerPage.value * currentPage.value, itemsPerPage.value * (currentPage.value + 1))
-)
+const itemsPaginated = computed(() => orders.value)
 
-const numPages = computed(() => Math.ceil(orders.value.length / itemsPerPage.value))
-
-const pagesList = computed(() => {
-  const list = []
-  for (let i = 0; i < numPages.value; i += 1) list.push(i)
-  return list
-})
+const numPages = computed(() => pageInfo.value.last_page)
 
 const formatDate = (date) => {
   return moment(date).format('D MMM YYYY')
@@ -82,16 +83,16 @@ const showDetailsView = (id) => {
       <BaseLevel>
         <BaseButtons>
           <BaseButton
-            v-for="page in pagesList"
-            :key="page"
-            :active="page === currentPage"
-            :label="page + 1"
-            :color="page === currentPage ? 'lightDark' : 'whiteDark'"
+            v-for="page in pageInfo.links"
+            :key="page.label"
+            :active="page.url == null ? true : false"
+            :label="page.label"
+            :color="page.active ? 'lightDark' : 'whiteDark'"
             small
-            @click="currentPage = page"
+            @click="changePage(page.url)"
           />
         </BaseButtons>
-        <small>Page {{ currentPage + 1 }} of {{ numPages }}</small>
+        <small>Page {{ currentPage }} of {{ numPages }}</small>
       </BaseLevel>
     </div>
   </CardBox>

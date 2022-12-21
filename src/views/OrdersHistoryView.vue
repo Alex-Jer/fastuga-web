@@ -38,6 +38,13 @@ const filteredOrders = computed(() => {
   return ordersStore.orders
 })
 
+const pageInfo = computed(() => ordersStore.getPageInfo())
+
+const changePage = async (page) => {
+  if (userStore.user.type === 'C') await ordersStore.loadMyOrders(page)
+  else await ordersStore.loadAllOrders(page)
+}
+
 onMounted(async () => {
   if (userStore.user.type === 'C') await loadMyOrders()
   else await loadAllOrders()
@@ -73,7 +80,12 @@ onMounted(async () => {
       </section>
       <!-- End of header -->
 
-      <orders-history-table :orders="filteredOrders" :statuses="selectStatuses" />
+      <orders-history-table
+        :orders="filteredOrders"
+        :statuses="selectStatuses"
+        :pageInfo="pageInfo"
+        :changePage="changePage"
+      />
 
       <!-- <div class="mx-2 mt-2" v-if="!isFetching">
         <label class="mr-3">Filter by type:</label>

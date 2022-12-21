@@ -1,10 +1,11 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { axiosReq } from '@/requestHelper'
+import { axiosReq, axiosReqPage } from '@/requestHelper'
 
 export const useOrdersStore = defineStore('orders', () => {
   const orders = ref([])
   const statuses = ref([])
+  const pageInfo = ref([])
 
   const totalOrders = computed(() => {
     return orders.value.length
@@ -21,11 +22,13 @@ export const useOrdersStore = defineStore('orders', () => {
   const clearStatuses = () => {
     statuses.value = []
   }
+  const getPageInfo = () => pageInfo
 
-  const loadMyOrders = async () => {
+  const loadOrders = async (route, page) => {
     try {
-      const response = await axiosReq('orders/me', 'GET')
+      const response = page ? await axiosReqPage(page) : await axiosReq(route, 'GET')
       orders.value = response.data.data
+      pageInfo.value = response.data.meta
       return orders.value
     } catch (error) {
       clearOrders()
@@ -33,16 +36,13 @@ export const useOrdersStore = defineStore('orders', () => {
     }
   }
 
-  const loadAllOrders = async () => {
-    try {
-      const response = await axiosReq('orders', 'GET')
-      console.log(response.data)
-      orders.value = response.data.data
-      return orders.value
-    } catch (error) {
-      clearOrders()
-      throw error
-    }
+  const loadMyOrders = async (page) => {
+    await loadOrders('orders/me', page)
+  }
+
+  const loadAllOrders = async (page) => {
+    console.log('loadMyOrders')
+    await loadOrders('orders', page)
   }
 
   const loadStatuses = async () => {
@@ -78,6 +78,8 @@ export const useOrdersStore = defineStore('orders', () => {
     orders,
     statuses,
     totalOrders,
+    pageInfo,
+    getPageInfo,
     // myInprogressProjects,
     // totalMyInprogressProjects,
     getOrdersByFilter,
