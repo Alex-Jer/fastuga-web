@@ -40,15 +40,13 @@ const paymentForm = reactive({
   defaultPaymentReference: userStore.user.customer?.default_payment_reference,
 })
 
-console.log(userStore.user.customer?.default_payment_type)
-
 const passwordForm = reactive({
   password: '',
   passwordCurrent: '',
   passwordConfirmation: '',
 })
 
-const newCustomer = () => {
+const newCustomerDetails = () => {
   return {
     user_id: userStore.user?.user_id || null,
     name: profileForm.name || null,
@@ -56,7 +54,16 @@ const newCustomer = () => {
     email_confirmation: profileForm.email || null,
     phone: profileForm.phone || null,
     photo: profileForm.photo || null,
-    // photo_url: userStore.user?.photo_url || null,
+  }
+}
+
+const newPaymentDetails = () => {
+  return {
+    name: userStore.user.name,
+    phone: userStore.user.customer?.phone || null,
+    nif: paymentForm.nif || null,
+    default_payment_type: paymentForm.defaultPaymentType || null,
+    default_payment_reference: paymentForm.defaultPaymentReference || null,
   }
 }
 
@@ -69,11 +76,11 @@ const newPassword = () => {
 }
 
 const submitProfile = async () => {
-  user.value = newCustomer()
+  const customerDetails = newCustomerDetails()
   let hasError = false
 
   await userStore
-    .updateEmail(user.value)
+    .updateEmail(customerDetails)
     .then((updatedUser) => {
       userStore.user.value = updatedUser
     })
@@ -90,11 +97,10 @@ const submitProfile = async () => {
 
   if (hasError) return
 
-  console.log(user.value)
   await userStore
-    .updateDetails(user.value)
+    .updateDetails(customerDetails)
     .then((updatedUser) => {
-      userStore.user.value = updatedUser
+      user.value = updatedUser
       toast.success('Your profile was updated successfully.')
     })
     .catch((error) => {
@@ -104,6 +110,26 @@ const submitProfile = async () => {
       } else {
         toast.error(`User #${userStore.user.user_id} was not updated due to an unknown server error!`)
       }
+    })
+}
+
+const submitPaymentDetails = () => {
+  const paymentDetails = newPaymentDetails()
+
+  userStore
+    .updateDetails(paymentDetails)
+    .then((updatedUser) => {
+      user.value = updatedUser
+      toast.success('Your payment details were updated successfully.')
+    })
+    .catch((error) => {
+      console.log({ error })
+      if (error.response.status === 422) {
+        const errorMsg = JSON.parse(JSON.stringify(error.response.data.message))
+        toast.error(errorMsg)
+        return
+      }
+      toast.error('Your payment details were not updated due to an unknown server error!')
     })
 }
 
@@ -140,8 +166,6 @@ const submitPass = () => {
   if (!validatePassword()) return
 
   user.value = newPassword()
-
-  console.log(user.value)
 
   userStore
     .updatePassword(user.value)
@@ -211,7 +235,7 @@ onMounted(async () => {
 
         <CardBox is-form @submit.prevent="submitPaymentDetails" v-if="userStore.user.customer">
           <FormField label="NIF">
-            <FormControl v-model="paymentForm.nif" :icon="mdiAccount" name="nif" required autocomplete="nif" />
+            <FormControl v-model="paymentForm.nif" :icon="mdiAccount" name="nif" placeholder="NIF" autocomplete="nif" />
           </FormField>
           <FormField label="Default payment type">
             <FormControl v-model="paymentForm.defaultPaymentType" :icon="mdiEmail" :options="paymentTypes" />
@@ -221,7 +245,7 @@ onMounted(async () => {
               v-model="paymentForm.defaultPaymentReference"
               :icon="mdiPhone"
               name="paymentReference"
-              required
+              placeholder="Payment reference"
               autocomplete="paymentReference"
             />
           </FormField>

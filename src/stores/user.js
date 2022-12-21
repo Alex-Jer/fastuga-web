@@ -40,15 +40,11 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const loadPaymentTypes = async () => {
-    paymentTypes.value = ['PAYPAL', 'MBWAY', 'VISA']
-    // try {
-    //   const response = await axiosReq('users/types', 'GET')
-    //   types.value = response.data
-    //   return types.value
-    // } catch (error) {
-    //   clearTypes()
-    //   throw error
-    // }
+    paymentTypes.value = [
+      { id: 1, value: 'PAYPAL', label: 'PAYPAL' },
+      { id: 2, value: 'MBWAY', label: 'MBWAY' },
+      { id: 3, value: 'VISA', label: 'VISA' },
+    ]
   }
 
   const login = async (credentials) => {
@@ -94,9 +90,8 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const updateDetails = async (updatedUser) => {
-    const response = await axiosReq('customers/me', 'PUT', updatedUser)
-    // const index = users.value.findIndex((user) => user.user_id === updatedUser.user_id)
-    // users.value[index] = response.data.user
+    const response = await axiosReq('customers/me', 'PUT', updatedUser, true)
+    user.value = response.data.user
     return response
   }
 
