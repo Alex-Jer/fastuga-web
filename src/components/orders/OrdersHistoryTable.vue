@@ -50,7 +50,7 @@ const showDetailsView = (id) => {
     <table>
       <thead>
         <tr>
-          <th>Ref</th>
+          <th>Reference</th>
           <th>Status</th>
           <th>Total Paid</th>
           <th>Payment Type</th>
