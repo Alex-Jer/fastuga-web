@@ -23,7 +23,16 @@ const toast = useToast()
 
 const emit = defineEmits(['register'])
 
+const validate = () => {
+  if (!form.value.email || !form.value.password) {
+    toast.error('Please fill all fields!')
+    return false
+  }
+  return true
+}
+
 const login = async () => {
+  if (!validate()) return
   toast.info('Logging in...')
   if (await userStore.login(form.value)) {
     toast.clear()
