@@ -1,10 +1,8 @@
-import { ref, computed, inject } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { axiosReq } from '@/requestHelper'
 
 export const useOrdersStore = defineStore('orders', () => {
-  const axios = inject('axios')
-
   const orders = ref([])
   const statuses = ref([])
 
@@ -24,9 +22,21 @@ export const useOrdersStore = defineStore('orders', () => {
     statuses.value = []
   }
 
-  const loadUserOrders = async () => {
+  const loadMyOrders = async () => {
     try {
-      const response = await axios.get('orders/me')
+      const response = await axiosReq('orders/me', 'GET')
+      orders.value = response.data.data
+      return orders.value
+    } catch (error) {
+      clearOrders()
+      throw error
+    }
+  }
+
+  const loadAllOrders = async () => {
+    try {
+      const response = await axiosReq('orders', 'GET')
+      console.log(response.data)
       orders.value = response.data.data
       return orders.value
     } catch (error) {
@@ -74,7 +84,8 @@ export const useOrdersStore = defineStore('orders', () => {
     getOrdersByFilterTotal,
     clearOrders,
     clearStatuses,
-    loadUserOrders,
+    loadMyOrders,
+    loadAllOrders,
     loadStatuses,
     insertOrder,
     updateOrder,
