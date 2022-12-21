@@ -2,7 +2,7 @@
 import { mdiClipboardTextClockOutline } from '@mdi/js'
 import { computed, onMounted, ref } from 'vue'
 import IconRounded from '@/components/IconRounded.vue'
-import OrdersHistoryTable from '@/components/orders/OrdersHistoryTable.vue'
+import OrdersTable from '@/components/orders/OrdersTable.vue'
 import SectionMain from '@/components/SectionMain.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { useOrdersStore } from '@/stores/orders'
@@ -80,12 +80,7 @@ onMounted(async () => {
       </section>
       <!-- End of header -->
 
-      <orders-history-table
-        :orders="filteredOrders"
-        :statuses="selectStatuses"
-        :pageInfo="pageInfo"
-        :changePage="changePage"
-      />
+      <orders-table :orders="filteredOrders" :statuses="selectStatuses" :pageInfo="pageInfo" :changePage="changePage" />
 
       <!-- <div class="mx-2 mt-2" v-if="!isFetching">
         <label class="mr-3">Filter by type:</label>

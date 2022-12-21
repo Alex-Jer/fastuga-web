@@ -43,10 +43,10 @@ const userStore = useUserStore()
 
     <!-- Orders Historu -->
     <li v-show="userStore.user?.type === 'C' || userStore.user?.type === 'EM'">
-      <router-link to="/orders-history">
+      <router-link to="/orders">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
-          :class="$route.name === 'orders-history' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
+          :class="$route.name === 'orders' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
         >
           <BaseIcon :path="mdiClipboardTextClockOutline" class="pt-1" w="w-16" :size="18" />
           <span class="pb-1">Orders {{ userStore.user?.type === 'C' ? 'History' : '' }}</span>
