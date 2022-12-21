@@ -70,7 +70,7 @@ export const useUserStore = defineStore('user', () => {
 
   const logout = async () => {
     try {
-      await axios.delete('logout')
+      await axiosReq('logout', 'DELETE')
       clearUser()
       return true
     } catch (error) {

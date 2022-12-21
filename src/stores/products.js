@@ -38,7 +38,7 @@ export const useProductsStore = defineStore('products', () => {
 
   const loadProducts = async () => {
     try {
-      const response = await axios.get('products')
+      const response = await axiosReq('products', 'GET')
       products.value = response.data.data
       return products.value
     } catch (error) {
@@ -49,7 +49,7 @@ export const useProductsStore = defineStore('products', () => {
 
   const loadTypes = async () => {
     try {
-      const response = await axios.get('products/types')
+      const response = await axiosReq('products/types', 'GET')
       types.value = response.data
       return types.value
     } catch (error) {
