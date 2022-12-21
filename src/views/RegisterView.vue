@@ -61,13 +61,18 @@ const register = async () => {
       userStore.user.value = newUser
     })
     .catch((error) => {
+      console.log({ error })
       if (error.response.status === 422) {
         const errorMsg = JSON.parse(JSON.stringify(error.response.data.message))
+        toast.clear()
         toast.error(errorMsg)
         return
       }
+      toast.clear()
       toast.error('Something went wrong!')
     })
+
+  if (!userStore.user?.value) return
 
   toast.clear()
   router.push('/')
