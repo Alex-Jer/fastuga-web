@@ -75,7 +75,7 @@ onMounted(async () => {
 
       <users-table :users="filteredUsers" :types="selectTypes" :pageInfo="pageInfo" :changePage="changePage" />
 
-      <div class="mx-2 mt-2" v-if="!isFetching">
+      <!--<div class="mx-2 mt-2" v-if="!isFetching">
         <label class="mr-3">Filter by type:</label>
         <select
           class="pl-3 pr-12 py-2 focus:ring focus:outline-none border-gray-700 rounded bg-slate-800"
@@ -86,7 +86,7 @@ onMounted(async () => {
             {{ item.label }}
           </option>
         </select>
-      </div>
+      </div>-->
     </SectionMain>
   </LayoutAuthenticated>
 </template>

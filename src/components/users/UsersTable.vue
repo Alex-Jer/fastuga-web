@@ -10,6 +10,7 @@ import ConfirmModal from './ConfirmModal.vue'
 import EmployeeModal from './EmployeeModal.vue'
 import CustomerModal from './CustomerModal.vue'
 import router from '@/router'
+import { useUserStore } from '@/stores/user'
 
 const props = defineProps({
   users: {
@@ -48,6 +49,9 @@ const modalData = ref({
   showBlockModal: false,
   showUnblockModal: false,
 })
+
+const userStore = useUserStore()
+const currUser = userStore.user
 
 const currentPage = computed(() => pageInfo.value.current_page)
 
@@ -178,7 +182,7 @@ const generateAvatar = (name) => {
                 color="info"
                 :icon="mdiPencil"
                 small
-                @click.stop="user.id === user_id ? router.push('profile') : showUpdateModal(user)"
+                @click.stop="user.user_id == currUser.user_id ? router.push('profile') : showUpdateModal(user)"
                 :disabled="user.customer"
               />
               <BaseButton
@@ -186,14 +190,14 @@ const generateAvatar = (name) => {
                 :icon="mdiBlockHelper"
                 small
                 @click.stop="user.blocked ? showUnblockModal(user) : showBlockModal(user)"
-                :disabled="user.id === user_id"
+                :disabled="user.user_id == currUser.user_id"
               />
               <BaseButton
                 color="danger"
                 :icon="mdiTrashCan"
                 small
                 @click.stop="showDeleteModal(user)"
-                :disabled="user.id === user_id"
+                :disabled="user.user_id == currUser.user_id"
               />
             </BaseButtons>
           </td>
@@ -211,7 +215,7 @@ const generateAvatar = (name) => {
           <BaseButton
             v-for="page in pageInfo.links"
             :key="page.label"
-            :active="page.url ? true : false"
+            :active="page.url == null ? true : false"
             :label="page.label"
             :color="page.active ? 'lightDark' : 'whiteDark'"
             small
