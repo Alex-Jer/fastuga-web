@@ -35,6 +35,17 @@ export const useOrdersStore = defineStore('orders', () => {
     }
   }
 
+  const loadPreperableDishes = async () => {
+    try {
+        const response = await axios.get('orders/preperable-dishes')
+        orders.value = response.data.data
+        return orders.value
+    } catch (error) {
+        clearOrders()
+        throw error
+    }
+  }
+
   const loadStatuses = async () => {
     statuses.value = [
       { id: 1, value: 'P', label: 'Preparing' },
@@ -79,5 +90,6 @@ export const useOrdersStore = defineStore('orders', () => {
     insertOrder,
     updateOrder,
     deleteOrder,
+    loadPreperableDishes
   }
 })
