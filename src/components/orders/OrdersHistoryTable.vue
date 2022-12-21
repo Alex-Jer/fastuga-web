@@ -37,7 +37,7 @@ const pagesList = computed(() => {
 })
 
 const formatDate = (date) => {
-  return moment(date).format('DD/MM/YYYY HH:mm')
+  return moment(date).format('D MMM YYYY')
 }
 
 const showDetailsView = (id) => {
@@ -50,7 +50,7 @@ const showDetailsView = (id) => {
     <table>
       <thead>
         <tr>
-          <th>Ticket #</th>
+          <th>Ref</th>
           <th>Status</th>
           <th>Total Paid</th>
           <th>Payment Type</th>
@@ -66,7 +66,7 @@ const showDetailsView = (id) => {
           @click="showDetailsView(order.id)"
         >
           <td data-label="Ticket number">
-            {{ order.ticket_number }}
+            {{ `${order.id} (#${order.ticket_number})` }}
           </td>
           <td data-label="Status">
             {{ props.statuses.find((status) => status.value === order.status)?.label }}
