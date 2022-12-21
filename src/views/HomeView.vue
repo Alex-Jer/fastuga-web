@@ -48,7 +48,9 @@ onMounted(async () => {
   <LayoutAuthenticated>
     <SectionMain>
       <SectionTitleLine :icon="mdiClipboardListOutline" title="Menu" main />
+
       <products-table :products="filteredProducts" :types="selectTypes" />
+
       <div class="mx-2 mt-2" v-if="!isFetching">
         <label class="mr-3">Filter by type:</label>
         <select

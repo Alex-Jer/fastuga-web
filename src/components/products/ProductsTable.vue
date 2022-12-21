@@ -7,6 +7,7 @@ import BaseLevel from '@/components/BaseLevel.vue'
 import CardBox from '@/components/CardBox.vue'
 import ConfirmModal from './ConfirmModal.vue'
 import ProductModal from './ProductModal.vue'
+import { useUserStore } from '@/stores/user'
 
 const props = defineProps({
   products: {
@@ -21,6 +22,7 @@ const props = defineProps({
 
 const apiDomain = inject('apiDomain')
 const products = computed(() => props.products)
+const userStore = useUserStore()
 
 const modalData = ref({
   showAddToCartModal: false,
@@ -107,7 +109,7 @@ const showDeleteModal = (product) => {
           <th>Name</th>
           <th>Type</th>
           <th>Price</th>
-          <th />
+          <th v-if="$route.name === 'home' && userStore.user?.type === 'C'" />
         </tr>
       </thead>
       <tbody>
@@ -136,7 +138,10 @@ const showDeleteModal = (product) => {
               <BaseButton color="danger" :icon="mdiTrashCan" small @click.stop="showDeleteModal(product)" />
             </BaseButtons>
           </td>
-          <td class="before:hidden lg:w-1 whitespace-nowrap" v-if="$route.name === 'home'">
+          <td
+            class="before:hidden lg:w-1 whitespace-nowrap"
+            v-if="$route.name === 'home' && userStore.user?.type === 'C'"
+          >
             <BaseButtons type="justify-start lg:justify-end" no-wrap>
               <BaseButton color="info" :icon="mdiPlus" small @click.stop="showAddToCartModal(product)" />
             </BaseButtons>
