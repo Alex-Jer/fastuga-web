@@ -60,7 +60,7 @@ const showDetailsView = (id) => {
       </thead>
       <tbody>
         <tr
-          v-for="order in itemsPaginated"
+          v-for="order in itemsPaginated.slice().reverse()"
           :key="order.order_id"
           class="cursor-pointer"
           @click="showDetailsView(order.id)"
