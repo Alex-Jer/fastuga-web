@@ -8,6 +8,7 @@ import Dashboard from '@/views/DashboardView.vue'
 import Login from '@/views/LoginView.vue'
 import Register from '@/views/RegisterView.vue'
 import OrdersHistory from '@/views/OrdersHistoryView.vue'
+import CurrentDishes from '@/views/ChefView.vue'
 
 const routes = [
   {
@@ -73,6 +74,14 @@ const routes = [
     path: '/dashboard',
     name: 'dashboard',
     component: Dashboard,
+  },
+  {
+    meta: {
+      title: 'CurrentDishes',
+    },
+    path: '/current-dishes',
+    name: 'current-dishes',
+    component: CurrentDishes,
   },
   {
     meta: {
@@ -146,6 +155,7 @@ router.beforeEach((to, from, next) => {
   const loginRoutes = ['profile']
   const customerRoutes = ['orders-history']
   const managerRoutes = ['products', 'users']
+  const chefRoutes = ['current-dishes']
 
   /* If the user is not logged in */
   if (noLoginRoutes.includes(to.name)) {
@@ -174,6 +184,14 @@ router.beforeEach((to, from, next) => {
   /* If the user is a manager */
   if (userStore.user?.type === 'EM') {
     if (managerRoutes.includes(to.name)) {
+      next()
+      return
+    }
+  }
+
+  /* If the user is a chef */
+  if (userStore.user?.type === 'EC') {
+    if (chefRoutes.includes(to.name)) {
       next()
       return
     }

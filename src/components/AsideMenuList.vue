@@ -67,6 +67,18 @@ const userStore = useUserStore()
       </router-link>
     </li>
 
+    <li v-show="userStore.user?.type === 'EC'">
+      <router-link to="/current-dishes">
+        <div
+          class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
+          :class="$route.name === 'users' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
+        >
+          <BaseIcon :path="mdiClipboardListOutline" class="pt-1" w="w-16" :size="18" />
+          <span class="pb-1">Current Dishes</span>
+        </div>
+      </router-link>
+    </li>
+
     <!-- Profile -->
     <li v-show="userStore.user">
       <router-link to="/profile">
