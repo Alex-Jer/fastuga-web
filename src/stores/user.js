@@ -86,9 +86,6 @@ export const useUserStore = defineStore('user', () => {
 
   const updateCustomerDetails = async (updatedCustomer) => {
     const response = await axiosReq('customers/me', 'PUT', updatedCustomer, true)
-    console.log(updatedCustomer)
-    console.log(response.data.user.customer)
-    // user.value.customer = updatedCustomer
     user.value = response.data.user
     return response
   }
