@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { axiosReq, axiosReqPage } from '@/requestHelper'
+import { useSocketStore } from './socket'
 
 export const useUsersStore = defineStore('users', () => {
   const users = ref([])
   const types = ref([])
   const pageInfo = ref([])
+  const socket = useSocketStore()
 
   const totalUsers = computed(() => {
     return users.value.length
@@ -58,6 +60,7 @@ export const useUsersStore = defineStore('users', () => {
     const response = await axiosReq(`users/${updatedUser.user_id}`, 'PUT', updatedUser, true)
     const index = users.value.findIndex((user) => user.user_id === updatedUser.user_id)
     users.value[index] = response.data.user
+    socket.sendUserUpdated(response.data.user)
     return response
   }
 
@@ -73,6 +76,7 @@ export const useUsersStore = defineStore('users', () => {
     if (response.status !== 200) throw response
     const index = users.value.findIndex((user) => user.user_id === blockedUserId)
     users.value[index].blocked = true
+    socket.sendSessionLost(users.value[index])
     return response
   }
 

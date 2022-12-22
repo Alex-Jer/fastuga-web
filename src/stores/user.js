@@ -1,8 +1,8 @@
 import { ref, computed, inject } from 'vue'
 import { defineStore } from 'pinia'
+import { useToast } from 'vue-toastification'
 import { axiosReq } from '@/requestHelper'
 import { useSocketStore } from './socket'
-import { useToast } from 'vue-toastification'
 
 export const useUserStore = defineStore('user', () => {
   const apiDomain = inject('apiDomain')
@@ -32,6 +32,7 @@ export const useUserStore = defineStore('user', () => {
 
   const clearUser = () => {
     sessionStorage.removeItem('token')
+    socket.sendSessionLost(user.value)
     user.value = null
   }
 
@@ -43,6 +44,7 @@ export const useUserStore = defineStore('user', () => {
     try {
       const response = await axiosReq('users/me', 'GET')
       user.value = response.data.data
+      socket.sendLoggedIn(user.value)
     } catch (error) {
       clearUser()
       throw error
