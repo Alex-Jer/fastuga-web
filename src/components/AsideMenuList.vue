@@ -2,6 +2,7 @@
 import {
   mdiAccount,
   mdiAccountGroupOutline,
+  mdiCartOutline,
   mdiClipboardListOutline,
   mdiClipboardTextClockOutline,
   mdiFoodAppleOutline,
@@ -27,9 +28,20 @@ const userStore = useUserStore()
         </div>
       </router-link>
     </li>
-
+    <!-- Cart -->
+    <li v-if="userStore.user?.type === 'C' || !userStore.user">
+      <router-link to="/cart">
+        <div
+          class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
+          :class="$route.name === 'cart' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
+        >
+          <BaseIcon :path="mdiCartOutline" class="pt-1" w="w-16" :size="18" />
+          <span class="pb-1">Cart</span>
+        </div>
+      </router-link>
+    </li>
     <!-- Products -->
-    <li v-show="userStore.user?.type === 'EM'">
+    <li v-if="userStore.user?.type === 'EM'">
       <router-link to="/products">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
@@ -40,9 +52,8 @@ const userStore = useUserStore()
         </div>
       </router-link>
     </li>
-
-    <!-- Orders Historu -->
-    <li v-show="userStore.user?.type === 'C' || userStore.user?.type === 'EM'">
+    <!-- Orders History -->
+    <li v-if="userStore.user?.type === 'C' || userStore.user?.type === 'EM'">
       <router-link to="/orders">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
@@ -53,9 +64,8 @@ const userStore = useUserStore()
         </div>
       </router-link>
     </li>
-
     <!-- Users -->
-    <li v-show="userStore.user?.type === 'EM'">
+    <li v-if="userStore.user?.type === 'EM'">
       <router-link to="/users">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
@@ -66,9 +76,8 @@ const userStore = useUserStore()
         </div>
       </router-link>
     </li>
-
     <!-- Profile -->
-    <li v-show="userStore.user">
+    <li v-if="userStore.user">
       <router-link to="/profile">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
@@ -79,10 +88,9 @@ const userStore = useUserStore()
         </div>
       </router-link>
     </li>
-    
-     <!-- Deliveries -->
-     <li v-show="userStore.user?.type === 'ED'">
-      <router-link to="/current-orders">
+    <!-- Deliveries -->
+    <li v-show="userStore.user?.type === 'ED'">
+      <router-link to="/current_orders">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
           :class="$route.name === 'users' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
@@ -92,7 +100,6 @@ const userStore = useUserStore()
         </div>
       </router-link>
     </li>
-
     <!-- TODO: remove dashboard -->
     <li>
       <router-link to="/dashboard">
