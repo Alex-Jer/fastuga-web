@@ -78,15 +78,15 @@ export const useOrdersStore = defineStore('orders', () => {
   const finishOrder = async (order) => {
     const response = await axiosReq(`orders/${order}/finish`, 'PATCH')
     if (response.status !== 200) throw response
-    const index = order.value.findIndex((itm) => ord.order.id === order)
-    items.value[index].order.status = 'R'
+    const index = orders.value.findIndex((ord) => ord.order.id === order)
+    orders.value[index].order.status = 'R'
     return response
   }
 
   const deliverOrder = async (order) => {
     const response = await axiosReq(`orders/${order}/deliver`, 'PATCH')
-    const index = order.value.findIndex((itm) => ord.order.id === order)
-    items.value[index].order.status = 'D'
+    const index = orders.value.findIndex((ord) => ord.order.id === order)
+    orders.value[index].order.status = 'D'
     return response
   }
 
