@@ -14,15 +14,12 @@ const selectStatuses = ref([])
 const toast = useToast()
 
 const loadOrders = async () => {
-  if (!ordersStore.loadPrepOrders) await loadOrders()
-  else
-    await ordersStore.loadPrepOrders().catch((error) => {
-      processGeneralError(error, 'orders')
-    })
+  await ordersStore.loadPrepOrders().catch((error) => {
+    processGeneralError(error, 'orders')
+  })
 }
 
 const filteredOrders = computed(() => {
-  console.log(ordersStore.orders)
   return ordersStore.orders
 })
 

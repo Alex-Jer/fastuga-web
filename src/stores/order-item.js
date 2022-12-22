@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { axiosReq } from '@/requestHelper'
 
-export const useOrderItemsStore = defineStore('orders', () => {
+export const useOrderItemsStore = defineStore('order-items', () => {
   const items = ref([])
   const statuses = ref([])
   const pageInfo = ref([])
