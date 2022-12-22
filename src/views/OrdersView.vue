@@ -27,11 +27,7 @@ const loadAllOrders = async () => {
   })
 }
 
-const filteredOrders = computed(() => {
-  // return ordersStore.getProductsByFilter(filterByType.value)
-  console.log(ordersStore.orders)
-  return ordersStore.orders
-})
+const filteredOrders = computed(() => ordersStore.orders)
 
 const pageInfo = computed(() => ordersStore.getPageInfo())
 
@@ -57,14 +53,6 @@ onMounted(async () => {
 <template>
   <LayoutAuthenticated>
     <SectionMain>
-      <!-- <ProductModal
-        v-if="!isFetching"
-        v-model="isModalActive"
-        title="Add a new product"
-        :types="selectTypes"
-        action="insert"
-      /> -->
-
       <!-- Start of header -->
       <section class="mb-6 flex items-center justify-between">
         <div class="flex items-center justify-start">
@@ -75,19 +63,6 @@ onMounted(async () => {
       <!-- End of header -->
 
       <orders-table :orders="filteredOrders" :statuses="selectStatuses" :pageInfo="pageInfo" :changePage="changePage" />
-
-      <!-- <div class="mx-2 mt-2" v-if="!isFetching">
-        <label class="mr-3">Filter by type:</label>
-        <select
-          class="pl-3 pr-12 py-2 focus:ring focus:outline-none border-gray-700 rounded bg-slate-800"
-          v-model="filterByType"
-        >
-          <option :value="null" />
-          <option v-for="item in selectTypes" :key="item.id" :value="item.value">
-            {{ item.label }}
-          </option>
-        </select>
-      </div> -->
     </SectionMain>
   </LayoutAuthenticated>
 </template>
