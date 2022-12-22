@@ -1,21 +1,13 @@
 <script setup>
-import {
-  mdiAccountMultiple,
-  mdiCartOutline,
-  mdiChartPie,
-  mdiChartTimelineVariant,
-  mdiMonitorCellphone,
-  mdiReload,
-} from '@mdi/js'
+import { mdiAccountMultiple, mdiCartOutline, mdiChartPie, mdiChartTimelineVariant } from '@mdi/js'
 import { onMounted, ref, computed } from 'vue'
-import BaseButton from '@/components/BaseButton.vue'
+import moment from 'moment'
 import CardBox from '@/components/CardBox.vue'
 import CardBoxClient from '@/components/CardBoxClient.vue'
 import CardBoxTransaction from '@/components/CardBoxTransaction.vue'
 import CardBoxWidget from '@/components/CardBoxWidget.vue'
 import * as chartConfig from '@/components/Charts/chart.config.js'
 import LineChart from '@/components/Charts/LineChart.vue'
-import NotificationBar from '@/components/NotificationBar.vue'
 import SectionMain from '@/components/SectionMain.vue'
 import SectionTitleLine from '@/components/SectionTitleLine.vue'
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
@@ -34,14 +26,12 @@ const monthsHistory = computed(() => stats.value?.months_history)
 
 const lastMonthProfit = computed(() => {
   if (!monthsHistory.value) return 0
-  return monthsHistory.value.profit[1].money_made
+  return monthsHistory.value.profit[monthsHistory.value.profit.length - 2].money_made
 })
 
 const lastMonthProfitPerc = computed(() => {
   if (!monthsHistory.value) return 0
-  const beforeLastMonth = monthsHistory.value.profit[2].money_made
-
-  console.log('AA')
+  const beforeLastMonth = monthsHistory.value.profit[monthsHistory.value.profit.length - 3].money_made
   return Math.round((lastMonthProfit.value / beforeLastMonth - 1) * 100)
 })
 
@@ -53,7 +43,7 @@ const loadStatistics = async () => {
   })
 }
 
-const datasetObject = (color, data) => {
+const datasetObject = (color, data, label, yAxisID) => {
   return {
     fill: false,
     borderColor: chartConfig.chartColors.default[color],
@@ -68,26 +58,30 @@ const datasetObject = (color, data) => {
     pointHoverBorderWidth: 15,
     pointRadius: 4,
     data,
+    label,
+    yAxisID,
     tension: 0.5,
     cubicInterpolationMode: 'default',
   }
 }
 
 const monthsToChartData = computed(() => {
-  console.log('GG')
   if (!monthsHistory.value) return []
   const labels = []
   const dataQuantity = []
   const dataProfit = []
   for (let i = 0; i < monthsHistory.value.profit.length; i += 1) {
-    labels.push(`${monthsHistory.value.profit[i].month}-${monthsHistory.value.profit[i].year}`)
+    labels.push(`${moment.months(monthsHistory.value.profit[i].month - 1)} ${monthsHistory.value.profit[i].year}`)
     dataQuantity.push(monthsHistory.value.num_orders[i].quantity)
     dataProfit.push(monthsHistory.value.profit[i].money_made)
   }
 
   return {
     labels,
-    datasets: [datasetObject('info', dataProfit), datasetObject('danger', dataQuantity)],
+    datasets: [
+      datasetObject('info', dataProfit, 'Profit ($)', 'y'),
+      datasetObject('danger', dataQuantity, 'Orders (#)', 'y1'),
+    ],
   }
 })
 
@@ -169,10 +163,6 @@ onMounted(async () => {
       </CardBox>
 
       <SectionTitleLineWithButton :icon="mdiAccountMultiple" title="Clients" />
-
-      <NotificationBar color="info" :icon="mdiMonitorCellphone">
-        <b>Responsive table.</b> Collapses on mobile
-      </NotificationBar>
     </SectionMain>
   </LayoutAuthenticated>
 </template>

@@ -1,7 +1,5 @@
 <script setup>
-import { mdiPlus } from '@mdi/js'
 import { computed, useSlots, ref } from 'vue'
-import BaseButton from '@/components/BaseButton.vue'
 import BaseIcon from '@/components/BaseIcon.vue'
 import IconRounded from '@/components/IconRounded.vue'
 import ProductModal from '@/components/products/ProductModal.vue'
@@ -33,6 +31,6 @@ const isModalActive = ref(false)
       </h1>
     </div>
     <slot v-if="hasSlot" />
-    <BaseButton v-else :icon="mdiPlus" color="whiteDark" @click="isModalActive = true" />
+    <!--<BaseButton v-else :icon="mdiPlus" color="whiteDark" @click="isModalActive = true" />-->
   </section>
 </template>

@@ -1,14 +1,6 @@
 <script setup>
 import { ref, watch, computed, onMounted } from 'vue'
-import {
-  Chart,
-  LineElement,
-  PointElement,
-  LineController,
-  LinearScale,
-  CategoryScale,
-  Tooltip,
-} from 'chart.js'
+import { Chart, LineElement, PointElement, LineController, LinearScale, CategoryScale, Tooltip } from 'chart.js'
 
 const props = defineProps({
   data: {
@@ -21,33 +13,41 @@ const root = ref(null)
 
 let chart
 
-Chart.register(
-  LineElement,
-  PointElement,
-  LineController,
-  LinearScale,
-  CategoryScale,
-  Tooltip
-)
+Chart.register(LineElement, PointElement, LineController, LinearScale, CategoryScale, Tooltip)
 
 onMounted(() => {
   chart = new Chart(root.value, {
     type: 'line',
     data: props.data,
     options: {
+      showDatasetLabels: true,
       responsive: true,
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      stacked: false,
       maintainAspectRatio: false,
       scales: {
-        y: {
-          display: false,
-        },
         x: {
           display: true,
         },
-      },
-      plugins: {
-        legend: {
-          display: false,
+        y: {
+          title: 'Profit',
+          type: 'linear',
+          display: true,
+          position: 'left',
+          grid: {
+            drawOnChartArea: false,
+          },
+        },
+        y1: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          grid: {
+            drawOnChartArea: false,
+          },
         },
       },
     },
