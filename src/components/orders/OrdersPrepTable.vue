@@ -1,6 +1,6 @@
 <script setup>
-import { computed, ref, inject } from 'vue'
-import { mdiCheck, mdiTruckDelivery, mdiTruckDeliveryOutline } from '@mdi/js'
+import { mdiTruckDelivery, mdiTruckDeliveryOutline } from '@mdi/js'
+import { computed, inject, ref } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
@@ -40,14 +40,11 @@ const formatDate = (date) => {
   return moment(date).format('DD/MM/YYYY')
 }
 
-const ready = () => {
-  
-}
+const ready = () => {}
 </script>
 
 <template>
   <CardBox class="mb-6" has-table>
-
     <table>
       <thead>
         <tr>
@@ -58,12 +55,7 @@ const ready = () => {
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="order in itemsPaginated"
-          :key="order.order_id"
-          class="cursor-pointer"
-          @click="showDetailsModal(order)"
-        >
+        <tr v-for="order in itemsPaginated" :key="order.order_id">
           <td data-label="Ticket number">
             {{ order.ticket_number }}
           </td>

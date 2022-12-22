@@ -19,12 +19,6 @@ const loadOrders = async () => {
   })
 }
 
-const loadStatuses = async () => {
-  await ordersStore.loadStatuses().catch((error) => {
-    console.log(error)
-  })
-}
-
 const filteredOrders = computed(() => {
   // return ordersStore.getProductsByFilter(filterByType.value)
   console.log(ordersStore.orders)
@@ -34,7 +28,6 @@ const filteredOrders = computed(() => {
 onMounted(async () => {
   // Calling loadProjects refreshes the list of projects from the API
   await loadOrders()
-  await loadStatuses()
   // isFetching.value = false
   ordersStore.statuses.forEach((status, index) => {
     selectStatuses.value.push({
@@ -45,6 +38,7 @@ onMounted(async () => {
   })
 })
 </script>
+
 <template>
   <LayoutAuthenticated>
     <SectionMain>
@@ -54,7 +48,7 @@ onMounted(async () => {
           <h1 class="text-3xl leading-tight">Current Orders</h1>
         </div>
       </section>
-      <orders-prep-table :orders="filteredOrders" :statuses="selectStatuses" />
+      <OrdersPrepTable :orders="filteredOrders" :statuses="selectStatuses" />
     </SectionMain>
   </LayoutAuthenticated>
 </template>

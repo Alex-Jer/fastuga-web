@@ -1,50 +1,59 @@
 <script setup>
 import { mdiClipboardTextClockOutline } from '@mdi/js'
 import { computed, onMounted, ref } from 'vue'
+import { useToast } from 'vue-toastification'
 import IconRounded from '@/components/IconRounded.vue'
 import OrderItemsTable from '@/components/orders/OrderItemsTable.vue'
 import SectionMain from '@/components/SectionMain.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
-import { useOrdersStore } from '@/stores/orders'
+import { processGeneralError } from '@/requestHelper'
+import { useOrderItemsStore } from '@/stores/order-item'
 
-const ordersStore = useOrdersStore()
+const orderItemsStore = useOrderItemsStore()
 const selectStatuses = ref([])
+const toast = useToast()
 
 const loadPreparableDishes = async () => {
-  await ordersStore.loadPreparableDishes().catch((error) => {
-    console.log(error)
-    console.log(ordersStore.loadPreparableDishes())
+  await orderItemsStore.loadPreparableDishes().catch((error) => {
+    processGeneralError(error, 'dishes')
   })
 }
 
-const loadDishStatuses = async () => {
-  await ordersStore.loadDishStatuses().catch((error) => {
-    console.log(error)
-  })
+const loadDishStatuses = () => {
+  orderItemsStore.loadDishStatuses()
 }
 
 const filteredOrders = computed(() => {
-  console.log(ordersStore.orders)
-  return ordersStore.orders
+  console.log(orderItemsStore.items)
+  return orderItemsStore.items
 })
 
-const finishDish = async (order, item) => {
-  await ordersStore.finishDish(order, item).catch((error) => {
-    console.log(error)
-  })
-}
-
 const prepareDish = async (order, item) => {
-  await ordersStore.prepareDish(order, item).catch((error) => {
-    console.log(error)
-  })
+  await orderItemsStore
+    .prepareDish(order, item)
+    .then(() => {
+      toast.success('Dish prepared')
+    })
+    .catch((error) => {
+      processGeneralError(error, 'dish')
+    })
 }
 
+const finishDish = async (order, item) => {
+  await orderItemsStore
+    .finishDish(order, item)
+    .then(() => {
+      toast.success('Dish finished')
+    })
+    .catch((error) => {
+      processGeneralError(error, 'dish')
+    })
+}
 
 onMounted(async () => {
   await loadPreparableDishes()
-  await loadDishStatuses()
-  ordersStore.statuses.forEach((status, index) => {
+  loadDishStatuses()
+  orderItemsStore.statuses.forEach((status, index) => {
     selectStatuses.value.push({
       id: index + 1,
       value: status.value,
@@ -63,7 +72,12 @@ onMounted(async () => {
           <h1 class="text-3xl leading-tight">Current Dishes</h1>
         </div>
       </section>
-      <order-items-table :order="filteredOrders" :statuses="selectStatuses" @readyEvent="finishDish" @prepareEvent="prepareDish" />
+      <order-items-table
+        :order="filteredOrders"
+        :statuses="selectStatuses"
+        @readyEvent="finishDish"
+        @prepareEvent="prepareDish"
+      />
     </SectionMain>
   </LayoutAuthenticated>
 </template>
