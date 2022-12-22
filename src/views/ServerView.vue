@@ -8,27 +8,45 @@ import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { useOrdersStore } from '@/stores/orders'
 
 const ordersStore = useOrdersStore()
-// const isModalActive = ref(false)
-// const filterByType = ref('')
-// const isFetching = ref(true)
 const selectStatuses = ref([])
 
 const loadOrders = async () => {
   await ordersStore.loadPrepOrders().catch((error) => {
-    console.log(error)
+    processGeneralError(error, 'orders')
   })
 }
 
+const loadStatuses = () => {
+  ordersStore.statuses
+}
+
 const filteredOrders = computed(() => {
-  // return ordersStore.getProductsByFilter(filterByType.value)
   console.log(ordersStore.orders)
   return ordersStore.orders
 })
 
+const finishOrder = async (order) => {
+  await ordersStore.finishOrder(order)
+    .then(() => {
+      toast.success('Order ready')
+    })
+    .catch((error) => {
+      processGeneralError(error, 'order')
+    })
+}
+
+const deliverOrder = async (order) => {
+  await ordersStore.deliverOrder(order)
+    .then(() => {
+      toast.success('Order delivered')
+    })
+    .catch((error) => {
+      processGeneralError(error, 'order')
+    })
+}
+
 onMounted(async () => {
-  // Calling loadProjects refreshes the list of projects from the API
   await loadOrders()
-  // isFetching.value = false
   ordersStore.statuses.forEach((status, index) => {
     selectStatuses.value.push({
       id: index + 1,
@@ -48,7 +66,7 @@ onMounted(async () => {
           <h1 class="text-3xl leading-tight">Current Orders</h1>
         </div>
       </section>
-      <OrdersPrepTable :orders="filteredOrders" :statuses="selectStatuses" />
+      <OrdersPrepTable :orders="filteredOrders" :statuses="selectStatuses" @readyEvent="finishOrder" @deliverEvent="deliverOrder" />
     </SectionMain>
   </LayoutAuthenticated>
 </template>

@@ -62,17 +62,18 @@ export const useOrdersStore = defineStore('orders', () => {
     }
   }
 
-  const orderReady = async (order) => {
+  const finishOrder = async (order) => {
     const response = await axiosReq(`orders/${order}/finish`, 'PATCH')
     if (response.status !== 200) throw response
-    orders.value.splice(orders.value.indexOf(order), 1)
+    const index = order.value.findIndex((itm) => ord.order.id === order)
+    items.value[index].order.status = 'R'
     return response
   }
 
   const deliverOrder = async (order) => {
     const response = await axiosReq(`orders/${order}/deliver`, 'PATCH')
-    if (response.status !== 200) throw response
-    orders.value.splice(orders.value.indexOf(order), 1)
+    const index = order.value.findIndex((itm) => ord.order.id === order)
+    items.value[index].order.status = 'D'
     return response
   }
 
@@ -96,7 +97,7 @@ export const useOrdersStore = defineStore('orders', () => {
     loadAllOrders,
     cancelOrder,
     loadPrepOrders,
-    orderReady,
+    finishOrder,
     deliverOrder,
   }
 })
