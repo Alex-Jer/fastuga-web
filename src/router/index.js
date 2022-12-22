@@ -167,6 +167,8 @@ router.beforeEach((to, from, next) => {
   const loginRoutes = ['profile', 'order']
   const customerRoutes = ['orders']
   const managerRoutes = ['products', 'users', 'orders', 'statistics']
+  const chefRoutes = ['current-dishes']
+  const serverRoutes = ['current-orders']
 
   /* If the user is not logged in */
   if (noLoginRoutes.includes(to.name)) {
