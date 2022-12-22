@@ -5,7 +5,6 @@ import axios from 'axios'
 import Toast from 'vue-toastification'
 import moment from 'moment'
 import { darkModeKey } from '@/config.js'
-import { useMainStore } from '@/stores/main.js'
 import { useStyleStore } from '@/stores/style.js'
 import App from './App.vue'
 import router from './router'
@@ -54,8 +53,6 @@ app.provide('moment', moment)
 /* Init Pinia stores */
 // TODO: remove template code
 const styleStore = useStyleStore(pinia)
-
-// mainStore.$state.axios.defaults.baseURL = `${apiDomain}/api`
 
 /* TODO: Websocket */
 // if (wsConnection) {
