@@ -4,6 +4,7 @@ import { createApp } from 'vue'
 import axios from 'axios'
 import Toast from 'vue-toastification'
 import moment from 'moment'
+import { io } from 'socket.io-client'
 import { darkModeKey } from '@/config.js'
 import { useStyleStore } from '@/stores/style.js'
 import App from './App.vue'
@@ -14,7 +15,7 @@ import './css/main.css'
 
 /* API and Webserver */
 const apiDomain = import.meta.env.VITE_API_DOMAIN
-// TODO: const wsConnection = import.meta.env.VITE_WS_CONNECTION
+const wsConnection = import.meta.env.VITE_WS_CONNECTION
 
 /* Init Pinia */
 const pinia = createPinia()
@@ -48,6 +49,7 @@ app.provide(
     },
   })
 )
+app.provide('socket', io(wsConnection))
 app.provide('moment', moment)
 
 /* Init Pinia stores */
