@@ -51,7 +51,7 @@ const loadStatistics = async () => {
   })
 }
 
-const datasetObject = (color, data) => {
+/*const datasetObject = (color, data) => {
   return {
     fill: false,
     borderColor: chartConfig.chartColors.default[color],
@@ -83,7 +83,7 @@ const monthsToChartData = () => {
     labels,
     datasets: [datasetObject('primary', points), datasetObject('danger', points)],
   }
-}
+}*/
 
 const fillChartData = () => {
   chartData.value = chartConfig.sampleChartData()
