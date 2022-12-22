@@ -94,12 +94,12 @@ const save = () => {
       cancel()
     })
     .catch((error) => {
-      if (error.response.status === 422) {
+      if (error.response.status === 422 || error.response.status === 402) {
         const errorMsg = JSON.parse(JSON.stringify(error.response.data.message))
         toast.error(errorMsg)
-      } else {
-        toast.error('Something went wrong. Please try again later.')
+        return
       }
+      toast.error('Something went wrong. Please try again later.')
     })
 }
 

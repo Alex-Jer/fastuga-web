@@ -58,7 +58,8 @@ export const useCartStore = defineStore('cart', () => {
       points_used: order.points_used,
       cart: JSON.stringify(cartItems),
     })
-    console.log(response)
+
+    return response.data.data
   }
 
   return {
