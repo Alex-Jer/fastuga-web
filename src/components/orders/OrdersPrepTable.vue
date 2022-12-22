@@ -39,8 +39,6 @@ const pagesList = computed(() => {
 const formatDate = (date) => {
   return moment(date).format('DD/MM/YYYY')
 }
-
-
 </script>
 
 <template>
@@ -66,8 +64,22 @@ const formatDate = (date) => {
           <td data-label="Date">{{ formatDate(order.date) }}</td>
           <td class="before:hidden lg:w-1 whitespace-nowrap">
             <BaseButtons type="justify-start lg:justify-end" no-wrap>
-              <BaseButton color="info" :icon="mdiTruckDeliveryOutline" :label="'Ready'" small @click.stop="$emit('readyEvent', order.id)" v-if="order.status === 'P'" />
-              <BaseButton color="info" :icon="mdiTruckDelivery" :label="'Delivered'" small @click.stop="$emit('deliverEvent', order.id)" v-if="order.status === 'R'" />
+              <BaseButton
+                color="info"
+                :icon="mdiTruckDeliveryOutline"
+                :label="'Ready'"
+                small
+                @click.stop="$emit('readyEvent', order.id)"
+                v-if="order.status === 'P'"
+              />
+              <BaseButton
+                color="info"
+                :icon="mdiTruckDelivery"
+                :label="'Delivered'"
+                small
+                @click.stop="$emit('deliverEvent', order.id)"
+                v-if="order.status === 'R'"
+              />
             </BaseButtons>
           </td>
         </tr>
