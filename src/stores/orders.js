@@ -49,8 +49,7 @@ export const useOrdersStore = defineStore('orders', () => {
   const loadPreparableDishes = async () => {
     try {
         const response = await axios.get('orders/preparable-dishes')
-        orders.value = response.data.data
-        console.log('passei pelo .js')
+        orders.value = response.data
         return orders.value
     } catch (error) {
         clearOrders()

@@ -8,43 +8,22 @@ import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { useOrdersStore } from '@/stores/orders'
 
 const ordersStore = useOrdersStore()
-// const isModalActive = ref(false)
-// const filterByType = ref('')
-// const isFetching = ref(true)
-const selectStatuses = ref([])
+
 
 const loadPreparableDishes = async () => {
-  console.log('entrei aqui')
   await ordersStore.loadPreparableDishes().catch((error) => {
     console.log(error)
     console.log(ordersStore.loadPreparableDishes())
   })
 }
 
-const loadStatuses = async () => {
-  await ordersStore.loadStatuses().catch((error) => {
-    console.log(error)
-  })
-}
-
 const filteredOrders = computed(() => {
-  // return ordersStore.getProductsByFilter(filterByType.value)
   console.log(ordersStore.orders)
   return ordersStore.orders
 })
 
 onMounted(async () => {
-  // Calling loadProjects refreshes the list of projects from the API
   await loadPreparableDishes()
-  await loadStatuses()
-  // isFetching.value = false
-  ordersStore.statuses.forEach((status, index) => {
-    selectStatuses.value.push({
-      id: index + 1,
-      value: status.value,
-      label: status.label,
-    })
-  })
 })
 </script>
 
@@ -57,7 +36,7 @@ onMounted(async () => {
           <h1 class="text-3xl leading-tight">Current Dishes</h1>
         </div>
       </section>
-      <order-items-table :orders="filteredOrders" :statuses="selectStatuses" />
+      <order-items-table :orders="filteredOrders" />
     </SectionMain>
   </LayoutAuthenticated>
 </template>
