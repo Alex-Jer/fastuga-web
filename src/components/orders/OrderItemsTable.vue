@@ -5,6 +5,7 @@ import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import CardBox from '@/components/CardBox.vue'
 import BaseLevel from '../BaseLevel.vue'
+import OrderItemsDeTailsModal from './OrderItemsDetailsModal.vue'
 
 const props = defineProps({
   items: {
@@ -35,10 +36,20 @@ const pagesList = computed(() => {
   for (let i = 0; i < numPages.value; i += 1) list.push(i)
   return list
 })
+
+const modalData = ref({
+  showDetailsModal: false,
+  item: {},
+})
+
+const showDetailsModal = (item) => {
+  modalData.value = { showDetailsModal: true, item }
+}
 </script>
 
 <template>
   <CardBox class="mb-6" has-table>
+    <OrderItemsDeTailsModal v-model="modalData.showDetailsModal" :item="modalData.item" :title="`Viewing Item`" />
     <table>
       <thead>
         <tr>
@@ -50,7 +61,7 @@ const pagesList = computed(() => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in itemsPaginated" :key="item.item.id">
+        <tr v-for="item in itemsPaginated" :key="item.item.id" class="cursor-pointer" @click="showDetailsModal(item)">
           <td data-label="Ticket number">{{ item.ticket_number }} - {{ item.item.order_local_number }}</td>
           <td data-label="Product name">{{ item.item.product.name }}</td>
           <td data-label="Status">

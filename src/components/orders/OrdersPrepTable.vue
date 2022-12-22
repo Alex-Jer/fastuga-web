@@ -5,6 +5,7 @@ import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import CardBox from '@/components/CardBox.vue'
+import router from '@/router'
 
 const moment = inject('moment')
 
@@ -39,6 +40,10 @@ const pagesList = computed(() => {
 const formatDate = (date) => {
   return moment(date).format('DD/MM/YYYY')
 }
+
+const showDetailsView = (id) => {
+  router.push({ name: 'order', params: { id } })
+}
 </script>
 
 <template>
@@ -53,7 +58,12 @@ const formatDate = (date) => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="order in itemsPaginated" :key="order.order_id">
+        <tr
+          v-for="order in itemsPaginated"
+          :key="order.order_id"
+          class="cursor-pointer"
+          @click="showDetailsView(order.id)"
+        >
           <td data-label="Ticket number">
             {{ order.ticket_number }}
           </td>
