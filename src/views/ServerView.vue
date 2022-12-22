@@ -5,19 +5,23 @@ import IconRounded from '@/components/IconRounded.vue'
 import OrdersPrepTable from '@/components/orders/OrdersPrepTable.vue'
 import SectionMain from '@/components/SectionMain.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
+import { processGeneralError } from '@/requestHelper'
 import { useOrdersStore } from '@/stores/orders'
 
 const ordersStore = useOrdersStore()
 const selectStatuses = ref([])
 
 const loadOrders = async () => {
-  await ordersStore.loadPrepOrders().catch((error) => {
+  await ordersStore.loadReadyOrders().catch((error) => {
     processGeneralError(error, 'orders')
   })
+  
 }
 
-const loadStatuses = () => {
-  ordersStore.statuses
+const loadReadyOrders = async () => {
+  await ordersStore.add.loadReadyOrders().catch((error) => {
+    processGeneralError(error, 'orders')
+  })
 }
 
 const filteredOrders = computed(() => {

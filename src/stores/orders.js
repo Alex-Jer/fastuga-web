@@ -62,6 +62,17 @@ export const useOrdersStore = defineStore('orders', () => {
     }
   }
 
+  const loadReadyOrders = async () => {
+    try {
+      const response = await axiosReq('orders/ready', 'GET')
+      orders.value = response.data.data
+      return orders.value
+    } catch (error) {
+      clearOrders()
+      throw error
+    }
+  }
+
   const finishOrder = async (order) => {
     const response = await axiosReq(`orders/${order}/finish`, 'PATCH')
     if (response.status !== 200) throw response
@@ -99,5 +110,6 @@ export const useOrdersStore = defineStore('orders', () => {
     loadPrepOrders,
     finishOrder,
     deliverOrder,
+    loadReadyOrders,
   }
 })
