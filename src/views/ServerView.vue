@@ -1,6 +1,7 @@
 <script setup>
 import { mdiClipboardTextClockOutline } from '@mdi/js'
 import { computed, onMounted, ref } from 'vue'
+import { useToast } from 'vue-toastification'
 import IconRounded from '@/components/IconRounded.vue'
 import OrdersPrepTable from '@/components/orders/OrdersPrepTable.vue'
 import SectionMain from '@/components/SectionMain.vue'
@@ -10,13 +11,12 @@ import { useOrdersStore } from '@/stores/orders'
 
 const ordersStore = useOrdersStore()
 const selectStatuses = ref([])
+const toast = useToast()
 
 const loadOrders = async () => {
   await ordersStore.loadPrepOrders().catch((error) => {
     processGeneralError(error, 'orders')
   })
-  
-  
 }
 
 const filteredOrders = computed(() => {
@@ -25,7 +25,8 @@ const filteredOrders = computed(() => {
 })
 
 const finishOrder = async (order) => {
-  await ordersStore.finishOrder(order)
+  await ordersStore
+    .finishOrder(order)
     .then(() => {
       toast.success('Order ready')
     })
@@ -35,7 +36,8 @@ const finishOrder = async (order) => {
 }
 
 const deliverOrder = async (order) => {
-  await ordersStore.deliverOrder(order)
+  await ordersStore
+    .deliverOrder(order)
     .then(() => {
       toast.success('Order delivered')
     })
@@ -65,7 +67,12 @@ onMounted(async () => {
           <h1 class="text-3xl leading-tight">Current Orders</h1>
         </div>
       </section>
-      <OrdersPrepTable :orders="filteredOrders" :statuses="selectStatuses" @readyEvent="finishOrder" @deliverEvent="deliverOrder" />
+      <OrdersPrepTable
+        :orders="filteredOrders"
+        :statuses="selectStatuses"
+        @readyEvent="finishOrder"
+        @deliverEvent="deliverOrder"
+      />
     </SectionMain>
   </LayoutAuthenticated>
 </template>
