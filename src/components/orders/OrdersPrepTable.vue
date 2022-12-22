@@ -25,7 +25,7 @@ const itemsPerPage = ref(8)
 const currentPage = ref(0)
 
 const itemsPaginated = computed(() =>
-  orders.value.slice(itemsPerPage.value * currentPage.value, itemsPerPage.value * (currentPage.value + 1))
+  orders.value?.slice(itemsPerPage.value * currentPage.value, itemsPerPage.value * (currentPage.value + 1))
 )
 
 const numPages = computed(() => Math.ceil(orders.value.length / itemsPerPage.value))
@@ -39,8 +39,6 @@ const pagesList = computed(() => {
 const formatDate = (date) => {
   return moment(date).format('DD/MM/YYYY')
 }
-
-const ready = () => {}
 </script>
 
 <template>

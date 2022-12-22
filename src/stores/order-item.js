@@ -39,6 +39,7 @@ export const useOrderItemsStore = defineStore('orders', () => {
     if (response.status !== 200) throw response
     const index = items.value.findIndex((itm) => itm.item.id === order)
     items.value[index].item.status = 'R'
+    items.value.splice(index, 1)
     return response
   }
 

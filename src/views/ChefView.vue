@@ -1,6 +1,6 @@
 <script setup>
 import { mdiClipboardTextClockOutline } from '@mdi/js'
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import IconRounded from '@/components/IconRounded.vue'
 import OrderItemsTable from '@/components/orders/OrderItemsTable.vue'
@@ -22,11 +22,6 @@ const loadPreparableDishes = async () => {
 const loadDishStatuses = () => {
   orderItemsStore.loadDishStatuses()
 }
-
-const filteredOrders = computed(() => {
-  console.log(orderItemsStore.items)
-  return orderItemsStore.items
-})
 
 const prepareDish = async (order, item) => {
   await orderItemsStore
@@ -73,7 +68,7 @@ onMounted(async () => {
         </div>
       </section>
       <order-items-table
-        :order="filteredOrders"
+        :items="orderItemsStore.items"
         :statuses="selectStatuses"
         @readyEvent="finishDish"
         @prepareEvent="prepareDish"
