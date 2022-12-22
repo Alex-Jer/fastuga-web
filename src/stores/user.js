@@ -1,6 +1,7 @@
 import { ref, computed, inject } from 'vue'
 import { defineStore } from 'pinia'
 import { axiosReq } from '@/requestHelper'
+import { useCartStore } from './cart'
 
 export const useUserStore = defineStore('user', () => {
   const apiDomain = inject('apiDomain')
@@ -66,6 +67,8 @@ export const useUserStore = defineStore('user', () => {
 
   const logout = async () => {
     try {
+      const cartStore = useCartStore()
+      cartStore.clearCart()
       await axiosReq('logout', 'DELETE')
       clearUser()
       return true

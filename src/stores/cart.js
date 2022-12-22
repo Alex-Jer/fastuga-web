@@ -13,7 +13,6 @@ export const useCartStore = defineStore('cart', () => {
     items.value = []
   }
 
-  //! TODO: Destroy cart on logout
   const addToCart = (newItem) => {
     const parsedItem = {
       ...newItem,

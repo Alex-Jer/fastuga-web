@@ -27,22 +27,22 @@ const paymentTypes = [
 ]
 
 const form = reactive({
-  payment_type: userStore.user.customer.default_payment_type || paymentTypes[1].value,
-  payment_reference: userStore.user.customer.default_payment_reference || '',
+  payment_type: userStore.user?.customer.default_payment_type || paymentTypes[0].value,
+  payment_reference: userStore.user?.customer.default_payment_reference || '',
   points_used: 0,
 })
 
 const reset = () => {
-  form.payment_type = userStore.user.customer.default_payment_type || paymentTypes[1].value
-  form.payment_reference = userStore.user.customer.default_payment_reference || ''
+  form.payment_type = userStore.user?.customer.default_payment_type || paymentTypes[0].value
+  form.payment_reference = userStore.user?.customer.default_payment_reference || ''
   form.points_used = 0
 }
 
 watch(
-  () => [userStore.user.customer],
+  () => [userStore.user?.customer],
   ([customer]) => {
-    form.payment_type = customer.default_payment_type || paymentTypes[1].value
-    form.payment_reference = customer.default_payment_reference || ''
+    form.payment_type = customer?.default_payment_type || paymentTypes[0].value
+    form.payment_reference = customer?.default_payment_reference || ''
   },
   { immediate: true }
 )
@@ -69,7 +69,7 @@ const validate = () => {
     return false
   }
 
-  if (form.points_used > userStore.user.customer.points) {
+  if (form.points_used > userStore.user?.customer.points) {
     toast.error('You do not have enough points')
     return false
   }
@@ -92,7 +92,7 @@ const checkout = () => {
     .then(() => {
       toast.success('Order placed!')
       reset()
-      cartStore.items = []
+      cartStore.clearCart()
     })
     .catch((error) => {
       if (error.response.status === 422 || error.response.status === 402) {
@@ -147,7 +147,7 @@ watchEffect(() => {
             <FormControl v-model="form.payment_reference" />
           </FormField>
 
-          <FormField label="Points to use">
+          <FormField label="Points to use" v-if="userStore.user">
             <FormControl v-model="form.points_used" />
           </FormField>
 
