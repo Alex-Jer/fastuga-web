@@ -80,7 +80,10 @@ export const axiosReqPage = async (pageUrl) => {
 
 export const processGeneralError = (error, model) => {
   const actualError = error.response ? error.response : error
-  if (!actualError.status) toast.error("Couldn't connect to the server! Please try again later.")
+  if (!actualError.status) {
+    toast.error("Couldn't connect to the server! Please try again later.")
+    return
+  }
   const capitalModel = model.charAt(0).toUpperCase() + model.slice(1)
   if (actualError.status === 404) toast.error(`${capitalModel} was not found!`)
   else if (actualError.data?.message) toast.error(actualError.data.message)

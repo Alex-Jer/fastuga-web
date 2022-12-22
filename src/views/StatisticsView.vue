@@ -161,8 +161,6 @@ onMounted(async () => {
           <line-chart :data="chartData" class="h-96" />
         </div>
       </CardBox>
-
-      <SectionTitleLineWithButton :icon="mdiAccountMultiple" title="Clients" />
     </SectionMain>
   </LayoutAuthenticated>
 </template>

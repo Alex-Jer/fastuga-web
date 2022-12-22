@@ -120,11 +120,35 @@ const userStore = useUserStore()
       </router-link>
     </li>
 
-    <li v-if="userStore.user && userStore.user.type !== 'C'">
+    <li v-if="userStore.user && userStore.user.type == 'EM'">
       <router-link to="/statistics">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
           :class="$route.name === 'statistics' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
+        >
+          <BaseIcon :path="mdiMonitor" class="pt-1" w="w-16" :size="18" />
+          <span class="pb-1">Statistics</span>
+        </div>
+      </router-link>
+    </li>
+
+    <li v-if="userStore.user && userStore.user.type == 'EC'">
+      <router-link to="/statistics-chef">
+        <div
+          class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
+          :class="$route.name === 'statistics-chef' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
+        >
+          <BaseIcon :path="mdiMonitor" class="pt-1" w="w-16" :size="18" />
+          <span class="pb-1">Statistics</span>
+        </div>
+      </router-link>
+    </li>
+
+    <li v-if="userStore.user && userStore.user.type == 'ED'">
+      <router-link to="/statistics-server">
+        <div
+          class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
+          :class="$route.name === 'statistics-server' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
         >
           <BaseIcon :path="mdiMonitor" class="pt-1" w="w-16" :size="18" />
           <span class="pb-1">Statistics</span>

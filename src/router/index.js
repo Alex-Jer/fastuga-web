@@ -6,6 +6,8 @@ import Cart from '@/views/CartView.vue'
 import Products from '@/views/ProductsView.vue'
 import Users from '@/views/UsersView.vue'
 import Statistics from '@/views/StatisticsView.vue'
+import StatisticsChef from '@/views/StatisticsChefView.vue'
+import StatisticsServer from '@/views/StatisticsServerView.vue'
 import Login from '@/views/LoginView.vue'
 import Register from '@/views/RegisterView.vue'
 import Orders from '@/views/OrdersView.vue'
@@ -127,6 +129,22 @@ const routes = [
     name: 'statistics',
     component: Statistics,
   },
+  {
+    meta: {
+      title: 'Statistics',
+    },
+    path: '/statistics-chef',
+    name: 'statistics-chef',
+    component: StatisticsChef,
+  },
+  {
+    meta: {
+      title: 'Statistics',
+    },
+    path: '/statistics-server',
+    name: 'statistics-server',
+    component: StatisticsServer,
+  },
 ]
 
 const router = createRouter({
@@ -151,8 +169,8 @@ router.beforeEach((to, from, next) => {
   const loginRoutes = ['profile', 'order']
   const customerRoutes = ['orders']
   const managerRoutes = ['products', 'users', 'orders', 'statistics']
-  const chefRoutes = ['current-dishes']
-  const serverRoutes = ['current-orders']
+  const chefRoutes = ['current-dishes', 'statistics-chef']
+  const serverRoutes = ['current-orders', 'statistics-server']
 
   /* If the user is not logged in */
   if (noLoginRoutes.includes(to.name)) {
