@@ -10,16 +10,18 @@ import { useOrdersStore } from '@/stores/orders'
 const ordersStore = useOrdersStore()
 
 const loadPreparableDishes = async () => {
+  console.log('entrei aqui')
   await ordersStore.loadPreparableDishes().catch((error) => {
     console.log(error)
+    console.log(ordersStore.loadPreparableDishes())
   })
 }
 
 
 const filteredOrders = computed(() => {
   // return ordersStore.getProductsByFilter(filterByType.value)
-  console.log(ordersStore.orders)
-  return ordersStore.getOrdersByFilter('')
+  console.log('entrei aqui 2')
+  return ordersStore.orders
 })
 
 onMounted(async () => {

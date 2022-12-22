@@ -35,11 +35,22 @@ export const useOrdersStore = defineStore('orders', () => {
     }
   }
 
+  const loadPrepOrders = async () => {
+    try {
+      const response = await axios.get('orders/preparing')
+      orders.value = response.data.data
+      return orders.value
+    } catch (error) {
+      clearOrders()
+      throw error
+    }
+  }
+
   const loadPreparableDishes = async () => {
     try {
         const response = await axios.get('orders/preparable-dishes')
         orders.value = response.data.data
-        console.log(orders.value)
+        console.log('passei pelo .js')
         return orders.value
     } catch (error) {
         clearOrders()
@@ -110,5 +121,6 @@ export const useOrdersStore = defineStore('orders', () => {
     loadPreparableDishes,
     prepareDish,
     finishDish,
+    loadPrepOrders,
   }
 })
