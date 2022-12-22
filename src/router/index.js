@@ -9,7 +9,7 @@ import Login from '@/views/LoginView.vue'
 import Register from '@/views/RegisterView.vue'
 import Orders from '@/views/OrdersView.vue'
 import Order from '@/views/OrderView.vue'
-import CurrentOrders from '@/views/DeliveryView.vue'
+import CurrentOrders from '@/views/ServerView.vue'
 
 const routes = [
   {
