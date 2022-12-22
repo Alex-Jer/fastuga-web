@@ -1,17 +1,29 @@
 import { ref, computed, inject } from 'vue'
 import { defineStore } from 'pinia'
 import { axiosReq } from '@/requestHelper'
+import { useSocketStore } from './socket'
+import { useToast } from 'vue-toastification'
 
 export const useUserStore = defineStore('user', () => {
   const apiDomain = inject('apiDomain')
 
   const user = ref(null)
   const paymentTypes = ref([])
+  const socket = useSocketStore()
+  const toast = useToast()
 
   const userPhotoUrl = computed(() => {
     const nameWithPlus = user.value?.name.replace(/ /g, '+')
     const placeholder = `https://avatar.oxro.io/avatar.svg?name=${nameWithPlus}&bold=true&width=150&height=150&fontSize=50&background=3b82f6&color=ffffff`
     return user.value?.photo_url ? `${apiDomain}/storage/fotos/${user.value?.photo_url}` : placeholder
+  })
+
+  socket.on('updateUser', (newUser) => {
+    const oldUser = user.value
+    user.value = newUser
+    if (oldUser.type !== newUser.type) {
+      toast.info('Your user was remotely updated. Updating page...')
+    }
   })
 
   const userId = computed(() => {

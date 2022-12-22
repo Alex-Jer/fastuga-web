@@ -1,11 +1,9 @@
 import { inject } from 'vue'
 import { defineStore } from 'pinia'
 import { useToast } from 'vue-toastification'
-import { useUserStore } from './user'
 
 export const useSocketStore = defineStore('socket', () => {
   const socket = inject('socket')
-  const userStore = useUserStore()
   const toast = useToast()
 
   const sendHotDishOrdered = (dish) => {
@@ -31,14 +29,6 @@ export const useSocketStore = defineStore('socket', () => {
   const sendUserUpdated = (oldType, user) => {
     socket.emit('updateUser', oldType, user)
   }
-
-  socket.on('updateUser', (user) => {
-    const oldUser = userStore.user.value
-    userStore.user.value = user
-    if (oldUser.type !== user.type) {
-      toast.info('Your user was remotely updated. Updating page...')
-    }
-  })
 
   socket.on('orderReady', (order) => {
     toast.info(`Your order (#${order.ticket_number}) is ready!`)
