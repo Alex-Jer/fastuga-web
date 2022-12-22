@@ -1,25 +1,33 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { axiosReq } from '@/requestHelper'
+import { useUserStore } from './user'
 
 export const useCartStore = defineStore('cart', () => {
   const items = ref([])
+  const userStore = useUserStore()
 
   const totalCartItems = computed(() => {
     return items.value.length
   })
 
-  const clearCart = () => {
-    items.value = []
+  const restoreCart = () => {
+    const cart = JSON.parse(sessionStorage.getItem('cart'))
+    if (cart) items.value = cart
   }
 
-  //! TODO: Destroy cart on logout
+  const clearCart = () => {
+    items.value = []
+    sessionStorage.removeItem('cart')
+  }
+
   const addToCart = (newItem) => {
     const parsedItem = {
       ...newItem,
       total_price: Math.round((newItem.price * newItem.quantity + Number.EPSILON) * 100) / 100,
     }
     items.value.push(parsedItem)
+    sessionStorage.setItem('cart', JSON.stringify(items.value))
   }
 
   const removeFromCart = (removedItem) => {
@@ -45,12 +53,17 @@ export const useCartStore = defineStore('cart', () => {
       cart: JSON.stringify(cartItems),
     })
 
+    clearCart()
+
+    userStore.user.customer.points += response.data.order.points_gained
+
     return response.data.data
   }
 
   return {
     items,
     totalCartItems,
+    restoreCart,
     clearCart,
     addToCart,
     removeFromCart,

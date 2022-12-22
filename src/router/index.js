@@ -5,11 +5,13 @@ import Home from '@/views/HomeView.vue'
 import Cart from '@/views/CartView.vue'
 import Products from '@/views/ProductsView.vue'
 import Users from '@/views/UsersView.vue'
-import Dashboard from '@/views/DashboardView.vue'
+import Statistics from '@/views/StatisticsView.vue'
 import Login from '@/views/LoginView.vue'
 import Register from '@/views/RegisterView.vue'
 import Orders from '@/views/OrdersView.vue'
 import Order from '@/views/OrderView.vue'
+import CurrentDishes from '@/views/ChefView.vue'
+import CurrentOrders from '@/views/ServerView.vue'
 
 const routes = [
   {
@@ -87,6 +89,38 @@ const routes = [
   },
   {
     meta: {
+      title: 'Current Dishes',
+    },
+    path: '/current-dishes',
+    name: 'current-dishes',
+    component: CurrentDishes,
+  },
+  {
+    meta: {
+      title: 'Current Orders',
+    },
+    path: '/current-orders',
+    name: 'current-orders',
+    component: CurrentOrders,
+  },
+  {
+    meta: {
+      title: 'Tables',
+    },
+    path: '/tables',
+    name: 'tables',
+    component: () => import('@/views/TablesView.vue'),
+  },
+  {
+    meta: {
+      title: 'Forms',
+    },
+    path: '/forms',
+    name: 'forms',
+    component: () => import('@/views/FormsView.vue'),
+  },
+  {
+    meta: {
       title: 'Profile',
     },
     path: '/profile',
@@ -103,11 +137,11 @@ const routes = [
   },
   {
     meta: {
-      title: 'Dashboard',
+      title: 'Statistics',
     },
-    path: '/dashboard',
-    name: 'dashboard',
-    component: Dashboard,
+    path: '/statistics',
+    name: 'statistics',
+    component: Statistics,
   },
 ]
 
@@ -132,7 +166,7 @@ router.beforeEach((to, from, next) => {
   const noEmployeeRoutes = ['cart']
   const loginRoutes = ['profile', 'order']
   const customerRoutes = ['orders']
-  const managerRoutes = ['products', 'users', 'orders']
+  const managerRoutes = ['products', 'users', 'orders', 'statistics']
 
   /* If the user is not logged in */
   if (noLoginRoutes.includes(to.name)) {
@@ -169,6 +203,21 @@ router.beforeEach((to, from, next) => {
   /* If the user is a manager */
   if (userStore.user?.type === 'EM') {
     if (managerRoutes.includes(to.name)) {
+      next()
+      return
+    }
+  }
+
+  /* If the user is a chef */
+  if (userStore.user?.type === 'EC') {
+    if (chefRoutes.includes(to.name)) {
+      next()
+      return
+    }
+  }
+
+  if (userStore.user?.type === 'ED') {
+    if (serverRoutes.includes(to.name)) {
       next()
       return
     }

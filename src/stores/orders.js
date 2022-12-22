@@ -1,11 +1,18 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { computed, ref } from 'vue'
 import { axiosReq, axiosReqPage } from '@/requestHelper'
 
 export const useOrdersStore = defineStore('orders', () => {
   const orders = ref([])
   const statuses = ref([])
   const pageInfo = ref([])
+
+  statuses.value = [
+    { id: 1, value: 'P', label: 'Preparing' },
+    { id: 2, value: 'R', label: 'Ready' },
+    { id: 3, value: 'D', label: 'Delivered' },
+    { id: 3, value: 'C', label: 'Cancelled' },
+  ]
 
   const totalOrders = computed(() => {
     return orders.value.length
@@ -44,33 +51,49 @@ export const useOrdersStore = defineStore('orders', () => {
     await loadOrders('orders', page)
   }
 
-  const loadStatuses = async () => {
-    statuses.value = [
-      { id: 1, value: 'P', label: 'Preparing' },
-      { id: 2, value: 'R', label: 'Ready' },
-      { id: 3, value: 'D', label: 'Delivered' },
-      { id: 3, value: 'C', label: 'Cancelled' },
-    ]
+  const loadPrepOrders = async () => {
+    try {
+      const res = await axiosReq('orders/ready', 'GET')
+      const response = await axiosReq('orders/preparing', 'GET')
+      const resFinal = res.data.data.concat(response.data.data)
+      orders.value = resFinal
+      return orders.value
+    } catch (error) {
+      clearOrders()
+      throw error
+    }
   }
 
-  const insertOrder = async (newOrder) => {
-    const response = await axiosReq('orders', 'POST', newOrder, true)
-    orders.value.push(response.data.order)
-    return response.data.order
+  const loadReadyOrders = async () => {
+    try {
+      const response = await axiosReq('orders/ready', 'GET')
+      orders.value = response.data.data
+      return orders.value
+    } catch (error) {
+      clearOrders()
+      throw error
+    }
   }
 
-  const updateOrder = async (updatedOrder) => {
-    const response = await axiosReq(`orders/${updatedOrder.order_id}`, 'PUT', updatedOrder, true)
-    const index = orders.value.findIndex((order) => order.order_id === updatedOrder.order_id)
-    orders.value[index] = response.data.order
-    return response
-  }
-
-  const deleteOrder = async (deletedOrder) => {
-    const response = await axiosReq(`orders/${deletedOrder.order_id}`, 'DELETE')
+  const finishOrder = async (order) => {
+    const response = await axiosReq(`orders/${order}/finish`, 'PATCH')
     if (response.status !== 200) throw response
-    orders.value.splice(orders.value.indexOf(deletedOrder), 1)
+    const index = order.value.findIndex((itm) => ord.order.id === order)
+    items.value[index].order.status = 'R'
     return response
+  }
+
+  const deliverOrder = async (order) => {
+    const response = await axiosReq(`orders/${order}/deliver`, 'PATCH')
+    const index = order.value.findIndex((itm) => ord.order.id === order)
+    items.value[index].order.status = 'D'
+    return response
+  }
+
+  const cancelOrder = async (orderId, reason) => {
+    const response = await axiosReq(`orders/${orderId}/cancel`, 'PATCH', { reason })
+    orders.value = orders.value.filter((order) => order.id !== orderId)
+    return response.data.order
   }
 
   return {
@@ -85,9 +108,10 @@ export const useOrdersStore = defineStore('orders', () => {
     clearStatuses,
     loadMyOrders,
     loadAllOrders,
-    loadStatuses,
-    insertOrder,
-    updateOrder,
-    deleteOrder,
+    cancelOrder,
+    loadPrepOrders,
+    finishOrder,
+    deliverOrder,
+    loadReadyOrders,
   }
 })

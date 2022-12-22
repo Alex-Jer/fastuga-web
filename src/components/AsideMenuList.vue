@@ -60,7 +60,9 @@ const userStore = useUserStore()
       <router-link to="/orders">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
-          :class="$route.name === 'orders' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
+          :class="
+            $route.name === 'orders' || $route.name === 'order' ? 'dark:text-white font-bold' : 'dark:text-slate-300'
+          "
         >
           <BaseIcon :path="mdiClipboardTextClockOutline" class="pt-1" w="w-16" :size="18" />
           <span class="pb-1">Orders {{ userStore.user?.type === 'C' ? 'History' : '' }}</span>
@@ -81,6 +83,30 @@ const userStore = useUserStore()
       </router-link>
     </li>
 
+    <li v-show="userStore.user?.type === 'EC'">
+      <router-link to="/current-dishes">
+        <div
+          class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
+          :class="$route.name === 'users' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
+        >
+          <BaseIcon :path="mdiClipboardListOutline" class="pt-1" w="w-16" :size="18" />
+          <span class="pb-1">Current Dishes</span>
+        </div>
+      </router-link>
+    </li>
+
+    <li v-show="userStore.user?.type === 'ED'">
+      <router-link to="/current-orders">
+        <div
+          class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
+          :class="$route.name === 'users' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
+        >
+          <BaseIcon :path="mdiClipboardListOutline" class="pt-1" w="w-16" :size="18" />
+          <span class="pb-1">Current Orders</span>
+        </div>
+      </router-link>
+    </li>
+
     <!-- Profile -->
     <li v-if="userStore.user">
       <router-link to="/profile">
@@ -94,15 +120,14 @@ const userStore = useUserStore()
       </router-link>
     </li>
 
-    <!-- TODO: remove dashboard -->
-    <li>
-      <router-link to="/dashboard">
+    <li v-if="userStore.user && userStore.user.type !== 'C'">
+      <router-link to="/statistics">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
-          :class="$route.name === 'dashboard' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
+          :class="$route.name === 'statistics' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
         >
           <BaseIcon :path="mdiMonitor" class="pt-1" w="w-16" :size="18" />
-          <span class="pb-1">Dashboard</span>
+          <span class="pb-1">Statistics</span>
         </div>
       </router-link>
     </li>

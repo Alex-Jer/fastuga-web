@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { useToast } from 'vue-toastification'
 import { axiosReq } from '@/requestHelper'
 import { useSocketStore } from './socket'
+import { useCartStore } from './cart'
 
 export const useUserStore = defineStore('user', () => {
   const apiDomain = inject('apiDomain')
@@ -82,6 +83,8 @@ export const useUserStore = defineStore('user', () => {
 
   const logout = async () => {
     try {
+      const cartStore = useCartStore()
+      cartStore.clearCart()
       await axiosReq('logout', 'DELETE')
       clearUser()
       return true
@@ -102,9 +105,6 @@ export const useUserStore = defineStore('user', () => {
 
   const updateCustomerDetails = async (updatedCustomer) => {
     const response = await axiosReq('customers/me', 'PUT', updatedCustomer, true)
-    console.log(updatedCustomer)
-    console.log(response.data.user.customer)
-    // user.value.customer = updatedCustomer
     user.value = response.data.user
     return response
   }
