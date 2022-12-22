@@ -4,7 +4,6 @@ import { axiosReq } from '@/requestHelper'
 
 export const useUserStore = defineStore('user', () => {
   const apiDomain = inject('apiDomain')
-  const axios = inject('axios')
 
   const user = ref(null)
   const paymentTypes = ref([])
@@ -20,7 +19,6 @@ export const useUserStore = defineStore('user', () => {
   })
 
   const clearUser = () => {
-    delete axios.defaults.headers.common.Authorization
     sessionStorage.removeItem('token')
     user.value = null
   }
@@ -50,7 +48,6 @@ export const useUserStore = defineStore('user', () => {
   const login = async (credentials) => {
     try {
       const response = await axiosReq('login', 'POST', credentials)
-      axios.defaults.headers.common.Authorization = `Bearer ${response.data.access_token}`
       sessionStorage.setItem('token', response.data.access_token)
       await loadUser()
       return true
@@ -62,7 +59,6 @@ export const useUserStore = defineStore('user', () => {
 
   const register = async (newCustomer) => {
     const response = await axiosReq('customers', 'POST', newCustomer, true)
-    axios.defaults.headers.common.Authorization = `Bearer ${response.data.access_token}`
     sessionStorage.setItem('token', response.data.access_token)
     if (response.status === 200) await loadUser()
     return response.data
@@ -81,7 +77,6 @@ export const useUserStore = defineStore('user', () => {
   const restoreToken = async () => {
     const storedToken = sessionStorage.getItem('token')
     if (storedToken) {
-      axios.defaults.headers.common.Authorization = `Bearer ${storedToken}`
       await loadUser()
       return true
     }
@@ -112,7 +107,6 @@ export const useUserStore = defineStore('user', () => {
 
   const updatePassword = async (updatedPassword) => {
     const response = await axiosReq('users/me/password', 'PATCH', updatedPassword)
-    axios.defaults.headers.common.Authorization = `Bearer ${response.data.access_token}`
     sessionStorage.setItem('token', response.data.access_token)
     return response
   }
