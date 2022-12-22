@@ -82,7 +82,7 @@ const userStore = useUserStore()
     
      <!-- Deliveries -->
      <li v-show="userStore.user?.type === 'ED'">
-      <router-link to="/current_orders">
+      <router-link to="/current-orders">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
           :class="$route.name === 'users' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
