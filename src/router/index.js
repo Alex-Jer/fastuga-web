@@ -105,22 +105,6 @@ const routes = [
   },
   {
     meta: {
-      title: 'Tables',
-    },
-    path: '/tables',
-    name: 'tables',
-    component: () => import('@/views/TablesView.vue'),
-  },
-  {
-    meta: {
-      title: 'Forms',
-    },
-    path: '/forms',
-    name: 'forms',
-    component: () => import('@/views/FormsView.vue'),
-  },
-  {
-    meta: {
       title: 'Profile',
     },
     path: '/profile',
