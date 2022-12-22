@@ -9,6 +9,7 @@ import Login from '@/views/LoginView.vue'
 import Register from '@/views/RegisterView.vue'
 import Orders from '@/views/OrdersView.vue'
 import Order from '@/views/OrderView.vue'
+import CurrentOrders from '@/views/DeliveryView.vue'
 
 const routes = [
   {
@@ -86,6 +87,14 @@ const routes = [
   },
   {
     meta: {
+      title: 'Current Orders',
+    },
+    path: '/current-orders',
+    name: 'current-orders ',
+    component: CurrentOrders,
+  },
+  {
+    meta: {
       title: 'Tables',
     },
     path: '/tables',
@@ -124,6 +133,7 @@ const routes = [
     name: 'responsive',
     component: () => import('@/views/ResponsiveView.vue'),
   },
+  
 
   {
     meta: {
@@ -156,6 +166,7 @@ router.beforeEach((to, from, next) => {
   const loginRoutes = ['profile', 'order']
   const customerRoutes = ['orders']
   const managerRoutes = ['products', 'users', 'orders']
+  const deliveryRoutes = ['current-orders']
 
   /* If the user is not logged in */
   if (noLoginRoutes.includes(to.name)) {
@@ -188,7 +199,13 @@ router.beforeEach((to, from, next) => {
       return
     }
   }
-
+  
+  if (userStore.user?.type === 'ED') {
+    if (deliveryRoutes.includes(to.name)) {
+      next()
+      return
+    }
+  }
   /* If the user tried to access a route that requires login */
   if (!userStore.user) {
     next({ name: 'login' })
