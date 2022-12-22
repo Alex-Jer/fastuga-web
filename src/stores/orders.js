@@ -35,16 +35,33 @@ export const useOrdersStore = defineStore('orders', () => {
     }
   }
 
-  const loadPreperableDishes = async () => {
+  const loadPreparableDishes = async () => {
     try {
-        const response = await axios.get('orders/preperable-dishes')
+        const response = await axios.get('orders/preparable-dishes')
         orders.value = response.data.data
+        console.log(orders.value)
         return orders.value
     } catch (error) {
         clearOrders()
         throw error
     }
   }
+
+  const prepareDish = async (order, item) => { 
+    const response = await axiosReq(`orders/${order}/dish/${item}/prepare`, 'PATCH')
+    if (response.status !== 200) throw response
+    orders.value.splice(orders.value.indexOf(item), 1)
+    return response
+  }
+
+  const finishDish = async (order, item) => { 
+    const response = await axiosReq(`orders/${order}/dish/${item}/finish`, 'PATCH')
+    if (response.status !== 200) throw response
+    orders.value.splice(orders.value.indexOf(item), 1)
+    return response
+  }
+
+
 
   const loadStatuses = async () => {
     statuses.value = [
@@ -90,6 +107,8 @@ export const useOrdersStore = defineStore('orders', () => {
     insertOrder,
     updateOrder,
     deleteOrder,
-    loadPreperableDishes
+    loadPreparableDishes,
+    prepareDish,
+    finishDish,
   }
 })

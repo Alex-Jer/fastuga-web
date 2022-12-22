@@ -50,10 +50,13 @@ const showDetailsModal = (order) => {
       </thead>
       <tbody>
         <tr
-          
+        v-for="order in itemsPaginated"
+        :key="order.ticket_number"
+        class="cursor-pointer"
         >
           <td data-label="Ticket number">
             {{ order.ticket_number }}
+            console.log(order.ticket_number)
           </td>
         </tr>
       </tbody>
