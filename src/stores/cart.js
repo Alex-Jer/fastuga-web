@@ -9,35 +9,21 @@ export const useCartStore = defineStore('cart', () => {
     return items.value.length
   })
 
-  // const getProductsByFilter = (type) => cart.value.filter((prod) => !type || type === prod.type)
-
-  // const getProductsByFilterTotal = (type) => getProductsByFilter(type).length
-
   const clearCart = () => {
     items.value = []
   }
 
-  // const loadCart = async () => {
-  //   try {
-  //     const response = await axiosReq('products', 'GET')
-  //     cart.value = response.data.data
-  //     return cart.value
-  //   } catch (error) {
-  //     clearCart()
-  //     throw error
-  //   }
-  // }
-
   //! TODO: Destroy cart on logout
   const addToCart = (newItem) => {
-    items.value.push(newItem)
+    const parsedItem = {
+      ...newItem,
+      total_price: Math.round((newItem.price * newItem.quantity + Number.EPSILON) * 100) / 100,
+    }
+    items.value.push(parsedItem)
   }
 
-  // const updateProduct = (updatedProduct) => {
-  // }
-
   const removeFromCart = (removedItem) => {
-    const index = items.value.findIndex((item) => item.product_id === removedItem.product_id)
+    const index = items.value.findIndex((item) => item === removedItem)
     if (index !== -1) {
       items.value.splice(index, 1)
     }
@@ -66,7 +52,6 @@ export const useCartStore = defineStore('cart', () => {
     items,
     totalCartItems,
     clearCart,
-    // loadCart,
     addToCart,
     removeFromCart,
     placeOrder,

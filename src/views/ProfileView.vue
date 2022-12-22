@@ -159,7 +159,6 @@ const submitPaymentDetails = () => {
       toast.success('Your payment details were updated successfully.')
     })
     .catch((error) => {
-      console.log({ error })
       if (error.response.status === 422) {
         const errorMsg = JSON.parse(JSON.stringify(error.response.data.message))
         toast.error(errorMsg)

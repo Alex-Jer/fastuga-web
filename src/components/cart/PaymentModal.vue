@@ -1,6 +1,6 @@
 <script setup>
 import { mdiClose } from '@mdi/js'
-import { computed, reactive } from 'vue'
+import { computed, reactive, watch } from 'vue'
 import { useToast } from 'vue-toastification'
 import BaseButton from '@/components/BaseButton.vue'
 import CardBox from '@/components/CardBox.vue'
@@ -54,28 +54,26 @@ window.addEventListener('keydown', (e) => {
 })
 
 const form = reactive({
-  payment_type: userStore.user.customer.default_payment_type || paymentTypes[0].value,
+  payment_type: userStore.user.customer.default_payment_type || paymentTypes[1].value,
   payment_reference: userStore.user.customer.default_payment_reference || '',
   points_used: 0,
 })
 
 const reset = () => {
-  form.payment_type = userStore.user.customer.default_payment_type || paymentTypes[0].value
+  console.log(userStore.user.customer)
+  form.payment_type = userStore.user.customer.default_payment_type || paymentTypes[1].value
   form.payment_reference = userStore.user.customer.default_payment_reference || ''
   form.points_used = 0
 }
 
-// watch(
-//   () => [props.product, props.types],
-//   ([product, types]) => {
-//     form.name = product?.name
-//     form.price = product?.price || ''
-//     form.type = product?.type || types[0]?.value
-//     form.description = product?.description || ''
-//     form.photo = null
-//   },
-//   { immediate: true }
-// )
+watch(
+  () => [userStore.user.customer],
+  ([customer]) => {
+    form.payment_type = customer.default_payment_type || paymentTypes[1].value
+    form.payment_reference = customer.default_payment_reference || ''
+  }
+  // { immediate: true }
+)
 
 const newPaymentInfo = () => {
   return {
