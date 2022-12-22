@@ -26,7 +26,9 @@ const itemsPaginated = computed(() =>
   items.value?.slice(itemsPerPage.value * currentPage.value, itemsPerPage.value * (currentPage.value + 1))
 )
 
-const numPages = computed(() => Math.ceil(items.value.length / itemsPerPage.value))
+const numPages = computed(() => {
+  return items.value ? Math.ceil(items.value.length / itemsPerPage.value) : 0
+})
 
 const pagesList = computed(() => {
   const list = []
