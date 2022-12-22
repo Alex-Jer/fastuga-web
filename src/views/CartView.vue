@@ -1,5 +1,5 @@
 <script setup>
-import { mdiCartOutline, mdiCreditCardCheck, mdiCurrencyEur } from '@mdi/js'
+import { mdiCartOutline, mdiCreditCardCheck, mdiCurrencyEur, mdiInformation } from '@mdi/js'
 import { reactive, ref, watch, watchEffect } from 'vue'
 import { useToast } from 'vue-toastification'
 import BaseButton from '@/components/BaseButton.vue'
@@ -8,6 +8,7 @@ import CardBox from '@/components/CardBox.vue'
 import CartTable from '@/components/cart/CartTable.vue'
 import FormControl from '@/components/FormControl.vue'
 import FormField from '@/components/FormField.vue'
+import NotificationBar from '@/components/NotificationBar.vue'
 import SectionMain from '@/components/SectionMain.vue'
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
@@ -146,6 +147,10 @@ watchEffect(() => {
           <FormField label="Payment Reference">
             <FormControl v-model="form.payment_reference" />
           </FormField>
+
+          <NotificationBar v-if="!userStore.user" color="info" :icon="mdiInformation">
+            <b>You won't gain any points unless you log in!</b>
+          </NotificationBar>
 
           <FormField label="Points to use" v-if="userStore.user">
             <FormControl v-model="form.points_used" />

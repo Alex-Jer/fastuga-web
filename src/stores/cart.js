@@ -9,6 +9,11 @@ export const useCartStore = defineStore('cart', () => {
     return items.value.length
   })
 
+  const restoreCart = () => {
+    const cart = JSON.parse(sessionStorage.getItem('cart'))
+    if (cart) items.value = cart
+  }
+
   const clearCart = () => {
     items.value = []
   }
@@ -19,6 +24,7 @@ export const useCartStore = defineStore('cart', () => {
       total_price: Math.round((newItem.price * newItem.quantity + Number.EPSILON) * 100) / 100,
     }
     items.value.push(parsedItem)
+    sessionStorage.setItem('cart', JSON.stringify(items.value))
   }
 
   const removeFromCart = (removedItem) => {
@@ -50,6 +56,7 @@ export const useCartStore = defineStore('cart', () => {
   return {
     items,
     totalCartItems,
+    restoreCart,
     clearCart,
     addToCart,
     removeFromCart,
