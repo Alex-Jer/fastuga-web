@@ -20,14 +20,6 @@ const props = defineProps({
 })
 
 
-const ready = () => {
-  //this.$emit('readyEvent', item.order_id, item.item.id)
-}
-
-const prepare = () => {
-  //this.$emit('prepareEvent', item.order_id, item.item.id)
-}
-
 
 </script>
 
@@ -62,8 +54,8 @@ const prepare = () => {
           </td>
           <td class="before:hidden lg:w-1 whitespace-nowrap" >
             <BaseButtons type="justify-start lg:justify-end" no-wrap>
-              <BaseButton color="info" :label="'Ready'" :icon="mdiCheck" small  @click.stop="ready(item.order_id, item.item.id)" v-if="item.item.status === 'P'" />
-              <BaseButton color="info" :label="'Preparing'" :icon="mdiChefHat" small  @click.stop="prepare(item.order_id, item.item.id)" v-if="item.item.status === 'W'" />
+              <BaseButton color="info" :label="'Ready'" :icon="mdiCheck" small  @click.stop="$emit('readyEvent', item.order_id, item.item.id)" v-if="item.item.status === 'P'" />
+              <BaseButton color="info" :label="'Preparing'" :icon="mdiChefHat" small  @click.stop="$emit('prepareEvent', item.order_id, item.item.id)" v-if="item.item.status === 'W'" />
             </BaseButtons>
           </td>
         </tr>
