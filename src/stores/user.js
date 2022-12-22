@@ -19,12 +19,16 @@ export const useUserStore = defineStore('user', () => {
     return user.value?.photo_url ? `${apiDomain}/storage/fotos/${user.value?.photo_url}` : placeholder
   })
 
-  socket.on('updateUser', (newUser) => {
+  socket.socket.on('updateUser', (newUser) => {
     const oldUser = user.value
     user.value = newUser
     if (oldUser.type !== newUser.type) {
       toast.info('Your user was remotely updated. Updating page...')
     }
+  })
+
+  socket.socket.on('orderReadyGuest', (order) => {
+    if (!user.value) toast.info(`Order (#${order}) is ready!`)
   })
 
   const userId = computed(() => {

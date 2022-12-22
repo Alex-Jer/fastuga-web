@@ -14,6 +14,8 @@ import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { useCartStore } from '@/stores/cart'
 import { useUserStore } from '@/stores/user'
+import { processGeneralError } from '@/requestHelper'
+import { useSocketStore } from '@/stores/socket'
 
 const cartStore = useCartStore()
 const userStore = useUserStore()
@@ -86,13 +88,22 @@ const newPaymentInfo = () => {
   }
 }
 
+const socketStore = useSocketStore()
+
+const sendNotificationsForNewOrder = (order) => {
+  order.items.forEach((item) => {
+    if (item.product.type === 'hot dish') socketStore.sendHotDishOrdered(item.product.name)
+  })
+}
+
 const checkout = () => {
   const paymentInfo = newPaymentInfo()
   cartStore
     .placeOrder(paymentInfo)
-    .then(() => {
+    .then((data) => {
       toast.success('Order placed!')
       reset()
+      sendNotificationsForNewOrder(data)
     })
     .catch((error) => {
       if (error.response.status === 422 || error.response.status === 402) {
@@ -100,7 +111,8 @@ const checkout = () => {
         toast.error(errorMsg)
         return
       }
-      toast.error('Something went wrong. Please try again later.')
+      processGeneralError(error, 'product')
+      // toast.error('Something went wrong. Please try again later.')
     })
 }
 

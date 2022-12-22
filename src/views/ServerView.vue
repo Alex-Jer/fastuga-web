@@ -8,6 +8,7 @@ import SectionMain from '@/components/SectionMain.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { processGeneralError } from '@/requestHelper'
 import { useOrdersStore } from '@/stores/orders'
+import { useSocketStore } from '@/stores/socket'
 
 const ordersStore = useOrdersStore()
 const selectStatuses = ref([])
@@ -23,11 +24,18 @@ const filteredOrders = computed(() => {
   return ordersStore.orders
 })
 
+const socketStore = useSocketStore()
+
+const sendNotificationForClient = (order) => {
+  socketStore.sendOrderReady(order.customer_user_id ? order.customer_user_id : null, order)
+}
+
 const finishOrder = async (order) => {
   await ordersStore
     .finishOrder(order)
-    .then(() => {
+    .then((thisOrder) => {
       toast.success('Order ready')
+      sendNotificationForClient(thisOrder)
     })
     .catch((error) => {
       processGeneralError(error, 'order')

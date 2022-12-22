@@ -23,26 +23,27 @@ export const useSocketStore = defineStore('socket', () => {
   }
 
   const sendSessionLost = (user) => {
-    socket.emit('sessionLost', user.user_id, user.type)
+    if (user) socket.emit('sessionLost', user.user_id, user.type)
   }
 
   const sendUserUpdated = (oldType, user) => {
     socket.emit('updateUser', oldType, user)
   }
 
-  socket.on('orderReady', (order) => {
-    toast.info(`Your order (#${order.ticket_number}) is ready!`)
-  })
-
   socket.on('orderDishesReady', (order) => {
     toast.info(`All hot dishes for order (#${order.ticket_number}) have been prepared!`)
   })
 
-  socket.on('hotDishOrdered', (dish) => {
-    toast.info(`A ${dish.product.name}) is waiting to be prepared`)
+  socket.on('hotDishOrdered', (name) => {
+    toast.info(`A ${name}) is waiting to be prepared`)
+  })
+
+  socket.on('orderReady', (order) => {
+    toast.info(`Your order (#${order}) is ready!`)
   })
 
   return {
+    socket,
     sendHotDishOrdered,
     sendOrderDishesReady,
     sendOrderReady,

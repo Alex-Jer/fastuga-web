@@ -13,6 +13,8 @@ import router from './router'
 
 import './css/main.css'
 import { useOrderItemsStore } from './stores/order-item'
+import { useSocketStore } from './stores/socket'
+import { useUserStore } from './stores/user'
 
 /* API and Webserver */
 const apiDomain = import.meta.env.VITE_API_DOMAIN

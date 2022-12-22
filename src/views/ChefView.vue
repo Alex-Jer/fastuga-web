@@ -7,6 +7,7 @@ import OrderItemsTable from '@/components/orders/OrderItemsTable.vue'
 import SectionMain from '@/components/SectionMain.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { processGeneralError } from '@/requestHelper'
+import { useSocketStore } from '@/stores/socket'
 
 const orderItemsStore = inject('orderItemsStore')
 const selectStatuses = ref([])
@@ -33,11 +34,18 @@ const prepareDish = async (order, item) => {
     })
 }
 
+const socketStore = useSocketStore()
+
+const sendNotificationForDishes = (order) => {
+  socketStore.sendOrderDishesReady(order)
+}
+
 const finishDish = async (order, item) => {
   await orderItemsStore
     .finishDish(order, item)
-    .then(() => {
+    .then((allDishesReady) => {
       toast.success('Dish finished')
+      if (allDishesReady) sendNotificationForDishes(order)
     })
     .catch((error) => {
       processGeneralError(error, 'dish')

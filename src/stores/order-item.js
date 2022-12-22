@@ -40,7 +40,7 @@ export const useOrderItemsStore = defineStore('order-items', () => {
     const index = items.value.findIndex((itm) => itm.item.id === order)
     items.value[index].item.status = 'R'
     items.value.splice(index, 1)
-    return response
+    return response.data.all_dishes_ready
   }
 
   const loadDishStatuses = () => {

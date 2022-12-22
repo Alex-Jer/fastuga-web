@@ -57,7 +57,7 @@ export const useCartStore = defineStore('cart', () => {
 
     userStore.user.customer.points += response.data.order.points_gained
 
-    return response.data.data
+    return response.data.order
   }
 
   return {
