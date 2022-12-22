@@ -1,10 +1,10 @@
 <script setup>
 import { computed, ref, inject } from 'vue'
+import { mdiCheck, mdiTruckDelivery, mdiTruckDeliveryOutline } from '@mdi/js'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import CardBox from '@/components/CardBox.vue'
-import { mdiCheck } from '@mdi/js';
 
 const moment = inject('moment')
 
@@ -72,9 +72,14 @@ const ready = () => {
           </td>
           <td data-label="Total Paid">{{ order.total_paid }} €</td>
           <td data-label="Date">{{ formatDate(order.date) }}</td>
-          <td class="before:hidden lg:w-1 whitespace-nowrap" >
+          <td class="before:hidden lg:w-1 whitespace-nowrap">
             <BaseButtons type="justify-start lg:justify-end" no-wrap>
-              <BaseButton color="info" :icon="mdiCheck" small  @click.stop="ready"  />
+              <BaseButton color="info" :icon="mdiTruckDeliveryOutline" small @click.stop="ready" />
+            </BaseButtons>
+          </td>
+          <td class="before:hidden lg:w-1 whitespace-nowrap">
+            <BaseButtons type="justify-start lg:justify-end" no-wrap>
+              <BaseButton color="danger" :icon="mdiTruckDelivery" small @click.stop="ready" />
             </BaseButtons>
           </td>
         </tr>

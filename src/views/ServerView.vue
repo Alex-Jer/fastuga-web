@@ -45,7 +45,6 @@ onMounted(async () => {
   })
 })
 </script>
-
 <template>
   <LayoutAuthenticated>
     <SectionMain>
