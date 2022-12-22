@@ -52,9 +52,6 @@ const pagesList = computed(() => {
 
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
 
-// const showAddToCartModal = (product) => {
-//   modalData.value = { showAddToCartModal: true, product }
-// }
 const showAddToCartModal = (product) => {
   modalData.value = { showAddToCartModal: true, product }
 }
