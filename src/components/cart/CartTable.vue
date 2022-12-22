@@ -1,13 +1,11 @@
 <script setup>
-import { mdiPencil, mdiPlus, mdiTrashCan } from '@mdi/js'
+import { mdiTrashCan } from '@mdi/js'
 import { computed, inject, ref } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import CardBox from '@/components/CardBox.vue'
 import ConfirmModal from './ConfirmModal.vue'
-import ProductModal from './ProductModal.vue'
-import { useUserStore } from '@/stores/user'
 
 const props = defineProps({
   products: {
@@ -22,13 +20,9 @@ const props = defineProps({
 
 const apiDomain = inject('apiDomain')
 const products = computed(() => props.products)
-const userStore = useUserStore()
 
 const modalData = ref({
-  showAddToCartModal: false,
-  showDetailsModal: false,
-  showUpdateModal: false,
-  showDeleteModal: false,
+  showRemoveFromCartModal: false,
   product: {},
   product_id: '',
   action: '',
@@ -51,50 +45,14 @@ const pagesList = computed(() => {
 
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
 
-const showAddToCartModal = (product) => {
-  modalData.value = { showAddToCartModal: true, product }
-}
-
-const showDetailsModal = (product) => {
-  modalData.value = { showDetailsModal: true, product }
-}
-
-const showUpdateModal = (product) => {
-  modalData.value = { showUpdateModal: true, product }
-}
-
-const showDeleteModal = (product) => {
-  modalData.value = { showDeleteModal: true, product }
+const showRemoveFromCartModal = (product) => {
+  modalData.value = { showRemoveFromCartModal: true, product }
 }
 </script>
 
 <template>
   <CardBox class="mb-6" has-table>
-    <ConfirmModal v-model="modalData.showAddToCartModal" :product="modalData.product">
-      <p>
-        Do you wish to add the product
-        <b>{{ modalData.product.name }}</b>
-        to your cart?
-      </p>
-    </ConfirmModal>
-
-    <ProductModal
-      v-model="modalData.showDetailsModal"
-      :product="modalData.product"
-      :types="props.types"
-      :title="`Viewing Product #${modalData.product.product_id}`"
-      action="view"
-    />
-
-    <ProductModal
-      v-model="modalData.showUpdateModal"
-      :product="modalData.product"
-      :types="props.types"
-      :title="`Updating Product #${modalData.product.product_id}`"
-      action="update"
-    />
-
-    <ConfirmModal v-model="modalData.showDeleteModal" :product="modalData.product" is-delete>
+    <ConfirmModal v-model="modalData.showRemoveFromCartModal" :product="modalData.product" is-delete>
       <p>
         Are you sure you want to delete the product
         <b>{{ modalData.product.name }}</b
@@ -109,16 +67,11 @@ const showDeleteModal = (product) => {
           <th>Name</th>
           <th>Type</th>
           <th>Price</th>
-          <th v-if="(userStore.user?.type === 'C' || !userStore.user) && $route.name === 'home'" />
+          <th />
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="product in itemsPaginated"
-          :key="product.product_id"
-          class="cursor-pointer"
-          @click="showDetailsModal(product)"
-        >
+        <tr v-for="product in itemsPaginated" :key="product.product_id">
           <td class="border-b-0 lg:w-6 before:hidden">
             <div class="w-24 h-24 mx-auto lg:w-10 lg:h-10">
               <img
@@ -132,18 +85,9 @@ const showDeleteModal = (product) => {
           <td data-label="Name">{{ product.name }}</td>
           <td data-label="Type">{{ capitalize(product.type) }}</td>
           <td data-label="Price">{{ product.price }} €</td>
-          <td class="before:hidden lg:w-1 whitespace-nowrap" v-if="$route.name === 'products'">
+          <td class="before:hidden lg:w-1 whitespace-nowrap">
             <BaseButtons type="justify-start lg:justify-end" no-wrap>
-              <BaseButton color="info" :icon="mdiPencil" small @click.stop="showUpdateModal(product)" />
-              <BaseButton color="danger" :icon="mdiTrashCan" small @click.stop="showDeleteModal(product)" />
-            </BaseButtons>
-          </td>
-          <td
-            class="before:hidden lg:w-1 whitespace-nowrap"
-            v-if="(userStore.user?.type === 'C' || !userStore.user) && $route.name === 'home'"
-          >
-            <BaseButtons type="justify-start lg:justify-end" no-wrap>
-              <BaseButton color="info" :icon="mdiPlus" small @click.stop="showAddToCartModal(product)" />
+              <BaseButton color="danger" :icon="mdiTrashCan" small @click.stop="showRemoveFromCartModal(product)" />
             </BaseButtons>
           </td>
         </tr>

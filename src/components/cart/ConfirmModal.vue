@@ -7,8 +7,6 @@ import BaseButtons from '@/components/BaseButtons.vue'
 import CardBox from '@/components/CardBox.vue'
 import CardBoxComponentTitle from '@/components/CardBoxComponentTitle.vue'
 import OverlayLayer from '@/components/OverlayLayer.vue'
-import { useProductsStore } from '@/stores/products'
-import { processGeneralError } from '@/requestHelper'
 import { useCartStore } from '@/stores/cart'
 
 const props = defineProps({
@@ -19,10 +17,6 @@ const props = defineProps({
   product: {
     type: Object,
     default: null,
-  },
-  isDelete: {
-    type: Boolean,
-    default: false,
   },
 })
 
@@ -45,24 +39,9 @@ const cancel = () => {
   confirmCancel('cancel')
 }
 
-const processError = (error) => {
-  processGeneralError(error, 'product')
-}
-
-const deleteProduct = () => {
-  const productsStore = useProductsStore()
-  productsStore
-    .deleteProduct(props.product)
-    .then((res) => {
-      if (res.status === 200) toast.success('Product was deleted successfully!')
-    })
-    .catch(processError)
-  cancel()
-}
-
-const addToCart = () => {
-  useCart.addToCart(props.product)
-  toast(`${props.product.name} was added to the cart`)
+const removeFromCart = () => {
+  useCart.removeFromCart(props.product)
+  toast(`${props.product.name} was removed from the cart`)
   cancel()
 }
 
@@ -74,7 +53,7 @@ window.addEventListener('keydown', (e) => {
 <template>
   <OverlayLayer v-show="value" @overlay-click="cancel">
     <CardBox v-show="value" class="z-50 w-11/12 shadow-lg max-h-modal md:w-3/5 lg:w-2/5 xl:w-4/12" is-modal>
-      <CardBoxComponentTitle :title="props.isDelete ? `Delete product #${product.product_id}?` : 'Add to cart'">
+      <CardBoxComponentTitle :title="`Remove ${product.name} from the cart?`">
         <BaseButton :icon="mdiClose" color="whiteDark" small rounded-full @click.prevent="cancel" />
       </CardBoxComponentTitle>
 
@@ -84,11 +63,7 @@ window.addEventListener('keydown', (e) => {
 
       <template #footer>
         <BaseButtons>
-          <BaseButton
-            :label="props.isDelete ? 'Delete' : 'Confirm'"
-            :color="props.isDelete ? 'danger' : 'info'"
-            @click="props.isDelete ? deleteProduct() : addToCart()"
-          />
+          <BaseButton label="Remove" color="danger" @click="removeFromCart()" />
           <BaseButton label="Cancel" :color="button" outline @click="cancel" />
         </BaseButtons>
       </template>

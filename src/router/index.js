@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import RouteRedirector from '@/components/global/RouteRedirector.vue'
 import { useUserStore } from '@/stores/user'
 import Home from '@/views/HomeView.vue'
+import Cart from '@/views/CartView.vue'
 import Products from '@/views/ProductsView.vue'
 import Users from '@/views/UsersView.vue'
 import Dashboard from '@/views/DashboardView.vue'
@@ -42,6 +43,14 @@ const routes = [
     path: '/register',
     name: 'register',
     component: () => Register,
+  },
+  {
+    meta: {
+      title: 'Cart',
+    },
+    path: '/cart',
+    name: 'cart',
+    component: Cart,
   },
   {
     meta: {
@@ -153,6 +162,7 @@ router.beforeEach((to, from, next) => {
   }
 
   const noLoginRoutes = ['Redirect', 'login', 'register', 'home', 'dashboard', 'error']
+  const noEmployeeRoutes = ['cart']
   const loginRoutes = ['profile', 'order']
   const customerRoutes = ['orders']
   const managerRoutes = ['products', 'users', 'orders']
@@ -165,7 +175,7 @@ router.beforeEach((to, from, next) => {
 
   const userStore = useUserStore()
 
-  /* If the user is logge in */
+  /* If the user is logged in */
   if (userStore.user) {
     if (loginRoutes.includes(to.name)) {
       next()
@@ -176,6 +186,14 @@ router.beforeEach((to, from, next) => {
   /* If the user is a customer */
   if (userStore.user?.type === 'C') {
     if (customerRoutes.includes(to.name)) {
+      next()
+      return
+    }
+  }
+
+  /* If the user is not an employee */
+  if (userStore.user?.type === 'C' || !userStore.user) {
+    if (noEmployeeRoutes.includes(to.name)) {
       next()
       return
     }

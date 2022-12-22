@@ -29,7 +29,7 @@ const filteredProducts = computed(() => {
 })
 
 onMounted(async () => {
-  // Calling loadProjects refreshes the list of projects from the API
+  // Calling loadProducts refreshes the list of products from the API
   await loadProducts()
   await loadTypes()
   isFetching.value = false
@@ -58,9 +58,7 @@ onMounted(async () => {
           v-model="filterByType"
         >
           <option :value="null" />
-          <option v-for="item in selectTypes" :key="item.id" :value="item.value">
-            {{ item.label }}
-          </option>
+          <option v-for="item in selectTypes" :key="item.id" :value="item.value">{{ item.label }}</option>
         </select>
       </div>
     </SectionMain>

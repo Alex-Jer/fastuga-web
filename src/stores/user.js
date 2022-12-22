@@ -99,7 +99,6 @@ export const useUserStore = defineStore('user', () => {
     /* eslint-disable no-param-reassign */
     updatedEmployee.type = user.value.type
     const response = await axiosReq('users/me', 'PUT', updatedEmployee, true)
-    // console.log(user.value)
     user.value = response.data.user
     return response
   }

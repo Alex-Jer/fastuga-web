@@ -1,11 +1,9 @@
-import { ref, computed, inject } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { axiosReq } from '@/requestHelper'
 
 export const useProductsStore = defineStore('products', () => {
   // const userStore = useUserStore()
-
-  const axios = inject('axios')
 
   const products = ref([])
   const types = ref([])
