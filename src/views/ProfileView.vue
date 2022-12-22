@@ -14,7 +14,6 @@ import UserCard from '@/components/UserCard.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { useUserStore } from '@/stores/user'
 import BaseDivider from '@/components/BaseDivider.vue'
-import router from '@/router'
 
 const userStore = useUserStore()
 
@@ -209,7 +208,6 @@ const submitPass = () => {
     .then((updatedUser) => {
       userStore.user.value = updatedUser
       toast.success(`Your password was successfully updated.`)
-      router.push({ name: 'login' })
     })
     .catch((error) => {
       if (error.response.status === 401) {

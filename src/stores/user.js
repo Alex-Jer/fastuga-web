@@ -113,8 +113,8 @@ export const useUserStore = defineStore('user', () => {
 
   const updatePassword = async (updatedPassword) => {
     const response = await axiosReq('users/me/password', 'PATCH', updatedPassword)
-    // const index = users.value.findIndex((user) => user.user_id === updatedUser.user_id)
-    // users.value[index] = response.data.user
+    axios.defaults.headers.common.Authorization = `Bearer ${response.data.access_token}`
+    sessionStorage.setItem('token', response.data.access_token)
     return response
   }
 
