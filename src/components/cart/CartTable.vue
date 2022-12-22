@@ -6,6 +6,7 @@ import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import CardBox from '@/components/CardBox.vue'
 import ConfirmModal from './ConfirmModal.vue'
+import CardBoxComponentEmpty from '../CardBoxComponentEmpty.vue'
 
 const props = defineProps({
   products: {
@@ -60,7 +61,9 @@ const showRemoveFromCartModal = (product) => {
       </p>
     </ConfirmModal>
 
-    <table>
+    <CardBoxComponentEmpty v-if="props.products.length < 1" />
+
+    <table v-if="props.products.length > 0">
       <thead>
         <tr>
           <th />
@@ -93,7 +96,7 @@ const showRemoveFromCartModal = (product) => {
         </tr>
       </tbody>
     </table>
-    <div class="p-3 border-t border-gray-100 lg:px-6 dark:border-slate-800">
+    <div v-if="props.products.length > 0" class="p-3 border-t border-gray-100 lg:px-6 dark:border-slate-800">
       <BaseLevel>
         <BaseButtons>
           <BaseButton
