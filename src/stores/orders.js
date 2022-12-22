@@ -79,6 +79,12 @@ export const useOrdersStore = defineStore('orders', () => {
     return response
   }
 
+  const deliverOrder = async (order) => { 
+    const response = await axiosReq(`orders/${order}/deliver`, 'PATCH')
+    if (response.status !== 200) throw response
+    orders.value.splice(orders.value.indexOf(order), 1)
+    return response
+  }
 
 
   const loadStatuses = async () => {
@@ -130,5 +136,6 @@ export const useOrdersStore = defineStore('orders', () => {
     finishDish,
     loadPrepOrders,
     orderReady,
+    deliverOrder,
   }
 })
