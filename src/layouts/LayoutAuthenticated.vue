@@ -7,7 +7,6 @@ import AsideMenu from '@/components/AsideMenu.vue'
 import BaseIcon from '@/components/BaseIcon.vue'
 import NavBar from '@/components/NavBar.vue'
 import NavBarItemPlain from '@/components/NavBarItemPlain.vue'
-import menuAside from '@/menuAside.js'
 import menuNavBar from '@/menuNavBar.js'
 import { useStyleStore } from '@/stores/style.js'
 import { useUserStore } from '@/stores/user.js'
@@ -64,7 +63,6 @@ const menuClick = (event, item) => {
       <AsideMenu
         :is-aside-mobile-expanded="isAsideMobileExpanded"
         :is-aside-lg-active="isAsideLgActive"
-        :menu="menuAside"
         @menu-click="menuClick"
         @aside-lg-close-click="isAsideLgActive = false"
       />
