@@ -53,8 +53,10 @@ export const useOrdersStore = defineStore('orders', () => {
 
   const loadPrepOrders = async () => {
     try {
+      const res= await axiosReq('orders/ready', 'GET')
       const response = await axiosReq('orders/preparing', 'GET')
-      orders.value = response.data.data
+      const resFinal = res.data.data.concat(response.data.data)
+      orders.value = resFinal
       return orders.value
     } catch (error) {
       clearOrders()

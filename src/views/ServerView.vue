@@ -12,16 +12,11 @@ const ordersStore = useOrdersStore()
 const selectStatuses = ref([])
 
 const loadOrders = async () => {
-  await ordersStore.loadReadyOrders().catch((error) => {
+  await ordersStore.loadPrepOrders().catch((error) => {
     processGeneralError(error, 'orders')
   })
   
-}
-
-const loadReadyOrders = async () => {
-  await ordersStore.add.loadReadyOrders().catch((error) => {
-    processGeneralError(error, 'orders')
-  })
+  
 }
 
 const filteredOrders = computed(() => {
