@@ -96,7 +96,7 @@ const userStore = useUserStore()
       </router-link>
     </li>
 
-    <li v-if="userStore.user?.type !== 'C'">
+    <li v-if="userStore.user && userStore.user.type !== 'C'">
       <router-link to="/statistics">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"

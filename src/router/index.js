@@ -132,7 +132,7 @@ router.beforeEach((to, from, next) => {
   const noEmployeeRoutes = ['cart']
   const loginRoutes = ['profile', 'order']
   const customerRoutes = ['orders']
-  const managerRoutes = ['products', 'users', 'orders']
+  const managerRoutes = ['products', 'users', 'orders', 'statistics']
 
   /* If the user is not logged in */
   if (noLoginRoutes.includes(to.name)) {
