@@ -55,9 +55,7 @@ const showRemoveFromCartModal = (product) => {
   <CardBox class="mb-6" has-table>
     <ConfirmModal v-model="modalData.showRemoveFromCartModal" :product="modalData.product" is-delete>
       <p>
-        Are you sure you want to delete the product
-        <b>{{ modalData.product.name }}</b
-        >?
+        Are you sure you want to remove <b>{{ modalData.product.name }}</b> from the cart?
       </p>
     </ConfirmModal>
 

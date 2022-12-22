@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { axiosReq } from '@/requestHelper'
 
 export const useCartStore = defineStore('cart', () => {
   const items = ref([])
@@ -42,6 +43,24 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
+  const placeOrder = async (order) => {
+    const cartItems = items.value.map((item) => {
+      return {
+        id: item.product_id,
+        quantity: item.quantity || 1,
+        notes: item.notes || '',
+      }
+    })
+
+    const response = await axiosReq('orders', 'POST', {
+      payment_type: order.payment_type,
+      payment_reference: order.payment_reference,
+      points_used: order.points_used,
+      cart: JSON.stringify(cartItems),
+    })
+    console.log(response)
+  }
+
   return {
     items,
     totalCartItems,
@@ -49,5 +68,6 @@ export const useCartStore = defineStore('cart', () => {
     // loadCart,
     addToCart,
     removeFromCart,
+    placeOrder,
   }
 })
