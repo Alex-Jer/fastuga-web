@@ -6,6 +6,7 @@ import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import CardBox from '@/components/CardBox.vue'
 import ConfirmModal from './ConfirmModal.vue'
+import AddToCartModal from '../cart/AddToCartModal.vue'
 import ProductModal from './ProductModal.vue'
 import { useUserStore } from '@/stores/user'
 
@@ -51,6 +52,9 @@ const pagesList = computed(() => {
 
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
 
+// const showAddToCartModal = (product) => {
+//   modalData.value = { showAddToCartModal: true, product }
+// }
 const showAddToCartModal = (product) => {
   modalData.value = { showAddToCartModal: true, product }
 }
@@ -70,13 +74,11 @@ const showDeleteModal = (product) => {
 
 <template>
   <CardBox class="mb-6" has-table>
-    <ConfirmModal v-model="modalData.showAddToCartModal" :product="modalData.product">
-      <p>
-        Do you wish to add the product
-        <b>{{ modalData.product.name }}</b>
-        to your cart?
-      </p>
-    </ConfirmModal>
+    <AddToCartModal
+      v-model="modalData.showAddToCartModal"
+      :product="modalData.product"
+      :title="`Add ${modalData.product.name} to cart?`"
+    />
 
     <ProductModal
       v-model="modalData.showDetailsModal"

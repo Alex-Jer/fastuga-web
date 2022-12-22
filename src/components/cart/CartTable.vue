@@ -44,8 +44,6 @@ const pagesList = computed(() => {
   return list
 })
 
-const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
-
 const showRemoveFromCartModal = (product) => {
   modalData.value = { showRemoveFromCartModal: true, product }
 }
@@ -65,9 +63,11 @@ const showRemoveFromCartModal = (product) => {
       <thead>
         <tr>
           <th />
-          <th>Name</th>
-          <th>Type</th>
-          <th>Price</th>
+          <th class="w-4/12">Name</th>
+          <th class="w-1/12">Quantity</th>
+          <th class="w-3/12 text-ellipsis">Notes</th>
+          <th class="w-2/12">Total Price</th>
+          <th class="w-2/12">Individual Price</th>
           <th />
         </tr>
       </thead>
@@ -83,9 +83,11 @@ const showRemoveFromCartModal = (product) => {
               />
             </div>
           </td>
-          <td data-label="Name">{{ product.name }}</td>
-          <td data-label="Type">{{ capitalize(product.type) }}</td>
-          <td data-label="Price">{{ product.price }} €</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.quantity }}</td>
+          <td class="whitespace-nowrap text-ellipsis overflow-hidden max-w-0">{{ product.notes }}</td>
+          <td>{{ product.total_price }} €</td>
+          <td>{{ product.price }} €</td>
           <td class="before:hidden lg:w-1 whitespace-nowrap">
             <BaseButtons type="justify-start lg:justify-end" no-wrap>
               <BaseButton color="danger" :icon="mdiTrashCan" small @click.stop="showRemoveFromCartModal(product)" />
