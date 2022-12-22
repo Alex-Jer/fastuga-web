@@ -4,16 +4,20 @@ import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import CardBox from '@/components/CardBox.vue'
+import { mdiCheck } from '@mdi/js';
 
+const moment = inject('moment')
 
 const props = defineProps({
   orders: {
     type: Array,
     default: () => [],
   },
+  statuses: {
+    type: Array,
+    default: () => [],
+  },
 })
-
-console.log('vim a este componente')
 
 const orders = computed(() => props.orders)
 
@@ -32,25 +36,45 @@ const pagesList = computed(() => {
   return list
 })
 
+const formatDate = (date) => {
+  return moment(date).format('DD/MM/YYYY')
+}
 
+const ready = (order) => {
+  
+}
 </script>
 
 <template>
   <CardBox class="mb-6" has-table>
+
     <table>
       <thead>
         <tr>
           <th>Ticket #</th>
+          <th>Status</th>
+          <th>Date</th>
         </tr>
       </thead>
       <tbody>
         <tr
-        v-for="order in orders"
-        :key="order.id"
-        class="cursor-pointer"
+          v-for="order in itemsPaginated"
+          :key="order.id"
+          class="cursor-pointer"
+          @click="showDetailsModal(order)"
         >
           <td data-label="Ticket number">
-            {{ order.id}}
+            {{ order.id }}
+          </td>
+          <td data-label="Status">
+            {{ props.statuses.find((status) => status.value === order.status)?.label }}
+          </td>
+          <td data-label="Total Paid">{{ order.total_paid }} €</td>
+          <td data-label="Date">{{ formatDate(order.date) }}</td>
+          <td class="before:hidden lg:w-1 whitespace-nowrap" >
+            <BaseButtons type="justify-start lg:justify-end" no-wrap>
+              <BaseButton color="info" :icon="mdiCheck" small  @click.stop="ready(order)"  />
+            </BaseButtons>
           </td>
         </tr>
       </tbody>

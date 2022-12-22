@@ -129,5 +129,6 @@ export const useOrdersStore = defineStore('orders', () => {
     prepareDish,
     finishDish,
     loadPrepOrders,
+    orderReady,
   }
 })
