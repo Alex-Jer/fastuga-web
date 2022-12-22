@@ -1,5 +1,5 @@
 <script setup>
-import { mdiClipboardTextClockOutline, mdiFoodApple, mdiReceiptText } from '@mdi/js'
+import { mdiCancel, mdiClipboardTextClockOutline, mdiFoodApple, mdiReceiptText } from '@mdi/js'
 import { onMounted, ref, inject } from 'vue'
 import { useRoute } from 'vue-router'
 import CardBox from '@/components/CardBox.vue'
@@ -12,6 +12,9 @@ import SectionTitleLine from '@/components/SectionTitleLine.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { axiosReq } from '@/requestHelper'
 import { useUserStore } from '@/stores/user'
+import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
+import BaseButton from '@/components/BaseButton.vue'
+import CancelOrderModal from '@/components/orders/CancelOrderModal.vue'
 
 const { params } = useRoute()
 const userStore = useUserStore()
@@ -58,6 +61,8 @@ const getProfilePicture = (photoUrl, name) => {
   return `https://avatar.oxro.io/avatar.svg?name=${nameWithPlus}&bold=true&width=60&height=60&fontSize=20&background=3b82f6&color=ffffff`
 }
 
+const showCancelOrderModal = ref(false)
+
 onMounted(async () => {
   let response
   if (userStore.user.type === 'C')
@@ -70,6 +75,8 @@ onMounted(async () => {
 <template>
   <LayoutAuthenticated>
     <SectionMain>
+      <CancelOrderModal v-model="showCancelOrderModal" :order="order" :title="`Cancel order #${order.id}?`" />
+      <!-- Header -->
       <section class="mb-6 flex items-center justify-between">
         <div class="flex items-center justify-start">
           <IconRounded :icon="mdiClipboardTextClockOutline" color="light" class="mr-3" bg />
@@ -82,9 +89,10 @@ onMounted(async () => {
       <!-- End of header -->
 
       <!-- Order details -->
-      <SectionTitleLine :icon="mdiReceiptText" title="Order details" />
+      <SectionTitleLineWithButton :icon="mdiReceiptText" title="Order details">
+        <BaseButton color="danger" label="Cancel order" :icon="mdiCancel" @click="showCancelOrderModal = true" />
+      </SectionTitleLineWithButton>
 
-      {{ detailsForm.cancel_reason }}
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <CardBox>
           <FormField label="Customer" v-if="userStore.user.type !== 'C' && order.customer_name">

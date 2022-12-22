@@ -59,18 +59,10 @@ export const useOrdersStore = defineStore('orders', () => {
     return response.data.order
   }
 
-  const updateOrder = async (updatedOrder) => {
-    const response = await axiosReq(`orders/${updatedOrder.order_id}`, 'PUT', updatedOrder, true)
-    const index = orders.value.findIndex((order) => order.order_id === updatedOrder.order_id)
-    orders.value[index] = response.data.order
-    return response
-  }
-
-  const deleteOrder = async (deletedOrder) => {
-    const response = await axiosReq(`orders/${deletedOrder.order_id}`, 'DELETE')
-    if (response.status !== 200) throw response
-    orders.value.splice(orders.value.indexOf(deletedOrder), 1)
-    return response
+  const cancelOrder = async (orderId, reason) => {
+    const response = await axiosReq(`orders/${orderId}/cancel`, 'PATCH', { reason })
+    orders.value = orders.value.filter((order) => order.id !== orderId)
+    return response.data.order
   }
 
   return {
@@ -87,7 +79,6 @@ export const useOrdersStore = defineStore('orders', () => {
     loadAllOrders,
     loadStatuses,
     insertOrder,
-    updateOrder,
-    deleteOrder,
+    cancelOrder,
   }
 })
