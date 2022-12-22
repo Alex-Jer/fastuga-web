@@ -7,7 +7,7 @@ import {
   mdiMonitorCellphone,
   mdiReload,
 } from '@mdi/js'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import CardBox from '@/components/CardBox.vue'
 import CardBoxClient from '@/components/CardBoxClient.vue'
@@ -20,6 +20,10 @@ import SectionMain from '@/components/SectionMain.vue'
 import SectionTitleLine from '@/components/SectionTitleLine.vue'
 import SectionTitleLineWithButton from '@/components/SectionTitleLineWithButton.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
+import { useStatisticsStore } from '@/stores/statistics'
+
+const statisticsStore = useStatisticsStore()
+const statistics = computed(() => statisticsStore.statistics)
 
 const chartData = ref(null)
 

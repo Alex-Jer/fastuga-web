@@ -96,15 +96,14 @@ const userStore = useUserStore()
       </router-link>
     </li>
 
-    <!-- TODO: remove dashboard -->
-    <li>
-      <router-link to="/dashboard">
+    <li v-if="userStore.user?.type !== 'C'">
+      <router-link to="/statistics">
         <div
           class="flex pt-4 text-gray-300 cursor-pointer hover:text-white dark:hover:text-white"
-          :class="$route.name === 'dashboard' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
+          :class="$route.name === 'statistics' ? 'dark:text-white font-bold' : 'dark:text-slate-300'"
         >
           <BaseIcon :path="mdiMonitor" class="pt-1" w="w-16" :size="18" />
-          <span class="pb-1">Dashboard</span>
+          <span class="pb-1">Statistics</span>
         </div>
       </router-link>
     </li>

@@ -5,7 +5,7 @@ import Home from '@/views/HomeView.vue'
 import Cart from '@/views/CartView.vue'
 import Products from '@/views/ProductsView.vue'
 import Users from '@/views/UsersView.vue'
-import Dashboard from '@/views/DashboardView.vue'
+import Statistics from '@/views/StatisticsView.vue'
 import Login from '@/views/LoginView.vue'
 import Register from '@/views/RegisterView.vue'
 import Orders from '@/views/OrdersView.vue'
@@ -103,11 +103,11 @@ const routes = [
   },
   {
     meta: {
-      title: 'Dashboard',
+      title: 'Statistics',
     },
-    path: '/dashboard',
-    name: 'dashboard',
-    component: Dashboard,
+    path: '/statistics',
+    name: 'statistics',
+    component: Statistics,
   },
 ]
 
