@@ -1,6 +1,7 @@
 <script setup>
 import { mdiClipboardTextClockOutline } from '@mdi/js'
 import { computed, onMounted, ref } from 'vue'
+import { useToast } from 'vue-toastification'
 import IconRounded from '@/components/IconRounded.vue'
 import OrdersPrepTable from '@/components/orders/OrdersPrepTable.vue'
 import SectionMain from '@/components/SectionMain.vue'
@@ -10,6 +11,7 @@ import { useOrdersStore } from '@/stores/orders'
 
 const ordersStore = useOrdersStore()
 const selectStatuses = ref([])
+const toast = useToast()
 
 const loadOrders = async () => {
   if (!ordersStore.loadPrepOrders) await loadOrders()
