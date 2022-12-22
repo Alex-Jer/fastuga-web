@@ -2,15 +2,16 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
 import axios from 'axios'
-import Toast from 'vue-toastification'
 import moment from 'moment'
-import { darkModeKey } from '@/config.js'
+import Toast from 'vue-toastification'
 import { useStyleStore } from '@/stores/style.js'
+import { darkModeKey } from '@/config.js'
+import 'vue-toastification/dist/index.css'
 import App from './App.vue'
 import router from './router'
-import 'vue-toastification/dist/index.css'
 
 import './css/main.css'
+import { useOrderItemsStore } from './stores/order-item'
 
 /* API and Webserver */
 const apiDomain = import.meta.env.VITE_API_DOMAIN
@@ -50,9 +51,10 @@ app.provide(
 )
 app.provide('moment', moment)
 
-/* Init Pinia stores */
-// TODO: remove template code
+const orderItemsStore = useOrderItemsStore()
 const styleStore = useStyleStore(pinia)
+
+app.provide('orderItemsStore', orderItemsStore)
 
 /* TODO: Websocket */
 // if (wsConnection) {

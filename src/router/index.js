@@ -10,6 +10,8 @@ import Login from '@/views/LoginView.vue'
 import Register from '@/views/RegisterView.vue'
 import Orders from '@/views/OrdersView.vue'
 import Order from '@/views/OrderView.vue'
+import CurrentDishes from '@/views/ChefView.vue'
+import CurrentOrders from '@/views/ServerView.vue'
 
 const routes = [
   {
@@ -84,6 +86,38 @@ const routes = [
     path: '/users',
     name: 'users',
     component: Users,
+  },
+  {
+    meta: {
+      title: 'Current Dishes',
+    },
+    path: '/current-dishes',
+    name: 'current-dishes',
+    component: CurrentDishes,
+  },
+  {
+    meta: {
+      title: 'Current Orders',
+    },
+    path: '/current-orders',
+    name: 'current-orders',
+    component: CurrentOrders,
+  },
+  {
+    meta: {
+      title: 'Tables',
+    },
+    path: '/tables',
+    name: 'tables',
+    component: () => import('@/views/TablesView.vue'),
+  },
+  {
+    meta: {
+      title: 'Forms',
+    },
+    path: '/forms',
+    name: 'forms',
+    component: () => import('@/views/FormsView.vue'),
   },
   {
     meta: {
@@ -169,6 +203,21 @@ router.beforeEach((to, from, next) => {
   /* If the user is a manager */
   if (userStore.user?.type === 'EM') {
     if (managerRoutes.includes(to.name)) {
+      next()
+      return
+    }
+  }
+
+  /* If the user is a chef */
+  if (userStore.user?.type === 'EC') {
+    if (chefRoutes.includes(to.name)) {
+      next()
+      return
+    }
+  }
+
+  if (userStore.user?.type === 'ED') {
+    if (serverRoutes.includes(to.name)) {
       next()
       return
     }

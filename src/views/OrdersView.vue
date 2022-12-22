@@ -35,6 +35,7 @@ const loadStatuses = async () => {
 
 const filteredOrders = computed(() => {
   // return ordersStore.getProductsByFilter(filterByType.value)
+  console.log(ordersStore.orders)
   return ordersStore.orders
 })
 
