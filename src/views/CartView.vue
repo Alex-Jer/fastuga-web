@@ -93,7 +93,6 @@ const checkout = () => {
     .then(() => {
       toast.success('Order placed!')
       reset()
-      cartStore.clearCart()
     })
     .catch((error) => {
       if (error.response.status === 422 || error.response.status === 402) {

@@ -53,12 +53,6 @@ export const useOrdersStore = defineStore('orders', () => {
     ]
   }
 
-  const insertOrder = async (newOrder) => {
-    const response = await axiosReq('orders', 'POST', newOrder, true)
-    orders.value.push(response.data.order)
-    return response.data.order
-  }
-
   const cancelOrder = async (orderId, reason) => {
     const response = await axiosReq(`orders/${orderId}/cancel`, 'PATCH', { reason })
     orders.value = orders.value.filter((order) => order.id !== orderId)
@@ -78,7 +72,6 @@ export const useOrdersStore = defineStore('orders', () => {
     loadMyOrders,
     loadAllOrders,
     loadStatuses,
-    insertOrder,
     cancelOrder,
   }
 })

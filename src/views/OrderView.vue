@@ -63,6 +63,17 @@ const getProfilePicture = (photoUrl, name) => {
 
 const showCancelOrderModal = ref(false)
 
+// watch if the reason is changed
+watch(
+  () => detailsForm.value.cancel_reason,
+  (newValue) => {
+    order.value.cancel_reason = newValue
+  },
+  {
+    immediate: true,
+  }
+)
+
 onMounted(async () => {
   let response
   if (userStore.user.type === 'C')

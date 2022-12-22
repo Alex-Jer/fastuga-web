@@ -1,9 +1,11 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { axiosReq } from '@/requestHelper'
+import { useUserStore } from './user'
 
 export const useCartStore = defineStore('cart', () => {
   const items = ref([])
+  const userStore = useUserStore()
 
   const totalCartItems = computed(() => {
     return items.value.length
@@ -16,6 +18,7 @@ export const useCartStore = defineStore('cart', () => {
 
   const clearCart = () => {
     items.value = []
+    sessionStorage.removeItem('cart')
   }
 
   const addToCart = (newItem) => {
@@ -49,6 +52,10 @@ export const useCartStore = defineStore('cart', () => {
       points_used: order.points_used,
       cart: JSON.stringify(cartItems),
     })
+
+    clearCart()
+
+    userStore.user.customer.points += response.data.order.points_gained
 
     return response.data.data
   }
