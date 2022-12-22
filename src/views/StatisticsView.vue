@@ -40,6 +40,8 @@ const lastMonthProfit = computed(() => {
 const lastMonthProfitPerc = computed(() => {
   if (!monthsHistory.value) return 0
   const beforeLastMonth = monthsHistory.value.profit[2].money_made
+
+  console.log('AA')
   return Math.round((lastMonthProfit.value / beforeLastMonth - 1) * 100)
 })
 
@@ -51,7 +53,7 @@ const loadStatistics = async () => {
   })
 }
 
-/*const datasetObject = (color, data) => {
+const datasetObject = (color, data) => {
   return {
     fill: false,
     borderColor: chartConfig.chartColors.default[color],
@@ -71,22 +73,26 @@ const loadStatistics = async () => {
   }
 }
 
-const monthsToChartData = () => {
+const monthsToChartData = computed(() => {
+  console.log('GG')
+  if (!monthsHistory.value) return []
   const labels = []
-  for (let i = 1; i <= 12; i += 1) {
-    labels.push(`${i}`)
+  const dataQuantity = []
+  const dataProfit = []
+  for (let i = 0; i < monthsHistory.value.profit.length; i += 1) {
+    labels.push(`${monthsHistory.value.profit[i].month}-${monthsHistory.value.profit[i].year}`)
+    dataQuantity.push(monthsHistory.value.num_orders[i].quantity)
+    dataProfit.push(monthsHistory.value.profit[i].money_made)
   }
-
-  //const data
 
   return {
     labels,
-    datasets: [datasetObject('primary', points), datasetObject('danger', points)],
+    datasets: [datasetObject('info', dataProfit), datasetObject('danger', dataQuantity)],
   }
-}*/
+})
 
 const fillChartData = () => {
-  chartData.value = chartConfig.sampleChartData()
+  chartData.value = monthsToChartData.value
 }
 
 onMounted(async () => {
