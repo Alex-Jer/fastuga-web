@@ -8,7 +8,7 @@ import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { useOrdersStore } from '@/stores/orders'
 
 const ordersStore = useOrdersStore()
-
+const selectStatuses = ref([])
 
 const loadPreparableDishes = async () => {
   await ordersStore.loadPreparableDishes().catch((error) => {
@@ -17,13 +17,29 @@ const loadPreparableDishes = async () => {
   })
 }
 
+const loadDishStatuses = async () => {
+  await ordersStore.loadDishStatuses().catch((error) => {
+    console.log(error)
+  })
+}
+
 const filteredOrders = computed(() => {
   console.log(ordersStore.orders)
   return ordersStore.orders
 })
 
+
+
 onMounted(async () => {
   await loadPreparableDishes()
+  await loadDishStatuses()
+  ordersStore.statuses.forEach((status, index) => {
+    selectStatuses.value.push({
+      id: index + 1,
+      value: status.value,
+      label: status.label,
+    })
+  })
 })
 </script>
 
@@ -36,7 +52,7 @@ onMounted(async () => {
           <h1 class="text-3xl leading-tight">Current Dishes</h1>
         </div>
       </section>
-      <order-items-table :orders="filteredOrders" />
+      <order-items-table :order="filteredOrders" :statuses="selectStatuses"  />
     </SectionMain>
   </LayoutAuthenticated>
 </template>

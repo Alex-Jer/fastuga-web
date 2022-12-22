@@ -4,25 +4,31 @@ import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import CardBox from '@/components/CardBox.vue'
-import { mdiCheck } from '@mdi/js';
+import { mdiCheck, mdiChefHat } from '@mdi/js';
 
-const moment = inject('moment')
+
 
 const props = defineProps({
   order: {
     type: Object,
     required: true,
   },
+  statuses: {
+    type: Array,
+    default: () => [],
+  },
 })
 
 
-const formatDate = (date) => {
-  return moment(date).format('DD/MM/YYYY')
+const ready = () => {
+  //this.$emit('readyEvent', item.order_id, item.item.id)
 }
 
-const ready = (order) => {
-  
+const prepare = () => {
+  //this.$emit('prepareEvent', item.order_id, item.item.id)
 }
+
+
 </script>
 
 <template>
@@ -32,24 +38,32 @@ const ready = (order) => {
       <thead>
         <tr>
           <th>Ticket #</th>
+          <th>Product ID</th>
+          <th>Product name</th>
           <th>Status</th>
         </tr>
       </thead>
       <tbody>
         <tr
-        v-for="order in props.order"
-          :key="order.id"
-          class="cursor-pointer"
+        v-for="item in props.order"
+          :key="item.order_id"
         >
           <td data-label="Ticket number">
-            {{ item.id }}
+            {{ item.ticket_number }}
+          </td>
+          <td data-label="Product id">
+            {{ item.item.id }}
+          </td>
+          <td data-label="Product name">
+            {{ item.item.product.name }}
           </td>
           <td data-label="Status">
-            {status}
+            {{ props.statuses.find((status) => status.value === item.item.status)?.label }}
           </td>
           <td class="before:hidden lg:w-1 whitespace-nowrap" >
             <BaseButtons type="justify-start lg:justify-end" no-wrap>
-              <BaseButton color="info" :icon="mdiCheck" small  @click.stop="ready(order)"  />
+              <BaseButton color="info" :label="'Ready'" :icon="mdiCheck" small  @click.stop="ready(item.order_id, item.item.id)" v-if="item.item.status === 'P'" />
+              <BaseButton color="info" :label="'Preparing'" :icon="mdiChefHat" small  @click.stop="prepare(item.order_id, item.item.id)" v-if="item.item.status === 'W'" />
             </BaseButtons>
           </td>
         </tr>
