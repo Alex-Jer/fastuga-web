@@ -37,7 +37,7 @@ export const useOrderItemsStore = defineStore('order-items', () => {
   const finishDish = async (order, item) => {
     const response = await axiosReq(`orders/${order}/dish/${item}/finish`, 'PATCH')
     if (response.status !== 200) throw response
-    const index = items.value.findIndex((itm) => itm.item.id === order)
+    const index = items.value.findIndex((itm) => itm.item.id === item)
     items.value[index].item.status = 'R'
     items.value.splice(index, 1)
     return response.data.all_dishes_ready
