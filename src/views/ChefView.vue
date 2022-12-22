@@ -1,6 +1,6 @@
 <script setup>
 import { mdiClipboardTextClockOutline } from '@mdi/js'
-import { onMounted, ref, inject } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import IconRounded from '@/components/IconRounded.vue'
 import OrderItemsTable from '@/components/orders/OrderItemsTable.vue'
@@ -8,8 +8,9 @@ import SectionMain from '@/components/SectionMain.vue'
 import LayoutAuthenticated from '@/layouts/LayoutAuthenticated.vue'
 import { processGeneralError } from '@/requestHelper'
 import { useSocketStore } from '@/stores/socket'
+import { useOrderItemsStore } from '@/stores/order-item'
 
-const orderItemsStore = inject('orderItemsStore')
+const orderItemsStore = useOrderItemsStore()
 const selectStatuses = ref([])
 const toast = useToast()
 

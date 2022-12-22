@@ -12,9 +12,6 @@ import App from './App.vue'
 import router from './router'
 
 import './css/main.css'
-import { useOrderItemsStore } from './stores/order-item'
-import { useSocketStore } from './stores/socket'
-import { useUserStore } from './stores/user'
 
 /* API and Webserver */
 const apiDomain = import.meta.env.VITE_API_DOMAIN
@@ -55,10 +52,7 @@ app.provide(
 app.provide('socket', io(wsConnection))
 app.provide('moment', moment)
 
-const orderItemsStore = useOrderItemsStore()
 const styleStore = useStyleStore(pinia)
-
-app.provide('orderItemsStore', orderItemsStore)
 
 /* TODO: Websocket */
 // if (wsConnection) {
