@@ -59,8 +59,10 @@ export const useUserStore = defineStore('user', () => {
 
   const register = async (newCustomer) => {
     const response = await axiosReq('customers', 'POST', newCustomer, true)
-    sessionStorage.setItem('token', response.data.access_token)
-    if (response.status === 200) await loadUser()
+    if (response.status === 200) {
+      sessionStorage.setItem('token', response.data.access_token)
+      await loadUser()
+    }
     return response.data
   }
 
