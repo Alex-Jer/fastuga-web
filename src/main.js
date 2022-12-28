@@ -54,12 +54,19 @@ app.provide('moment', moment)
 
 const styleStore = useStyleStore(pinia)
 
-if (wsConnection) {
-  const ws = new WebSocket(wsConnection)
-  ws.onopen = () => {
-    console.log('Websocket connected')
-  }
-}
+/* TODO: Websocket */
+// if (wsConnection) {
+//   const ws = new WebSocket(wsConnection)
+//   ws.onopen = () => {
+//     console.log('Websocket connected')
+//   }
+//   ws.onmessage = (event) => {
+//     const data = JSON.parse(event.data)
+//     if (data.type === 'notification') {
+//       mainStore.notification = data.message
+//     }
+//   }
+// }
 
 /* App style */
 styleStore.setStyle()
