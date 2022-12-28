@@ -14,6 +14,8 @@ import Orders from '@/views/OrdersView.vue'
 import Order from '@/views/OrderView.vue'
 import CurrentDishes from '@/views/ChefView.vue'
 import CurrentOrders from '@/views/ServerView.vue'
+import Profile from '@/views/ProfileView.vue'
+import Error from '@/views/ErrorView.vue'
 
 const routes = [
   {
@@ -38,7 +40,7 @@ const routes = [
     },
     path: '/login',
     name: 'login',
-    component: () => Login,
+    component: Login,
   },
   {
     meta: {
@@ -46,7 +48,7 @@ const routes = [
     },
     path: '/register',
     name: 'register',
-    component: () => Register,
+    component: Register,
   },
   {
     meta: {
@@ -111,7 +113,7 @@ const routes = [
     },
     path: '/profile',
     name: 'profile',
-    component: () => import('@/views/ProfileView.vue'),
+    component: Profile,
   },
   {
     meta: {
@@ -119,7 +121,7 @@ const routes = [
     },
     path: '/error',
     name: 'error',
-    component: () => import('@/views/ErrorView.vue'),
+    component: Error,
   },
   {
     meta: {
